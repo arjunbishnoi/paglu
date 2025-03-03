@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Adrit Bhatnagar - World's Biggest Chut Paglu! 🎉</title>
-    <link rel="icon" type="image/png" href="https://i.ibb.co/HfJs9KVm/IMG-1071.png">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://i.ibb.co/rKmTc7Tm/IMG-1072.png">
     <style>
-        /* Funky CSS */
+        /* General Styles */
         body {
             margin: 0;
             padding: 20px;
@@ -23,7 +24,7 @@
             padding: 30px;
             border-radius: 20px;
             border: 5px dashed #ff0000;
-            box-shadow: 0 0 50px rgba(0,0,0,0.3);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
         }
 
         h1 {
@@ -35,20 +36,22 @@
         }
 
         .meme-image {
-            width: 300px;
-            height: 300px;
+            width: 100%;
+            max-width: 300px;
+            height: auto;
             border: 5px solid #0000ff;
             border-radius: 50%;
             margin: 20px auto;
-            background: url('https://i.ibb.co/HfJs9KVm/IMG-1071.png') center/cover;
+            background: url('https://i.ibb.co/rKmTc7Tm/IMG-1072.png') center/cover;
             filter: hue-rotate(90deg) saturate(200%);
             transition: transform 0.3s;
         }
 
         .slideshow {
             position: relative;
-            width: 300px;
-            height: 300px;
+            width: 100%;
+            max-width: 300px;
+            height: auto;
             margin: 20px auto;
             overflow: hidden;
             border: 5px solid #ff00ff;
@@ -142,9 +145,38 @@
             font-weight: bold;
         }
 
+        /* Responsive Design */
         @media (max-width: 600px) {
-            h1 { font-size: 2em; }
-            .meme-image { width: 200px; height: 200px; }
+            h1 {
+                font-size: 2em;
+            }
+
+            .meme-image, .slideshow {
+                max-width: 200px;
+            }
+
+            .meme-text {
+                font-size: 1.4em;
+            }
+
+            .meme-gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .chutpaglu-meter {
+                height: 30px;
+            }
+
+            .meter-text {
+                font-size: 1em;
+            }
+
+            button {
+                font-size: 1em;
+                padding: 10px;
+                width: 100%;
+                margin-top: 20px;
+            }
         }
     </style>
 </head>
