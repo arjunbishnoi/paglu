@@ -196,6 +196,10 @@
             }
             .flying-image { width: 120px !important; opacity: 1; }
         }
+
+        #strongg{
+            color: rgb(100, 0, 0);
+        }
     </style>
 </head>
 <body>
@@ -211,7 +215,9 @@
             <img src="images/adrit6.png" alt="Adrit 6" class="slide">
         </div>
 
-        <p class="meme-text">"When the chutpagluness is too strong..." 😎</p>
+        <div class="meme-text" id="randomText">Click anywhere for surprise!</div>
+
+        <p class="meme-text" id="strongg">"When the chutpagluness is too strong..." 😎</p>
 
         <div class="meme-gallery">
             <div class="meme-item">
@@ -232,8 +238,6 @@
             <div class="meter-fill"></div>
             <span class="meter-text">Chutpaglu Level: <span id="meterValue">0%</span></span>
         </div>
-
-        <div class="meme-text" id="randomText">Click anywhere for surprise!</div>
     </div>
 
     <audio loop id="backgroundMusic">
@@ -341,7 +345,7 @@
             }
             document.getElementById('randomText').textContent =
                 ["Chutpaglu Alert! 🚨", "Adrit is watching... 👀", "Warning: Extreme Pagluness! ⚠️",
-                 "Certified Gandu™️", "100% Pure Chutpaglu! �", "Sniff Incoming! 💥", "Dalla No.1"]
+                 "Certified Gandu™️", "100% Pure Chutpaglu!", "Sniff Incoming! 💥", "Dalla No.1"]
                 [Math.floor(Math.random() * 7)];
             document.querySelectorAll('.meme-item').forEach(item => {
                 item.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
