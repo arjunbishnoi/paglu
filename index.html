@@ -1,13 +1,14 @@
+Here's the complete code with automatic music play and persistent toggle button:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Adrit Bhatnagar - World's Biggest Chut Paglu! 🎉</title>
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/adrit1.png">
     <style>
-        /* General Styles */
         body {
             margin: 0;
             padding: 20px;
@@ -32,10 +33,9 @@
             font-size: 3.5em;
             text-align: center;
             text-shadow: 3px 3px 0 #00ff00;
-            animation: float 3s ease-in-out infinite;
+            animation: float 3s ease-in-out infinite, rainbow 5s infinite;
         }
 
-        /* Slideshow */
         .slideshow {
             position: relative;
             width: 100%;
@@ -75,16 +75,6 @@
             height: 10px;
             background: #ff0000;
             animation: confetti-fall 3s linear infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes confetti-fall {
-            0% { transform: translateY(-100vh) rotate(0deg); }
-            100% { transform: translateY(100vh) rotate(360deg); }
         }
 
         .meme-gallery {
@@ -135,39 +125,75 @@
             font-weight: bold;
         }
 
-        /* Responsive Design */
+        #musicToggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            padding: 12px 20px;
+            background: #ff00ff;
+            border: 3px solid #00ffff;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Comic Sans MS';
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+
+        #musicToggle:hover {
+            transform: scale(1.1);
+            background: #00ffff;
+            border-color: #ff00ff;
+        }
+
+        .flying-image {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0.7;
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+            z-index: -1;
+            animation: floatImage 8s linear infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes rainbow {
+            0% { color: #ff0000; }
+            20% { color: #00ff00; }
+            40% { color: #0000ff; }
+            60% { color: #ff00ff; }
+            80% { color: #ffff00; }
+            100% { color: #ff0000; }
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        @keyframes floatImage {
+            0% { transform: translate(-100%, -100%) rotate(0deg); }
+            100% { transform: translate(200vw, 200vh) rotate(720deg); }
+        }
+
         @media (max-width: 600px) {
-            h1 {
-                font-size: 2em;
+            h1 { font-size: 2em; }
+            .slideshow { max-width: 200px; height: 200px; }
+            .meme-text { font-size: 1.4em; }
+            .meme-gallery { grid-template-columns: 1fr; }
+            .chutpaglu-meter { height: 30px; }
+            .meter-text { font-size: 1em; }
+            #musicToggle {
+                padding: 8px 16px;
+                font-size: 0.9em;
+                top: 10px;
+                right: 10px;
             }
-
-            .slideshow {
-                max-width: 200px;
-                height: 200px;
-            }
-
-            .meme-text {
-                font-size: 1.4em;
-            }
-
-            .meme-gallery {
-                grid-template-columns: 1fr;
-            }
-
-            .chutpaglu-meter {
-                height: 30px;
-            }
-
-            .meter-text {
-                font-size: 1em;
-            }
-
-            button {
-                font-size: 1em;
-                padding: 10px;
-                width: 100%;
-                margin-top: 20px;
-            }
+            .flying-image { width: 40px !important; opacity: 0.5; }
         }
     </style>
 </head>
@@ -175,7 +201,6 @@
     <div class="container">
         <h1>🎉 ADRIT BHATNAGAR 🎉<br>WORLD'S #1 CHUT PAGLU! 🏆</h1>
 
-        <!-- Slideshow -->
         <div class="slideshow">
             <img src="images/adrit1.png" alt="Adrit 1" class="slide active">
             <img src="images/adrit2.png" alt="Adrit 2" class="slide">
@@ -207,16 +232,73 @@
         <div class="meme-text" id="randomText">Click anywhere for surprise!</div>
     </div>
 
-    <!-- Background Music -->
-    <audio autoplay loop id="backgroundMusic">
+    <audio loop id="backgroundMusic">
         <source src="sound.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
     </audio>
 
-    <button id="musicToggle">🎵 Toggle Music 🎵</button>
+    <button id="musicToggle">🔊 Music ON</button>
 
     <script>
-        // Confetti Explosion on Page Load
+        // Music Management
+        const music = document.getElementById('backgroundMusic');
+        const toggleButton = document.getElementById('musicToggle');
+        let isMuted = false;
+
+        // Try autoplay with user interaction
+        document.addEventListener('click', () => {
+            if (music.paused) {
+                music.play().catch(() => {});
+            }
+        }, { once: true });
+
+        // Load music state from localStorage
+        window.addEventListener('load', () => {
+            const savedVolume = localStorage.getItem('musicMuted');
+            if (savedVolume === 'true') {
+                music.pause();
+                toggleButton.textContent = "🔇 Music OFF";
+                isMuted = true;
+            } else {
+                music.play().catch(() => {});
+                toggleButton.textContent = "🔊 Music ON";
+            }
+        });
+
+        // Toggle Music
+        toggleButton.addEventListener('click', () => {
+            isMuted = !isMuted;
+            if (isMuted) {
+                music.pause();
+                toggleButton.textContent = "🔇 Music OFF";
+            } else {
+                music.play();
+                toggleButton.textContent = "🔊 Music ON";
+            }
+            localStorage.setItem('musicMuted', isMuted);
+        });
+
+        // Flying Images
+        function createFlyingImage() {
+            const img = document.createElement('img');
+            const imgNum = Math.floor(Math.random() * 3) + 1;
+            img.src = `images/adrit${imgNum}.png`;
+            img.className = 'flying-image';
+            
+            img.style.left = Math.random() * 100 + 'vw';
+            img.style.top = Math.random() * 100 + 'vh';
+            img.style.width = (window.innerWidth <= 600 ? 40 : Math.random() * 100 + 50) + 'px';
+            img.style.animationDuration = Math.random() * 5 + 5 + 's';
+            img.style.animationDelay = Math.random() * 2 + 's';
+            img.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+            
+            document.body.appendChild(img);
+            setTimeout(() => img.remove(), 8000);
+        }
+
+        setInterval(createFlyingImage, 1500);
+        setTimeout(() => { for(let i=0; i<20; i++) createFlyingImage(); }, 500);
+
+        // Original Interactions
         window.onload = () => {
             for (let i = 0; i < 200; i++) {
                 const confetti = document.createElement('div');
@@ -226,80 +308,22 @@
                 confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
                 confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
                 document.body.appendChild(confetti);
-
                 setTimeout(() => confetti.remove(), 5000);
             }
         };
 
-        // Slideshow Logic
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
-
-        function showNextSlide() {
+        setInterval(() => {
             slides[currentSlide].classList.remove('active');
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].classList.add('active');
-        }
-
-        setInterval(showNextSlide, 3000);
-
-        // Chutpaglu Meter Animation
-        const meterFill = document.querySelector('.meter-fill');
-        const meterValue = document.getElementById('meterValue');
+        }, 3000);
 
         setTimeout(() => {
-            meterFill.style.width = '100%';
-            meterValue.textContent = 'OVER 900000%';
+            document.querySelector('.meter-fill').style.width = '100%';
+            document.getElementById('meterValue').textContent = 'OVER 900000%';
         }, 1000);
-
-        // Random Flying Emojis
-        setInterval(() => {
-            const emojis = ['🎉', '🏆', '🔥', '🚨', '💥', '😎'];
-            const emoji = document.createElement('div');
-            emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            emoji.style.position = 'fixed';
-            emoji.style.left = Math.random() * 100 + 'vw';
-            emoji.style.top = Math.random() * 100 + 'vh';
-            emoji.style.fontSize = Math.random() * 30 + 20 + 'px';
-            emoji.style.animation = `bounce ${Math.random() * 3 + 2}s infinite`;
-
-            document.body.appendChild(emoji);
-
-            setTimeout(() => emoji.remove(), 5000);
-        }, 1000);
-
-        const styleSheet = document.createElement('style');
-        styleSheet.innerHTML = `
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-50px); }
-        }`;
-        document.head.appendChild(styleSheet);
-
-        // Music Toggle Button
-        const music = document.getElementById('backgroundMusic');
-        const toggleButton = document.getElementById('musicToggle');
-
-        toggleButton.addEventListener('click', () => {
-            if (music.paused) {
-                music.play();
-                toggleButton.textContent = "🎵 Pause Music 🎵";
-            } else {
-                music.pause();
-                toggleButton.textContent = "🎵 Play Music 🎵";
-            }
-        });
-
-        // Click Effects
-        const messages = [
-            "Chutpaglu Alert! 🚨",
-            "Adrit is watching... 👀",
-            "Warning: Extreme Pagluness! ⚠️",
-            "Certified Gandu™️",
-            "100% Pure Chutpaglu! 🧪",
-            "Sniff Incoming! 💥",
-            "Dalla No.1"
-        ];
 
         document.addEventListener('click', () => {
             for (let i = 0; i < 50; i++) {
@@ -309,13 +333,12 @@
                 confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
                 confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
                 document.body.appendChild(confetti);
-
                 setTimeout(() => confetti.remove(), 5000);
             }
-
             document.getElementById('randomText').textContent =
-                messages[Math.floor(Math.random() * messages.length)];
-
+                ["Chutpaglu Alert! 🚨", "Adrit is watching... 👀", "Warning: Extreme Pagluness! ⚠️",
+                 "Certified Gandu™️", "100% Pure Chutpaglu! �", "Sniff Incoming! 💥", "Dalla No.1"]
+                [Math.floor(Math.random() * 7)];
             document.querySelectorAll('.meme-item').forEach(item => {
                 item.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
             });
