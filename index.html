@@ -19,14 +19,15 @@
             max-width: 800px;
             margin: 0 auto;
             background: linear-gradient(45deg, 
-    rgba(255, 240, 245, 0.7), /* LavenderBlush */
-    rgba(255, 228, 225, 0.8), /* MistyRose */
-    rgba(255, 245, 238, 0.6)  /* Seashell */
-  );
+                rgba(255, 240, 245, 0.7),
+                rgba(255, 228, 225, 0.8),
+                rgba(255, 245, 238, 0.6));
             padding: 30px;
             border-radius: 20px;
             border: 5px dashed #ff0000;
             box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
         }
 
         h1 {
@@ -151,10 +152,11 @@
         .flying-image {
             position: fixed;
             pointer-events: none;
-            opacity: 1;
+            opacity: 0.8;
             filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
-            z-index: -1;
-            animation: floatImage 10s linear infinite;
+            mix-blend-mode: multiply;
+            z-index: 1;
+            transform-origin: center;
         }
 
         @keyframes float {
@@ -176,9 +178,19 @@
             100% { transform: translateY(100vh) rotate(360deg); }
         }
 
-        @keyframes floatImage {
-            0% { transform: translate(-100%, -100%) rotate(0deg); }
-            100% { transform: translate(200vw, 200vh) rotate(720deg); }
+        @keyframes floatImage1 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(100vw, 100vh) scale(2) rotate(720deg); }
+        }
+
+        @keyframes floatImage2 {
+            0% { transform: translate(0, 0) scale(0.5); }
+            100% { transform: translate(-80vw, 120vh) scale(1.8) rotate(-540deg); }
+        }
+
+        @keyframes floatImage3 {
+            0% { transform: translate(0, 0) scale(1.2); }
+            100% { transform: translate(120vw, -50vh) scale(0.8) rotate(360deg); }
         }
 
         @media (max-width: 600px) {
@@ -194,10 +206,10 @@
                 top: 10px;
                 right: 10px;
             }
-            .flying-image { width: 120px !important; opacity: 1; }
+            .flying-image { width: 120px !important; }
         }
 
-        #strongg{
+        #strongg {
             color: rgb(100, 0, 0);
         }
     </style>
@@ -252,14 +264,12 @@
         const toggleButton = document.getElementById('musicToggle');
         let isMuted = false;
 
-        // Try autoplay with user interaction
         document.addEventListener('click', () => {
             if (music.paused) {
                 music.play().catch(() => {});
             }
         }, { once: true });
 
-        // Load music state from localStorage
         window.addEventListener('load', () => {
             const savedVolume = localStorage.getItem('musicMuted');
             if (savedVolume === 'true') {
@@ -272,7 +282,6 @@
             }
         });
 
-        // Toggle Music
         toggleButton.addEventListener('click', () => {
             isMuted = !isMuted;
             if (isMuted) {
@@ -285,26 +294,42 @@
             localStorage.setItem('musicMuted', isMuted);
         });
 
-        // Flying Images
+        // Flying Images with Delay and Random Sizes
         function createFlyingImage() {
             const img = document.createElement('img');
             const imgNum = Math.floor(Math.random() * 7) + 1;
             img.src = `images/adrit${imgNum}.png`;
             img.className = 'flying-image';
-            
-            img.style.left = Math.random() * 100 + 'vw';
-            img.style.top = Math.random() * 100 + 'vh';
-            img.style.width = (window.innerWidth <= 600 ? 40 : Math.random() * 100 + 50) + 'px';
-            img.style.animationDuration = Math.random() * 5 + 5 + 's';
-            img.style.animationDelay = Math.random() * 2 + 's';
-            img.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
-            
+
+            const startX = Math.random() * 100;
+            const startY = Math.random() * 100;
+            const initialSize = window.innerWidth <= 600 
+                ? Math.random() * 100 + 20 
+                : Math.random() * 200 + 50;
+
+            img.style.cssText = `
+                left: ${startX}vw;
+                top: ${startY}vh;
+                width: ${initialSize}px;
+                opacity: 0.8;
+                filter: hue-rotate(${Math.random() * 360}deg);
+                z-index: ${Math.random() > 0.5 ? 3 : 1};
+            `;
+
             document.body.appendChild(img);
-            setTimeout(() => img.remove(), 8000);
+
+            setTimeout(() => {
+                const animations = ['floatImage1', 'floatImage2', 'floatImage3'];
+                const animation = animations[Math.floor(Math.random() * animations.length)];
+                const duration = Math.random() * 8 + 8;
+                img.style.animation = `${animation} ${duration}s linear forwards`;
+            }, 2000);
+
+            setTimeout(() => img.remove(), 10000);
         }
 
         setInterval(createFlyingImage, 1500);
-        setTimeout(() => { for(let i=0; i<20; i++) createFlyingImage(); }, 500);
+        setTimeout(() => { for(let i=0; i<15; i++) createFlyingImage(); }, 500);
 
         // Original Interactions
         window.onload = () => {
