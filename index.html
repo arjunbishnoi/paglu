@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title id="title">Adrit Bhatnagar - World's #1 Chutpaglu! 🎉</title>
+    <title>Adrit Bhatnagar - World's Biggest Chut Paglu! 🎉</title>
     <link rel="icon" type="image/png" href="images/adrit1.png">
     <style>
         body {
@@ -35,145 +35,116 @@
             animation: float 3s ease-in-out infinite, rainbow 5s infinite;
         }
 
-        .slideshow {
-            position: relative;
-            width: 100%;
-            max-width: 300px;
-            height: 300px;
-            margin: 20px auto;
-            overflow: hidden;
-            border: 5px solid #ff00ff;
-            border-radius: 50%;
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
-        .slide {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-            border-radius: 50%;
+        @keyframes rainbow {
+            0% { color: #ff0000; }
+            20% { color: #00ff00; }
+            40% { color: #0000ff; }
+            60% { color: #ff00ff; }
+            80% { color: #ffff00; }
+            100% { color: #ff0000; }
         }
 
-        .slide.active {
-            opacity: 1;
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
         }
 
-        /* Talking Adrit - Speech Bubble */
-        .speech-bubble {
-            position: absolute;
-            background: yellow;
-            padding: 10px;
-            border-radius: 10px;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1em;
-            font-weight: bold;
-            color: black;
-            display: none;
-        }
-
-        .slideshow:hover .speech-bubble {
-            display: block;
-        }
-
-        /* Chutpaglu Meter Glitch Effect */
-        .glitch {
-            animation: glitch 0.3s infinite alternate;
-        }
-
-        @keyframes glitch {
-            0% { transform: skew(-2deg); color: red; }
-            100% { transform: skew(2deg); color: yellow; }
-        }
-
-        /* Earthquake Mode */
-        .shake {
-            animation: shake 0.2s linear 3;
-        }
-
-        @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            25% { transform: translate(-1px, -2px) rotate(-1deg); }
-            50% { transform: translate(-3px, 0px) rotate(1deg); }
-            75% { transform: translate(3px, 2px) rotate(0deg); }
-            100% { transform: translate(1px, -1px) rotate(1deg); }
-        }
-
-        /* Flying Emojis */
-        .flying-emoji {
+        .confetti {
             position: fixed;
-            font-size: 2em;
-            animation: floatEmojis 10s linear infinite;
-            z-index: 5;
+            width: 10px;
+            height: 10px;
+            background: #ff0000;
+            animation: confetti-fall 3s linear infinite;
         }
 
-        @keyframes floatEmojis {
-            0% { transform: translateY(100vh); }
-            100% { transform: translateY(-100vh); }
+        .flying-image {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+            mix-blend-mode: multiply;
+            z-index: 1;
+            transform-origin: center;
         }
+
+        @keyframes floatImage1 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(100vw, 100vh) scale(2) rotate(720deg); }
+        }
+
+        @keyframes floatImage2 {
+            0% { transform: translate(0, 0) scale(0.5); }
+            100% { transform: translate(-80vw, 120vh) scale(1.8) rotate(-540deg); }
+        }
+
+        @keyframes floatImage3 {
+            0% { transform: translate(0, 0) scale(1.2); }
+            100% { transform: translate(120vw, -50vh) scale(0.8) rotate(360deg); }
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🎉 ADRIT BHATNAGAR 🎉<br>WORLD'S #1 CHUT PAGLU! 🏆</h1>
-
-        <div class="slideshow">
-            <div class="speech-bubble">"Mera naam Adrit hai, aur main chutpaglu hoon!"</div>
-            <img src="images/adrit1.png" alt="Adrit 1" class="slide active">
-            <img src="images/adrit2.png" alt="Adrit 2" class="slide">
-            <img src="images/adrit3.png" alt="Adrit 3" class="slide">
-        </div>
-
-        <div class="chutpaglu-meter">
-            <div class="meter-fill"></div>
-            <span class="meter-text">Chutpaglu Level: <span id="meterValue">0%</span></span>
-        </div>
     </div>
 
     <script>
-        // Earthquake Mode
+        // Flying Images with Delay and Random Sizes
+        function createFlyingImage() {
+            const img = document.createElement('img');
+            const imgNum = Math.floor(Math.random() * 8) + 1;
+            img.src = `images/adrit${imgNum}.png`;
+            img.className = 'flying-image';
+
+            const startX = Math.random() * 100;
+            const startY = Math.random() * 100;
+            const initialSize = window.innerWidth <= 600 
+                ? Math.random() * 100 + 20 
+                : Math.random() * 200 + 50;
+
+            img.style.cssText = `
+                left: ${startX}vw;
+                top: ${startY}vh;
+                width: ${initialSize}px;
+                opacity: 0.8;
+                filter: hue-rotate(${Math.random() * 360}deg);
+                z-index: ${Math.random() > 0.5 ? 3 : 1};
+            `;
+
+            document.body.appendChild(img);
+
+            setTimeout(() => {
+                const animations = ['floatImage1', 'floatImage2', 'floatImage3'];
+                const animation = animations[Math.floor(Math.random() * animations.length)];
+                const duration = Math.random() * 8 + 8;
+                img.style.animation = `${animation} ${duration}s linear forwards`;
+            }, 2000);
+
+            setTimeout(() => img.remove(), 10000);
+        }
+
+        setInterval(createFlyingImage, 1500);
+        setTimeout(() => { for(let i=0; i<15; i++) createFlyingImage(); }, 500);
+
+        // Confetti on Click
         document.addEventListener('click', () => {
-            document.body.classList.add('shake');
-            setTimeout(() => document.body.classList.remove('shake'), 600);
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }
         });
 
-        // Flying Emojis
-        function createFlyingEmoji() {
-            const emojiArray = ["🤡", "🐸", "💩", "🚽", "🎭", "🚀", "🤯", "😵"];
-            const emoji = document.createElement('div');
-            emoji.textContent = emojiArray[Math.floor(Math.random() * emojiArray.length)];
-            emoji.className = 'flying-emoji';
-            emoji.style.left = Math.random() * 100 + "vw";
-            emoji.style.top = Math.random() * 100 + "vh";
-            document.body.appendChild(emoji);
-            setTimeout(() => emoji.remove(), 10000);
-        }
-
-        setInterval(createFlyingEmoji, 2000);
-
-        // Chutpaglu Meter Overload
-        setTimeout(() => {
-            document.querySelector('.meter-fill').style.width = '100%';
-            document.getElementById('meterValue').textContent = 'INFINITE%';
-            document.querySelector('.meter-text').classList.add('glitch');
-        }, 10000);
-
-        // Glitchy Title Effect
-        function glitchTitle() {
-            const titles = [
-                "Adrit Bhatnagar - World's #1 Chutpaglu! 🎉",
-                "Adrit 'SNIFF MASTER' Bhatnagar 🚀",
-                "THE LEGENDARY DALLA HIMSELF 🔥",
-                "CEO of CHUTPAGLU Pvt Ltd 💼",
-                "PhD in Chutpaglu-ology 🎓"
-            ];
-            document.title = titles[Math.floor(Math.random() * titles.length)];
-        }
-
-        setInterval(glitchTitle, 3000);
     </script>
 </body>
 </html>
