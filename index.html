@@ -6,6 +6,52 @@
     <title>Adrit Bhatnagar - World's Biggest Chut Paglu! 🎉</title>
     <link rel="icon" type="image/png" href="images/adrit1.png">
     <style>
+        /* Password Protection Styles */
+        .password-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #passwordInput {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 25px;
+            padding: 15px 25px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2em;
+            width: 250px;
+            outline: none;
+            text-align: center;
+            font-family: 'Comic Sans MS';
+        }
+
+        #passwordInput::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        #errorMessage {
+            color: #ff0000;
+            position: fixed;
+            top: 60vh;
+            text-align: center;
+            width: 100%;
+            display: none;
+            font-size: 1.1em;
+        }
+
+        .hidden-content {
+            display: none;
+        }
+
+        /* Original CSS Styles */
         body {
             margin: 0;
             padding: 20px;
@@ -213,7 +259,6 @@
             color: rgb(100, 0, 0);
         }
 
-        /* New CSS Additions */
         .sniff-o-tron {
             text-align: center;
             margin: 20px 0;
@@ -339,262 +384,297 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎉 ADRIT BHATNAGAR<br>WORLD'S #1 CHUT PAGLU! 🏆</h1>
-
-        <div class="slideshow">
-            <img src="images/adrit1.png" alt="Adrit 1" class="slide active">
-            <img src="images/adrit2.png" alt="Adrit 2" class="slide">
-            <img src="images/adrit3.png" alt="Adrit 3" class="slide">
-            <img src="images/adrit7.png" alt="Adrit 7" class="slide">
-            <img src="images/adrit5.png" alt="Adrit 5" class="slide">
-            <img src="images/adrit6.png" alt="Adrit 6" class="slide">
-        </div>
-
-        <div class="meme-text" id="randomText">Click anywhere for surprise!</div>
-
-        <p class="meme-text" id="strongg">"When the chutpagluness is too strong..." 😎</p>
-
-        <div class="meme-gallery">
-            <div class="meme-item">
-                <h3>🔥 Achievement Unlocked 🔥</h3>
-                <p>Maximum Chutpaglu Level: OVER 9000!</p>
-            </div>
-            <div class="meme-item">
-                <h3>🚨 Warning 🚨</h3>
-                <p>Chutpaglu radiation levels: Critical!</p>
-            </div>
-            <div class="meme-item">
-                <h3>🏅 Skills 🏅</h3>
-                <p>CEO of Chutpaglu<br>PhD in Chutpaglu-ology</p>
-            </div>
-        </div>
-
-        <div class="chutpaglu-meter">
-            <div class="meter-fill"></div>
-            <span class="meter-text">Chutpaglu Level: <span id="meterValue">0%</span></span>
-        </div>
-
-        <!-- New HTML Additions -->
-        <div class="sniff-o-tron">
-            <button id="sniffButton">💨 Activate Sniff-O-Tron 3000 💨</button>
-            <div id="sniffBubble" class="sniff-bubble">*SNIFFFFF*</div>
-        </div>
-
-        <div id="badgeContainer"></div>
-
-        <div id="alertBanner" class="alert-banner">🚨 CHUTPAGLU EMERGENCY ALERT 🚨</div>
-
-        <button id="voiceButton">🗣️ Hear the Chutpaglu Call!</button>
+    <!-- Password Protection Overlay -->
+    <div class="password-overlay">
+        <input type="password" id="passwordInput" placeholder="Enter Secret Code" autocomplete="off">
+        <div id="errorMessage">WRONG CODE! TRY AGAIN! 😡</div>
     </div>
 
-    <audio loop id="backgroundMusic">
-        <source src="sound.mp3" type="audio/mpeg">
-    </audio>
+    <!-- Hidden Content (Original Page) -->
+    <div class="hidden-content">
+        <div class="container">
+            <h1>🎉 ADRIT BHATNAGAR<br>WORLD'S #1 CHUT PAGLU! 🏆</h1>
 
-    <button id="musicToggle">🔊 Music ON</button>
+            <div class="slideshow">
+                <img src="images/adrit1.png" alt="Adrit 1" class="slide active">
+                <img src="images/adrit2.png" alt="Adrit 2" class="slide">
+                <img src="images/adrit3.png" alt="Adrit 3" class="slide">
+                <img src="images/adrit7.png" alt="Adrit 7" class="slide">
+                <img src="images/adrit5.png" alt="Adrit 5" class="slide">
+                <img src="images/adrit6.png" alt="Adrit 6" class="slide">
+            </div>
 
-    <script>
-        // Music Management
-        const music = document.getElementById('backgroundMusic');
-        const toggleButton = document.getElementById('musicToggle');
-        let isMuted = false;
+            <div class="meme-text" id="randomText">Click anywhere for surprise!</div>
 
-        document.addEventListener('click', () => {
-            if (music.paused) {
-                music.play().catch(() => {});
+            <p class="meme-text" id="strongg">"When the chutpagluness is too strong..." 😎</p>
+
+            <div class="meme-gallery">
+                <div class="meme-item">
+                    <h3>🔥 Achievement Unlocked 🔥</h3>
+                    <p>Maximum Chutpaglu Level: OVER 9000!</p>
+                </div>
+                <div class="meme-item">
+                    <h3>🚨 Warning 🚨</h3>
+                    <p>Chutpaglu radiation levels: Critical!</p>
+                </div>
+                <div class="meme-item">
+                    <h3>🏅 Skills 🏅</h3>
+                    <p>CEO of Chutpaglu<br>PhD in Chutpaglu-ology</p>
+                </div>
+            </div>
+
+            <div class="chutpaglu-meter">
+                <div class="meter-fill"></div>
+                <span class="meter-text">Chutpaglu Level: <span id="meterValue">0%</span></span>
+            </div>
+
+            <div class="sniff-o-tron">
+                <button id="sniffButton">💨 Activate Sniff-O-Tron 3000 💨</button>
+                <div id="sniffBubble" class="sniff-bubble">*SNIFFFFF*</div>
+            </div>
+
+            <div id="badgeContainer"></div>
+
+            <div id="alertBanner" class="alert-banner">🚨 CHUTPAGLU EMERGENCY ALERT 🚨</div>
+
+            <button id="voiceButton">🗣️ Hear the Chutpaglu Call!</button>
+        </div>
+
+        <audio loop id="backgroundMusic">
+            <source src="sound.mp3" type="audio/mpeg">
+        </audio>
+
+        <button id="musicToggle">🔊 Music ON</button>
+
+        <script>
+            // Password Protection Logic
+            const CORRECT_PASSWORD = "ADRITDADDY69";
+            const passwordInput = document.getElementById('passwordInput');
+            const errorMessage = document.getElementById('errorMessage');
+            const contentWrapper = document.querySelector('.hidden-content');
+            const passwordOverlay = document.querySelector('.password-overlay');
+
+            function checkPassword() {
+                if (passwordInput.value === CORRECT_PASSWORD) {
+                    passwordOverlay.style.display = 'none';
+                    contentWrapper.style.display = 'block';
+                    document.body.style.background = '';
+                } else {
+                    errorMessage.style.display = 'block';
+                    passwordInput.value = '';
+                    setTimeout(() => errorMessage.style.display = 'none', 2000);
+                }
             }
-        }, { once: true });
 
-        window.addEventListener('load', () => {
-            const savedVolume = localStorage.getItem('musicMuted');
-            if (savedVolume === 'true') {
-                music.pause();
-                toggleButton.textContent = "🔇 Music OFF";
-                isMuted = true;
-            } else {
-                music.play().catch(() => {});
-                toggleButton.textContent = "🔊 Music ON";
-            }
-        });
-
-        toggleButton.addEventListener('click', () => {
-            isMuted = !isMuted;
-            if (isMuted) {
-                music.pause();
-                toggleButton.textContent = "🔇 Music OFF";
-            } else {
-                music.play();
-                toggleButton.textContent = "🔊 Music ON";
-            }
-            localStorage.setItem('musicMuted', isMuted);
-        });
-
-        // Flying Images with Delay and Random Sizes
-        function createFlyingImage() {
-            const img = document.createElement('img');
-            const imgNum = Math.floor(Math.random() * 8) + 1;
-            img.src = `images/adrit${imgNum}.png`;
-            img.className = 'flying-image';
-
-            const startX = Math.random() * 100;
-            const startY = Math.random() * 100;
-            const initialSize = window.innerWidth <= 600 
-                ? Math.random() * 100 + 20 
-                : Math.random() * 200 + 50;
-
-            img.style.cssText = `
-                left: ${startX}vw;
-                top: ${startY}vh;
-                width: ${initialSize}px;
-                opacity: 0.8;
-                filter: hue-rotate(${Math.random() * 360}deg);
-                z-index: ${Math.random() > 0.5 ? 3 : 1};
-            `;
-
-            document.body.appendChild(img);
-
-            setTimeout(() => {
-                const animations = ['floatImage1', 'floatImage2', 'floatImage3'];
-                const animation = animations[Math.floor(Math.random() * animations.length)];
-                const duration = Math.random() * 8 + 8;
-                img.style.animation = `${animation} ${duration}s linear forwards`;
-            }, 2000);
-
-            setTimeout(() => img.remove(), 10000);
-        }
-
-        setInterval(createFlyingImage, 1500);
-        setTimeout(() => { for(let i=0; i<15; i++) createFlyingImage(); }, 500);
-
-        // Original Interactions
-        window.onload = () => {
-            for (let i = 0; i < 200; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.top = Math.random() * 100 + 'vh';
-                confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
-                document.body.appendChild(confetti);
-                setTimeout(() => confetti.remove(), 5000);
-            }
-        };
-
-        const slides = document.querySelectorAll('.slide');
-        let currentSlide = 0;
-        setInterval(() => {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }, 3000);
-
-        setTimeout(() => {
-            document.querySelector('.meter-fill').style.width = '100%';
-            document.getElementById('meterValue').textContent = 'OVER 900000%';
-        }, 1000);
-
-        document.addEventListener('click', () => {
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
-                document.body.appendChild(confetti);
-                setTimeout(() => confetti.remove(), 5000);
-            }
-            document.getElementById('randomText').textContent =
-                ["Chutpaglu Alert! 🚨", "Adrit is watching... 👀", "Warning: Extreme Pagluness! ⚠️",
-                 "Certified Gandu™️", "100% Pure Chutpaglu!", "Sniff Incoming! 💥", "Dalla No.1"]
-                [Math.floor(Math.random() * 7)];
-            document.querySelectorAll('.meme-item').forEach(item => {
-                item.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') checkPassword();
             });
-        });
 
-        // New JavaScript Additions
-        // Sniff-O-Tron 3000
-        const sniffButton = document.getElementById('sniffButton');
-        const sniffBubble = document.getElementById('sniffBubble');
-        const sniffSounds = [
-            new Audio('sniff1.mp3'), // Placeholder—replace with your own sniff sound files!
-            new Audio('sniff2.mp3'),
-            new Audio('sniff3.mp3')
-        ];
+            // Hide original background initially
+            document.body.style.background = '#000';
 
-        sniffButton.addEventListener('click', () => {
-            const randomSound = sniffSounds[Math.floor(Math.random() * sniffSounds.length)];
-            randomSound.play().catch(() => {});
-            sniffBubble.style.animation = 'none'; // Reset animation
+            // Original JavaScript Code
+            // Music Management
+            const music = document.getElementById('backgroundMusic');
+            const toggleButton = document.getElementById('musicToggle');
+            let isMuted = false;
+
+            document.addEventListener('click', () => {
+                if (music.paused) {
+                    music.play().catch(() => {});
+                }
+            }, { once: true });
+
+            window.addEventListener('load', () => {
+                const savedVolume = localStorage.getItem('musicMuted');
+                if (savedVolume === 'true') {
+                    music.pause();
+                    toggleButton.textContent = "🔇 Music OFF";
+                    isMuted = true;
+                } else {
+                    music.play().catch(() => {});
+                    toggleButton.textContent = "🔊 Music ON";
+                }
+            });
+
+            toggleButton.addEventListener('click', () => {
+                isMuted = !isMuted;
+                if (isMuted) {
+                    music.pause();
+                    toggleButton.textContent = "🔇 Music OFF";
+                } else {
+                    music.play();
+                    toggleButton.textContent = "🔊 Music ON";
+                }
+                localStorage.setItem('musicMuted', isMuted);
+            });
+
+            // Flying Images with Delay and Random Sizes
+            function createFlyingImage() {
+                const img = document.createElement('img');
+                const imgNum = Math.floor(Math.random() * 8) + 1;
+                img.src = `images/adrit${imgNum}.png`;
+                img.className = 'flying-image';
+
+                const startX = Math.random() * 100;
+                const startY = Math.random() * 100;
+                const initialSize = window.innerWidth <= 600 
+                    ? Math.random() * 100 + 20 
+                    : Math.random() * 200 + 50;
+
+                img.style.cssText = `
+                    left: ${startX}vw;
+                    top: ${startY}vh;
+                    width: ${initialSize}px;
+                    opacity: 0.8;
+                    filter: hue-rotate(${Math.random() * 360}deg);
+                    z-index: ${Math.random() > 0.5 ? 3 : 1};
+                `;
+
+                document.body.appendChild(img);
+
+                setTimeout(() => {
+                    const animations = ['floatImage1', 'floatImage2', 'floatImage3'];
+                    const animation = animations[Math.floor(Math.random() * animations.length)];
+                    const duration = Math.random() * 8 + 8;
+                    img.style.animation = `${animation} ${duration}s linear forwards`;
+                }, 2000);
+
+                setTimeout(() => img.remove(), 10000);
+            }
+
+            setInterval(createFlyingImage, 1500);
+            setTimeout(() => { for(let i=0; i<15; i++) createFlyingImage(); }, 500);
+
+            // Original Interactions
+            window.onload = () => {
+                for (let i = 0; i < 200; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = Math.random() * 100 + 'vh';
+                    confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 5000);
+                }
+            };
+
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+            setInterval(() => {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 3000);
+
             setTimeout(() => {
-                sniffBubble.textContent = ['*SNIFFFFF*', '*SNUUUUUUUF*', '*SNIFF SNIFF*'][Math.floor(Math.random() * 3)];
-                sniffBubble.style.animation = 'sniffPop 1.5s ease-out forwards';
-            }, 10);
-        });
+                document.querySelector('.meter-fill').style.width = '100%';
+                document.getElementById('meterValue').textContent = 'OVER 900000%';
+            }, 1000);
 
-        // Achievement Badges
-        const badgeContainer = document.getElementById('badgeContainer');
-        const badgeMessages = [
-            '🏆 Chutpaglu of the Century!',
-            '🥇 Sniff Master 9000!',
-            '🎖️ Certified Dalla King!',
-            '💪 Chutpaglu Power Level: Infinity!',
-            '🌟 Supreme Gandu Award!'
-        ];
+            document.addEventListener('click', () => {
+                for (let i = 0; i < 50; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 5000);
+                }
+                document.getElementById('randomText').textContent =
+                    ["Chutpaglu Alert! 🚨", "Adrit is watching... 👀", "Warning: Extreme Pagluness! ⚠️",
+                     "Certified Gandu™️", "100% Pure Chutpaglu!", "Sniff Incoming! 💥", "Dalla No.1"]
+                    [Math.floor(Math.random() * 7)];
+                document.querySelectorAll('.meme-item').forEach(item => {
+                    item.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
+                });
+            });
 
-        function spawnBadge() {
-            const badge = document.createElement('div');
-            badge.className = 'badge';
-            badge.textContent = badgeMessages[Math.floor(Math.random() * badgeMessages.length)];
-            badge.style.left = Math.random() * 80 + 10 + 'vw';
-            badge.style.top = Math.random() * 80 + 10 + 'vh';
-            badgeContainer.appendChild(badge);
-            setTimeout(() => badge.remove(), 4000);
-        }
+            // New JavaScript Additions
+            // Sniff-O-Tron 3000
+            const sniffButton = document.getElementById('sniffButton');
+            const sniffBubble = document.getElementById('sniffBubble');
+            const sniffSounds = [
+                new Audio('sniff1.mp3'),
+                new Audio('sniff2.mp3'),
+                new Audio('sniff3.mp3')
+            ];
 
-        setInterval(spawnBadge, 5000); // New badge every 5 seconds
-        setTimeout(spawnBadge, 1000);  // Start with one right away
+            sniffButton.addEventListener('click', () => {
+                const randomSound = sniffSounds[Math.floor(Math.random() * sniffSounds.length)];
+                randomSound.play().catch(() => {});
+                sniffBubble.style.animation = 'none';
+                setTimeout(() => {
+                    sniffBubble.textContent = ['*SNIFFFFF*', '*SNUUUUUUUF*', '*SNIFF SNIFF*'][Math.floor(Math.random() * 3)];
+                    sniffBubble.style.animation = 'sniffPop 1.5s ease-out forwards';
+                }, 10);
+            });
 
-        // Cursor Trail
-        document.addEventListener('mousemove', (e) => {
-            const trail = document.createElement('img');
-            trail.src = `images/adrit${Math.floor(Math.random() * 7) + 1}.png`;
-            trail.className = 'cursor-trail';
-            trail.style.left = e.pageX - 25 + 'px';
-            trail.style.top = e.pageY - 25 + 'px';
-            document.body.appendChild(trail);
-            setTimeout(() => trail.remove(), 1000);
-        });
+            // Achievement Badges
+            const badgeContainer = document.getElementById('badgeContainer');
+            const badgeMessages = [
+                '🏆 Chutpaglu of the Century!',
+                '🥇 Sniff Master 9000!',
+                '🎖️ Certified Dalla King!',
+                '💪 Chutpaglu Power Level: Infinity!',
+                '🌟 Supreme Gandu Award!'
+            ];
 
-        // Emergency Alert System
-        const alertBanner = document.getElementById('alertBanner');
-        const alertMessages = [
-            '🚨 CHUTPAGLU DETECTED IN YOUR AREA! 🚨',
-            '⚠️ SNIFF LEVELS OFF THE CHARTS! ⚠️',
-            '🚨 ADRIT IS SNIFFING YOU RIGHT NOW! 🚨',
-            '⚠️ CHUTPAGLU RADIATION SPIKE! ⚠️'
-        ];
+            function spawnBadge() {
+                const badge = document.createElement('div');
+                badge.className = 'badge';
+                badge.textContent = badgeMessages[Math.floor(Math.random() * badgeMessages.length)];
+                badge.style.left = Math.random() * 80 + 10 + 'vw';
+                badge.style.top = Math.random() * 80 + 10 + 'vh';
+                badgeContainer.appendChild(badge);
+                setTimeout(() => badge.remove(), 4000);
+            }
 
-        function triggerAlert() {
-            alertBanner.textContent = alertMessages[Math.floor(Math.random() * alertMessages.length)];
-            alertBanner.style.display = 'block';
-            setTimeout(() => alertBanner.style.display = 'none', 3000);
-        }
+            setInterval(spawnBadge, 5000);
+            setTimeout(spawnBadge, 1000);
 
-        setInterval(triggerAlert, 10000); // Alert every 10 seconds
-        setTimeout(triggerAlert, 2000);   // First one after 2 seconds
+            // Cursor Trail
+            document.addEventListener('mousemove', (e) => {
+                const trail = document.createElement('img');
+                trail.src = `images/adrit${Math.floor(Math.random() * 7) + 1}.png`;
+                trail.className = 'cursor-trail';
+                trail.style.left = e.pageX - 25 + 'px';
+                trail.style.top = e.pageY - 25 + 'px';
+                document.body.appendChild(trail);
+                setTimeout(() => trail.remove(), 1000);
+            });
 
-        // Voice Clips
-        const voiceButton = document.getElementById('voiceButton');
-        const voiceClips = [
-            new Audio('https://www.myinstants.com/en/instant/makaka-funk-88128/?utm_source=copy&utm_medium=share'), // Placeholder—replace with your own voice clips!
-        ];
+            // Emergency Alert System
+            const alertBanner = document.getElementById('alertBanner');
+            const alertMessages = [
+                '🚨 CHUTPAGLU DETECTED IN YOUR AREA! 🚨',
+                '⚠️ SNIFF LEVELS OFF THE CHARTS! ⚠️',
+                '🚨 ADRIT IS SNIFFING YOU RIGHT NOW! 🚨',
+                '⚠️ CHUTPAGLU RADIATION SPIKE! ⚠️'
+            ];
 
-        voiceButton.addEventListener('click', () => {
-            const randomClip = voiceClips[Math.floor(Math.random() * voiceClips.length)];
-            randomClip.play().catch(() => {});
-        });
-    </script>
+            function triggerAlert() {
+                alertBanner.textContent = alertMessages[Math.floor(Math.random() * alertMessages.length)];
+                alertBanner.style.display = 'block';
+                setTimeout(() => alertBanner.style.display = 'none', 3000);
+            }
+
+            setInterval(triggerAlert, 10000);
+            setTimeout(triggerAlert, 2000);
+
+            // Voice Clips
+            const voiceButton = document.getElementById('voiceButton');
+            const voiceClips = [
+                new Audio('https://www.myinstants.com/en/instant/makaka-funk-88128/?utm_source=copy&utm_medium=share'),
+            ];
+
+            voiceButton.addEventListener('click', () => {
+                const randomClip = voiceClips[Math.floor(Math.random() * voiceClips.length)];
+                randomClip.play().catch(() => {});
+            });
+        </script>
+    </div>
 </body>
 </html>
