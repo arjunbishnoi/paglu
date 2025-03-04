@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Adrit Bhatnagar - World's Biggest Chut Paglu! 🎉</title>
+    <title id="title">Adrit Bhatnagar - World's #1 Chutpaglu! 🎉</title>
     <link rel="icon" type="image/png" href="images/adrit1.png">
     <style>
         body {
@@ -18,10 +18,7 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: linear-gradient(45deg, 
-                rgba(255, 240, 245, 0.7),
-                rgba(255, 228, 225, 0.8),
-                rgba(255, 245, 238, 0.6));
+            background: linear-gradient(45deg, rgba(255, 240, 245, 0.7), rgba(255, 228, 225, 0.8), rgba(255, 245, 238, 0.6));
             padding: 30px;
             border-radius: 20px;
             border: 5px dashed #ff0000;
@@ -63,154 +60,59 @@
             opacity: 1;
         }
 
-        .meme-text {
-            font-size: 1.8em;
-            color: #0000ff;
-            text-align: center;
-            margin: 20px 0;
-            transform: rotate(-3deg);
-        }
-
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background: #ff0000;
-            animation: confetti-fall 3s linear infinite;
-        }
-
-        .meme-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .meme-item {
-            background: #fff;
-            padding: 15px;
-            border: 3px solid #00ff00;
-            transform: rotate(2deg);
-            transition: all 0.3s;
-        }
-
-        .meme-item:hover {
-            transform: rotate(-2deg) scale(1.1);
-            z-index: 1;
-        }
-
-        .chutpaglu-meter {
-            width: 100%;
-            height: 40px;
-            background: #000;
-            border: 3px solid #ff0000;
-            border-radius: 20px;
-            position: relative;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-
-        .meter-fill {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #ff00ff, #00ffff);
-            transition: width 2s ease-in-out;
-        }
-
-        .meter-text {
+        /* Talking Adrit - Speech Bubble */
+        .speech-bubble {
             position: absolute;
-            top: 50%;
+            background: yellow;
+            padding: 10px;
+            border-radius: 10px;
+            top: -40px;
             left: 50%;
-            transform: translate(-50%, -50%);
-            color: #fff;
-            font-size: 1.2em;
+            transform: translateX(-50%);
+            font-size: 1em;
             font-weight: bold;
+            color: black;
+            display: none;
         }
 
-        #musicToggle {
+        .slideshow:hover .speech-bubble {
+            display: block;
+        }
+
+        /* Chutpaglu Meter Glitch Effect */
+        .glitch {
+            animation: glitch 0.3s infinite alternate;
+        }
+
+        @keyframes glitch {
+            0% { transform: skew(-2deg); color: red; }
+            100% { transform: skew(2deg); color: yellow; }
+        }
+
+        /* Earthquake Mode */
+        .shake {
+            animation: shake 0.2s linear 3;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            25% { transform: translate(-1px, -2px) rotate(-1deg); }
+            50% { transform: translate(-3px, 0px) rotate(1deg); }
+            75% { transform: translate(3px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -1px) rotate(1deg); }
+        }
+
+        /* Flying Emojis */
+        .flying-emoji {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            padding: 12px 20px;
-            background: #ff00ff;
-            border: 3px solid #00ffff;
-            border-radius: 30px;
-            cursor: pointer;
-            font-family: 'Comic Sans MS';
-            font-weight: bold;
-            box-shadow: 0 0 15px rgba(0,0,0,0.3);
-            transition: all 0.3s;
+            font-size: 2em;
+            animation: floatEmojis 10s linear infinite;
+            z-index: 5;
         }
 
-        #musicToggle:hover {
-            transform: scale(1.1);
-            background: #00ffff;
-            border-color: #ff00ff;
-        }
-
-        .flying-image {
-            position: fixed;
-            pointer-events: none;
-            opacity: 0.8;
-            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
-            mix-blend-mode: multiply;
-            z-index: 1;
-            transform-origin: center;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes rainbow {
-            0% { color: #ff0000; }
-            20% { color: #00ff00; }
-            40% { color: #0000ff; }
-            60% { color: #ff00ff; }
-            80% { color: #ffff00; }
-            100% { color: #ff0000; }
-        }
-
-        @keyframes confetti-fall {
-            0% { transform: translateY(-100vh) rotate(0deg); }
-            100% { transform: translateY(100vh) rotate(360deg); }
-        }
-
-        @keyframes floatImage1 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(100vw, 100vh) scale(2) rotate(720deg); }
-        }
-
-        @keyframes floatImage2 {
-            0% { transform: translate(0, 0) scale(0.5); }
-            100% { transform: translate(-80vw, 120vh) scale(1.8) rotate(-540deg); }
-        }
-
-        @keyframes floatImage3 {
-            0% { transform: translate(0, 0) scale(1.2); }
-            100% { transform: translate(120vw, -50vh) scale(0.8) rotate(360deg); }
-        }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 2em; }
-            .slideshow { max-width: 200px; height: 200px; }
-            .meme-text { font-size: 1.4em; }
-            .meme-gallery { grid-template-columns: 1fr; }
-            .chutpaglu-meter { height: 30px; }
-            .meter-text { font-size: 1em; }
-            #musicToggle {
-                padding: 8px 16px;
-                font-size: 0.9em;
-                top: 10px;
-                right: 10px;
-            }
-            .flying-image { width: 120px !important; }
-        }
-
-        #strongg {
-            color: rgb(100, 0, 0);
+        @keyframes floatEmojis {
+            0% { transform: translateY(100vh); }
+            100% { transform: translateY(-100vh); }
         }
     </style>
 </head>
@@ -219,31 +121,10 @@
         <h1>🎉 ADRIT BHATNAGAR 🎉<br>WORLD'S #1 CHUT PAGLU! 🏆</h1>
 
         <div class="slideshow">
+            <div class="speech-bubble">"Mera naam Adrit hai, aur main chutpaglu hoon!"</div>
             <img src="images/adrit1.png" alt="Adrit 1" class="slide active">
             <img src="images/adrit2.png" alt="Adrit 2" class="slide">
             <img src="images/adrit3.png" alt="Adrit 3" class="slide">
-            <img src="images/adrit7.png" alt="Adrit 7" class="slide">
-            <img src="images/adrit5.png" alt="Adrit 5" class="slide">
-            <img src="images/adrit6.png" alt="Adrit 6" class="slide">
-        </div>
-
-        <div class="meme-text" id="randomText">Click anywhere for surprise!</div>
-
-        <p class="meme-text" id="strongg">"When the chutpagluness is too strong..." 😎</p>
-
-        <div class="meme-gallery">
-            <div class="meme-item">
-                <h3>🔥 Achievement Unlocked 🔥</h3>
-                <p>Maximum Chutpaglu Level: OVER 9000!</p>
-            </div>
-            <div class="meme-item">
-                <h3>🚨 Warning 🚨</h3>
-                <p>Chutpaglu radiation levels: Critical!</p>
-            </div>
-            <div class="meme-item">
-                <h3>🏅 Skills 🏅</h3>
-                <p>CEO of Chutpaglu<br>PhD in Chutpaglu-ology</p>
-            </div>
         </div>
 
         <div class="chutpaglu-meter">
@@ -252,130 +133,47 @@
         </div>
     </div>
 
-    <audio loop id="backgroundMusic">
-        <source src="sound.mp3" type="audio/mpeg">
-    </audio>
-
-    <button id="musicToggle">🔊 Music ON</button>
-
     <script>
-        // Music Management
-        const music = document.getElementById('backgroundMusic');
-        const toggleButton = document.getElementById('musicToggle');
-        let isMuted = false;
-
+        // Earthquake Mode
         document.addEventListener('click', () => {
-            if (music.paused) {
-                music.play().catch(() => {});
-            }
-        }, { once: true });
-
-        window.addEventListener('load', () => {
-            const savedVolume = localStorage.getItem('musicMuted');
-            if (savedVolume === 'true') {
-                music.pause();
-                toggleButton.textContent = "🔇 Music OFF";
-                isMuted = true;
-            } else {
-                music.play().catch(() => {});
-                toggleButton.textContent = "🔊 Music ON";
-            }
+            document.body.classList.add('shake');
+            setTimeout(() => document.body.classList.remove('shake'), 600);
         });
 
-        toggleButton.addEventListener('click', () => {
-            isMuted = !isMuted;
-            if (isMuted) {
-                music.pause();
-                toggleButton.textContent = "🔇 Music OFF";
-            } else {
-                music.play();
-                toggleButton.textContent = "🔊 Music ON";
-            }
-            localStorage.setItem('musicMuted', isMuted);
-        });
-
-        // Flying Images with Delay and Random Sizes
-        function createFlyingImage() {
-            const img = document.createElement('img');
-            const imgNum = Math.floor(Math.random() * 8) + 1;
-            img.src = `images/adrit${imgNum}.png`;
-            img.className = 'flying-image';
-
-            const startX = Math.random() * 100;
-            const startY = Math.random() * 100;
-            const initialSize = window.innerWidth <= 600 
-                ? Math.random() * 100 + 20 
-                : Math.random() * 200 + 50;
-
-            img.style.cssText = `
-                left: ${startX}vw;
-                top: ${startY}vh;
-                width: ${initialSize}px;
-                opacity: 0.8;
-                filter: hue-rotate(${Math.random() * 360}deg);
-                z-index: ${Math.random() > 0.5 ? 3 : 1};
-            `;
-
-            document.body.appendChild(img);
-
-            setTimeout(() => {
-                const animations = ['floatImage1', 'floatImage2', 'floatImage3'];
-                const animation = animations[Math.floor(Math.random() * animations.length)];
-                const duration = Math.random() * 8 + 8;
-                img.style.animation = `${animation} ${duration}s linear forwards`;
-            }, 2000);
-
-            setTimeout(() => img.remove(), 10000);
+        // Flying Emojis
+        function createFlyingEmoji() {
+            const emojiArray = ["🤡", "🐸", "💩", "🚽", "🎭", "🚀", "🤯", "😵"];
+            const emoji = document.createElement('div');
+            emoji.textContent = emojiArray[Math.floor(Math.random() * emojiArray.length)];
+            emoji.className = 'flying-emoji';
+            emoji.style.left = Math.random() * 100 + "vw";
+            emoji.style.top = Math.random() * 100 + "vh";
+            document.body.appendChild(emoji);
+            setTimeout(() => emoji.remove(), 10000);
         }
 
-        setInterval(createFlyingImage, 1500);
-        setTimeout(() => { for(let i=0; i<15; i++) createFlyingImage(); }, 500);
+        setInterval(createFlyingEmoji, 2000);
 
-        // Original Interactions
-        window.onload = () => {
-            for (let i = 0; i < 200; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.top = Math.random() * 100 + 'vh';
-                confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
-                document.body.appendChild(confetti);
-                setTimeout(() => confetti.remove(), 5000);
-            }
-        };
-
-        const slides = document.querySelectorAll('.slide');
-        let currentSlide = 0;
-        setInterval(() => {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }, 3000);
-
+        // Chutpaglu Meter Overload
         setTimeout(() => {
             document.querySelector('.meter-fill').style.width = '100%';
-            document.getElementById('meterValue').textContent = 'OVER 900000%';
-        }, 1000);
+            document.getElementById('meterValue').textContent = 'INFINITE%';
+            document.querySelector('.meter-text').classList.add('glitch');
+        }, 10000);
 
-        document.addEventListener('click', () => {
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
-                document.body.appendChild(confetti);
-                setTimeout(() => confetti.remove(), 5000);
-            }
-            document.getElementById('randomText').textContent =
-                ["Chutpaglu Alert! 🚨", "Adrit is watching... 👀", "Warning: Extreme Pagluness! ⚠️",
-                 "Certified Gandu™️", "100% Pure Chutpaglu!", "Sniff Incoming! 💥", "Dalla No.1"]
-                [Math.floor(Math.random() * 7)];
-            document.querySelectorAll('.meme-item').forEach(item => {
-                item.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
-            });
-        });
+        // Glitchy Title Effect
+        function glitchTitle() {
+            const titles = [
+                "Adrit Bhatnagar - World's #1 Chutpaglu! 🎉",
+                "Adrit 'SNIFF MASTER' Bhatnagar 🚀",
+                "THE LEGENDARY DALLA HIMSELF 🔥",
+                "CEO of CHUTPAGLU Pvt Ltd 💼",
+                "PhD in Chutpaglu-ology 🎓"
+            ];
+            document.title = titles[Math.floor(Math.random() * titles.length)];
+        }
+
+        setInterval(glitchTitle, 3000);
     </script>
 </body>
 </html>
