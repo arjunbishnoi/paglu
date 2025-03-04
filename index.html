@@ -6,7 +6,7 @@
     <title>Adrit Bhatnagar - World's Biggest Chut Paglu! 🎉</title>
     <link rel="icon" type="image/png" href="images/adrit1.png">
     <style>
-        /* ======= PASSWORD PROTECTION STYLES ======= */
+        /* ======= PASSWORD PROTECTION ======= */
         .password-overlay {
             position: fixed;
             top: 0;
@@ -47,7 +47,7 @@
             font-size: 1.1em;
         }
 
-        /* ======= YOUR ORIGINAL STYLES ======= */
+        /* ======= ORIGINAL STYLES ======= */
         body {
             margin: 0;
             padding: 20px;
@@ -386,7 +386,7 @@
         <div id="errorMessage">WRONG CODE! TRY AGAIN! 😡</div>
     </div>
 
-    <!-- Your Original Content -->
+    <!-- Original Content -->
     <div class="container">
         <h1>🎉 ADRIT BHATNAGAR<br>WORLD'S #1 CHUT PAGLU! 🏆</h1>
 
@@ -449,19 +449,20 @@
         const passwordOverlay = document.querySelector('.password-overlay');
         let initialized = false;
 
-        // Hide original content initially
-        document.querySelectorAll('body > *:not(.password-overlay)').forEach(el => {
+        // Initial setup
+        document.querySelectorAll('.container, #musicToggle').forEach(el => {
             el.style.visibility = 'hidden';
         });
+        document.body.style.background = '#000';
 
         function checkPassword() {
             if (passwordInput.value === CORRECT_PASSWORD) {
                 passwordOverlay.style.display = 'none';
-                // Show all content
-                document.querySelectorAll('body > *:not(.password-overlay)').forEach(el => {
+                document.body.style.background = 'linear-gradient(45deg, #ff00ff, #00ffff, #ffff00)';
+                document.querySelectorAll('.container, #musicToggle').forEach(el => {
                     el.style.visibility = 'visible';
                 });
-                // Initialize animations only once
+                
                 if (!initialized) {
                     initializePage();
                     initialized = true;
@@ -477,17 +478,41 @@
             if (e.key === 'Enter') checkPassword();
         });
 
-        // Original JavaScript Initialization
+        // Page Initialization
         function initializePage() {
-            // Music Management
+            // ======= CONFETTI SYSTEM =======
+            function createConfetti() {
+                for (let i = 0; i < 50; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = Math.random() * 100 + 'vh';
+                    confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 5000);
+                }
+            }
+
+            // Initial confetti
+            createConfetti();
+            
+            // Regular confetti bursts
+            setInterval(() => {
+                createConfetti();
+            }, Math.random() * 5000 + 5000); // 5-10 seconds
+
+            // Click confetti
+            document.addEventListener('click', createConfetti);
+
+            // ======= ORIGINAL FUNCTIONALITY =======
+            // Music System
             const music = document.getElementById('backgroundMusic');
             const toggleButton = document.getElementById('musicToggle');
             let isMuted = false;
 
             document.addEventListener('click', () => {
-                if (music.paused) {
-                    music.play().catch(() => {});
-                }
+                if (music.paused) music.play().catch(() => {});
             }, { once: true });
 
             window.addEventListener('load', () => {
@@ -551,20 +576,6 @@
             setInterval(createFlyingImage, 1500);
             setTimeout(() => { for(let i=0; i<15; i++) createFlyingImage(); }, 500);
 
-            // Confetti
-            window.onload = () => {
-                for (let i = 0; i < 200; i++) {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = Math.random() * 100 + 'vw';
-                    confetti.style.top = Math.random() * 100 + 'vh';
-                    confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                    confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
-                    document.body.appendChild(confetti);
-                    setTimeout(() => confetti.remove(), 5000);
-                }
-            };
-
             // Slideshow
             const slides = document.querySelectorAll('.slide');
             let currentSlide = 0;
@@ -580,27 +591,7 @@
                 document.getElementById('meterValue').textContent = 'OVER 900000%';
             }, 1000);
 
-            // Click Interactions
-            document.addEventListener('click', () => {
-                for (let i = 0; i < 50; i++) {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = Math.random() * 100 + 'vw';
-                    confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                    confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
-                    document.body.appendChild(confetti);
-                    setTimeout(() => confetti.remove(), 5000);
-                }
-                document.getElementById('randomText').textContent =
-                    ["Chutpaglu Alert! 🚨", "Adrit is watching... 👀", "Warning: Extreme Pagluness! ⚠️",
-                     "Certified Gandu™️", "100% Pure Chutpaglu!", "Sniff Incoming! 💥", "Dalla No.1"]
-                    [Math.floor(Math.random() * 7)];
-                document.querySelectorAll('.meme-item').forEach(item => {
-                    item.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
-                });
-            });
-
-            // Sniff-O-Tron
+            // Interactive Elements
             const sniffButton = document.getElementById('sniffButton');
             const sniffBubble = document.getElementById('sniffBubble');
             const sniffSounds = [
@@ -619,7 +610,7 @@
                 }, 10);
             });
 
-            // Badges
+            // Badge System
             const badgeContainer = document.getElementById('badgeContainer');
             const badgeMessages = [
                 '🏆 Chutpaglu of the Century!',
@@ -653,7 +644,7 @@
                 setTimeout(() => trail.remove(), 1000);
             });
 
-            // Alerts
+            // Alert System
             const alertBanner = document.getElementById('alertBanner');
             const alertMessages = [
                 '🚨 CHUTPAGLU DETECTED IN YOUR AREA! 🚨',
@@ -671,7 +662,7 @@
             setInterval(triggerAlert, 10000);
             setTimeout(triggerAlert, 2000);
 
-            // Voice Button
+            // Voice System
             const voiceButton = document.getElementById('voiceButton');
             const voiceClips = [
                 new Audio('https://www.myinstants.com/en/instant/makaka-funk-88128/?utm_source=copy&utm_medium=share'),
@@ -682,9 +673,6 @@
                 randomClip.play().catch(() => {});
             });
         }
-
-        // Initial black background
-        document.body.style.background = '#000';
     </script>
 </body>
 </html>
