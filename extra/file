@@ -129,24 +129,32 @@
 
         #musicToggle {
             position: fixed;
-            bottom: 20px;
+            bottom: 20px; /* Moved to bottom-right */
             right: 20px;
             z-index: 9999;
-            padding: 12px 20px;
-            background: #ff00ff;
-            border: 3px solid #00ffff;
-            border-radius: 30px;
+            width: 100px;
+            height: 100px;
+            background: url('images/adrit1.png') center/cover no-repeat; /* Adrit’s pic as BG */
+            border: 5px double #ff00ff; /* Funky double border */
+            border-radius: 50%; /* Circular shape */
             cursor: pointer;
             font-family: 'Comic Sans MS';
             font-weight: bold;
-            box-shadow: 0 0 15px rgba(0,0,0,0.3);
-            transition: all 0.3s;
+            font-size: 1.2em;
+            color: #ffff00; /* Bright yellow text */;
+            text-shadow: 2px 2px 0 #0000ff; /* Blue shadow for pop */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.8); /* Glow effect */
+            transition: all 0.3s ease;
         }
 
         #musicToggle:hover {
-            transform: scale(1.1);
-            background: #00ffff;
-            border-color: #ff00ff;
+            transform: scale(1.2) rotate(360deg); /* Spin and grow on hover */
+            border-color: #00ffff; /* Swap border color */
+            box-shadow: 0 0 30px rgba(0, 255, 255, 1); /* Brighter glow */
+            background: url('images/adrit1.png') center/cover no-repeat, #ff00ff; /* Keep Adrit with a pink overlay */
         }
 
         .flying-image {
@@ -201,9 +209,10 @@
             .chutpaglu-meter { height: 30px; }
             .meter-text { font-size: 1em; }
             #musicToggle {
-                padding: 8px 16px;
+                width: 70px; /* Smaller for mobile */
+                height: 70px;
                 font-size: 0.9em;
-                top: 10px;
+                bottom: 10px; /* Adjusted for mobile */
                 right: 10px;
             }
             .flying-image { width: 120px !important; }
@@ -213,7 +222,7 @@
             color: rgb(100, 0, 0);
         }
 
-        /* New CSS Additions */
+        /* Existing New CSS */
         .sniff-o-tron {
             text-align: center;
             margin: 20px 0;
@@ -398,205 +407,4 @@
         // Music Management
         const music = document.getElementById('backgroundMusic');
         const toggleButton = document.getElementById('musicToggle');
-        let isMuted = false;
-
-        document.addEventListener('click', () => {
-            if (music.paused) {
-                music.play().catch(() => {});
-            }
-        }, { once: true });
-
-        window.addEventListener('load', () => {
-            const savedVolume = localStorage.getItem('musicMuted');
-            if (savedVolume === 'true') {
-                music.pause();
-                toggleButton.textContent = "🔇 Music OFF";
-                isMuted = true;
-            } else {
-                music.play().catch(() => {});
-                toggleButton.textContent = "🔊 Music ON";
-            }
-        });
-
-        toggleButton.addEventListener('click', () => {
-            isMuted = !isMuted;
-            if (isMuted) {
-                music.pause();
-                toggleButton.textContent = "🔇 Music OFF";
-            } else {
-                music.play();
-                toggleButton.textContent = "🔊 Music ON";
-            }
-            localStorage.setItem('musicMuted', isMuted);
-        });
-
-        // Flying Images with Delay and Random Sizes
-        function createFlyingImage() {
-            const img = document.createElement('img');
-            const imgNum = Math.floor(Math.random() * 8) + 1;
-            img.src = `images/adrit${imgNum}.png`;
-            img.className = 'flying-image';
-
-            const startX = Math.random() * 100;
-            const startY = Math.random() * 100;
-            const initialSize = window.innerWidth <= 600 
-                ? Math.random() * 100 + 20 
-                : Math.random() * 200 + 50;
-
-            img.style.cssText = `
-                left: ${startX}vw;
-                top: ${startY}vh;
-                width: ${initialSize}px;
-                opacity: 0.8;
-                filter: hue-rotate(${Math.random() * 360}deg);
-                z-index: ${Math.random() > 0.5 ? 3 : 1};
-            `;
-
-            document.body.appendChild(img);
-
-            setTimeout(() => {
-                const animations = ['floatImage1', 'floatImage2', 'floatImage3'];
-                const animation = animations[Math.floor(Math.random() * animations.length)];
-                const duration = Math.random() * 8 + 8;
-                img.style.animation = `${animation} ${duration}s linear forwards`;
-            }, 2000);
-
-            setTimeout(() => img.remove(), 10000);
-        }
-
-        setInterval(createFlyingImage, 1500);
-        setTimeout(() => { for(let i=0; i<15; i++) createFlyingImage(); }, 500);
-
-        // Original Interactions
-        window.onload = () => {
-            for (let i = 0; i < 200; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.top = Math.random() * 100 + 'vh';
-                confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
-                document.body.appendChild(confetti);
-                setTimeout(() => confetti.remove(), 5000);
-            }
-        };
-
-        const slides = document.querySelectorAll('.slide');
-        let currentSlide = 0;
-        setInterval(() => {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }, 3000);
-
-        setTimeout(() => {
-            document.querySelector('.meter-fill').style.width = '100%';
-            document.getElementById('meterValue').textContent = 'OVER 900000%';
-        }, 1000);
-
-        document.addEventListener('click', () => {
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
-                document.body.appendChild(confetti);
-                setTimeout(() => confetti.remove(), 5000);
-            }
-            document.getElementById('randomText').textContent =
-                ["Chutpaglu Alert! 🚨", "Adrit is watching... 👀", "Warning: Extreme Pagluness! ⚠️",
-                 "Certified Gandu™️", "100% Pure Chutpaglu!", "Sniff Incoming! 💥", "Dalla No.1"]
-                [Math.floor(Math.random() * 7)];
-            document.querySelectorAll('.meme-item').forEach(item => {
-                item.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
-            });
-        });
-
-        // New JavaScript Additions
-        // Sniff-O-Tron 3000
-        const sniffButton = document.getElementById('sniffButton');
-        const sniffBubble = document.getElementById('sniffBubble');
-        const sniffSounds = [
-            new Audio('sniff1.mp3'), // Placeholder—replace with your own sniff sound files!
-            new Audio('sniff2.mp3'),
-            new Audio('sniff3.mp3')
-        ];
-
-        sniffButton.addEventListener('click', () => {
-            const randomSound = sniffSounds[Math.floor(Math.random() * sniffSounds.length)];
-            randomSound.play().catch(() => {});
-            sniffBubble.style.animation = 'none'; // Reset animation
-            setTimeout(() => {
-                sniffBubble.textContent = ['*SNIFFFFF*', '*SNUUUUUUUF*', '*SNIFF SNIFF*'][Math.floor(Math.random() * 3)];
-                sniffBubble.style.animation = 'sniffPop 1.5s ease-out forwards';
-            }, 10);
-        });
-
-        // Achievement Badges
-        const badgeContainer = document.getElementById('badgeContainer');
-        const badgeMessages = [
-            '🏆 Chutpaglu of the Century!',
-            '🥇 Sniff Master 9000!',
-            '🎖️ Certified Dalla King!',
-            '💪 Chutpaglu Power Level: Infinity!',
-            '🌟 Supreme Gandu Award!'
-        ];
-
-        function spawnBadge() {
-            const badge = document.createElement('div');
-            badge.className = 'badge';
-            badge.textContent = badgeMessages[Math.floor(Math.random() * badgeMessages.length)];
-            badge.style.left = Math.random() * 80 + 10 + 'vw';
-            badge.style.top = Math.random() * 80 + 10 + 'vh';
-            badgeContainer.appendChild(badge);
-            setTimeout(() => badge.remove(), 4000);
-        }
-
-        setInterval(spawnBadge, 5000); // New badge every 5 seconds
-        setTimeout(spawnBadge, 1000);  // Start with one right away
-
-        // Cursor Trail
-        document.addEventListener('mousemove', (e) => {
-            const trail = document.createElement('img');
-            trail.src = `images/adrit${Math.floor(Math.random() * 7) + 1}.png`;
-            trail.className = 'cursor-trail';
-            trail.style.left = e.pageX - 25 + 'px';
-            trail.style.top = e.pageY - 25 + 'px';
-            document.body.appendChild(trail);
-            setTimeout(() => trail.remove(), 1000);
-        });
-
-        // Emergency Alert System
-        const alertBanner = document.getElementById('alertBanner');
-        const alertMessages = [
-            '🚨 CHUTPAGLU DETECTED IN YOUR AREA! 🚨',
-            '⚠️ SNIFF LEVELS OFF THE CHARTS! ⚠️',
-            '🚨 ADRIT IS SNIFFING YOU RIGHT NOW! 🚨',
-            '⚠️ CHUTPAGLU RADIATION SPIKE! ⚠️'
-        ];
-
-        function triggerAlert() {
-            alertBanner.textContent = alertMessages[Math.floor(Math.random() * alertMessages.length)];
-            alertBanner.style.display = 'block';
-            setTimeout(() => alertBanner.style.display = 'none', 3000);
-        }
-
-        setInterval(triggerAlert, 10000); // Alert every 10 seconds
-        setTimeout(triggerAlert, 2000);   // First one after 2 seconds
-
-        // Voice Clips
-        const voiceButton = document.getElementById('voiceButton');
-        const voiceClips = [
-            new Audio('chutpaglu1.mp3'), // Placeholder—replace with your own voice clips!
-            new Audio('chutpaglu2.mp3'),
-            new Audio('chutpaglu3.mp3')
-        ];
-
-        voiceButton.addEventListener('click', () => {
-            const randomClip = voiceClips[Math.floor(Math.random() * voiceClips.length)];
-            randomClip.play().catch(() => {});
-        });
-    </script>
-</body>
-</html>
+        let isMuted = false
