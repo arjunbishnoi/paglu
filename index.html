@@ -30,47 +30,30 @@
             text-align: center;
         }
 
-        .input-group {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px 20px;
-            font-size: 1.1em;
+        #passwordInput {
+            background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
             color: #ffffff;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .input-group label {
-            position: absolute;
-            top: 50%;
-            left: 20px;
-            transform: translateY(-50%);
             font-size: 1.1em;
-            color: rgba(255, 255, 255, 0.6);
-            pointer-events: none;
+            width: 100%;
+            box-sizing: border-box;
+            outline: none;
+            font-family: 'Segoe UI', Arial, sans-serif;
             transition: all 0.3s ease;
+            margin-top: 10px;
         }
 
-        .input-group input:focus,
-        .input-group input:not(:placeholder-shown) {
-            border-color: #ffffff; /* Pure white focus color */
+        #passwordInput:focus {
+            border-color: #00aaff;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 12px rgba(0, 170, 255, 0.2);
         }
 
-        .input-group input:focus + label,
-        .input-group input:not(:placeholder-shown) + label {
-            top: -10px;
-            left: 10px;
-            font-size: 0.8em;
-            color: #ffffff;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            padding: 0 5px;
+        #passwordInput::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-family: 'Segoe UI', Arial, sans-serif;
         }
 
         #errorMessage {
@@ -87,7 +70,7 @@
             transition: opacity 0.3s ease;
         }
         
-        /* Updated Footer Styles */
+        /* NEW FOOTER STYLES */
         .password-footer {
             position: fixed;
             bottom: 0;
@@ -100,10 +83,14 @@
             color: rgba(255, 255, 255, 0.7);
             font-family: 'Segoe UI', Arial, sans-serif;
             font-size: 0.8em;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            text-align: center;
+            line-height: 1.4;
             z-index: 99999;
+        }
+
+        .password-footer span {
+            display: inline-block;
+            margin: 0 5px;
         }
 
         @media (max-width: 600px) {
@@ -458,12 +445,10 @@
     <!-- Password Overlay -->
     <div class="password-overlay">
         <div class="password-container">
-            <div class="input-group">
-                <input type="password" id="passwordInput" placeholder=" " autocomplete="off">
-                <label for="passwordInput">Code</label>
-            </div>
+            <input type="password" id="passwordInput" placeholder="Code..." autocomplete="off">
             <div id="errorMessage">Invalid Code - Try Again</div>
         </div>
+        <!-- NEW FOOTER -->
         <div class="password-footer">
             <span>Adrit Bhatnagar, CEO — Chutpaglu LLC. ©<span id="currentYear"></span></span>
         </div>
@@ -540,6 +525,7 @@
             el.style.visibility = 'hidden';
         });
         document.body.style.background = '#000';
+        passwordInput.focus();
 
         function checkPassword() {
             if (passwordInput.value === CORRECT_PASSWORD) {
