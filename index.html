@@ -7,54 +7,47 @@
     <link rel="icon" type="image/png" href="images/adrit1.png">
     <style>
         /* ======= PASSWORD PROTECTION ======= */
-        /* ======= PASSWORD PROTECTION ======= */
-.password-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    z-index: 99999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden; /* Prevent scrolling */
-}
+        .password-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+overflow: hidden;
+        }
 
-#passwordInput {
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    border-radius: 25px;
-    padding: 15px 25px;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1.1em;
-    width: 250px;
-    outline: none;
-    text-align: center;
-    font-family: "Segoe UI", sans-serif;
-}
+        #passwordInput {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 25px;
+            padding: 15px 25px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.0em;
+            width: 250px;
+            outline: none;
+            text-align: center;
+            font-family: 'arial';
+        }
 
-#passwordInput::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-    font-family: "Segoe UI", sans-serif;
-}
+        #passwordInput::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
 
-#errorMessage {
-    color: #ff4d4d; /* Softer red */
-    text-align: center;
-    width: 100%;
-    display: none;
-    font-size: 1em;
-    font-family: "Segoe UI", sans-serif;
-    font-weight: bold;
-    margin-top: 15px;
-}
-
-/* Restore scrolling after authentication */
-body.locked {
-    overflow: hidden;
-}
+        #errorMessage {
+            color: #ff0000;
+            position: fixed;
+            top: 60vh;
+            text-align: center;
+            width: 100%;
+            display: none;
+font-family: ‘arial’;
+            font-size: 1.1em;
+        }
 
         /* ======= ORIGINAL STYLES ======= */
         body {
@@ -464,27 +457,24 @@ body.locked {
         });
         document.body.style.background = '#000';
 
-        // Initial setup: Prevent scrolling on the password screen
-document.body.classList.add('locked');
-
-function checkPassword() {
-    if (passwordInput.value === CORRECT_PASSWORD) {
-        passwordOverlay.style.display = 'none';
-        document.body.classList.remove('locked'); // Restore scrolling
-        document.querySelectorAll('.container, #musicToggle').forEach(el => {
-            el.style.visibility = 'visible';
-        });
-        
-        if (!initialized) {
-            initializePage();
-            initialized = true;
+        function checkPassword() {
+            if (passwordInput.value === CORRECT_PASSWORD) {
+                passwordOverlay.style.display = 'none';
+                document.body.style.background = 'linear-gradient(45deg, #ff00ff, #00ffff, #ffff00)';
+                document.querySelectorAll('.container, #musicToggle').forEach(el => {
+                    el.style.visibility = 'visible';
+                });
+                
+                if (!initialized) {
+                    initializePage();
+                    initialized = true;
+                }
+            } else {
+                errorMessage.style.display = 'block';
+                passwordInput.value = '';
+                setTimeout(() => errorMessage.style.display = 'none', 2000);
+            }
         }
-    } else {
-        errorMessage.style.display = 'block';
-        passwordInput.value = '';
-        setTimeout(() => errorMessage.style.display = 'none', 2000);
-    }
-}
 
         passwordInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') checkPassword();
