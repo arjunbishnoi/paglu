@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -13,7 +14,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            background: black;
             z-index: 99999;
             display: flex;
             justify-content: center;
@@ -69,7 +70,7 @@
             border: 1px solid rgba(255, 85, 85, 0.2);
             transition: opacity 0.3s ease;
         }
-        
+
         /* NEW FOOTER STYLES */
         .password-footer {
             position: fixed;
@@ -77,7 +78,7 @@
             left: 0;
             width: 100%;
             padding: 15px;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(10, 10, 10, 0.4);
             backdrop-filter: blur(5px);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: rgba(255, 255, 255, 0.7);
@@ -98,7 +99,11 @@
                 font-size: 0.7em;
                 padding: 10px;
             }
-            .password-container { width: 280px; padding: 30px; }
+
+            .password-container {
+                width: 280px;
+                padding: 30px;
+            }
         }
 
         @media (max-width: 350px) {
@@ -116,16 +121,17 @@
             font-family: 'Comic Sans MS';
             min-height: 100vh;
             overflow-x: hidden;
-            overflow-y: hidden; /* Hide scroll initially */
+            overflow-y: hidden;
+            /* Hide scroll initially */
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: linear-gradient(45deg, 
-                rgba(255, 240, 245, 0.7),
-                rgba(255, 228, 225, 0.8),
-                rgba(255, 245, 238, 0.6));
+            background: linear-gradient(45deg,
+                    rgba(255, 240, 245, 0.7),
+                    rgba(255, 228, 225, 0.8),
+                    rgba(255, 245, 238, 0.6));
             padding: 30px;
             border-radius: 20px;
             border: 5px dashed #ff0000;
@@ -243,7 +249,7 @@
             cursor: pointer;
             font-family: 'Comic Sans MS';
             font-weight: bold;
-            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
             transition: all 0.3s;
         }
 
@@ -257,60 +263,126 @@
             position: fixed;
             pointer-events: none;
             opacity: 0.8;
-            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
             mix-blend-mode: multiply;
             z-index: 1;
             transform-origin: center;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
         }
 
         @keyframes rainbow {
-            0% { color: #ff0000; }
-            20% { color: #00ff00; }
-            40% { color: #0000ff; }
-            60% { color: #ff00ff; }
-            80% { color: #ffff00; }
-            100% { color: #ff0000; }
+            0% {
+                color: #ff0000;
+            }
+
+            20% {
+                color: #00ff00;
+            }
+
+            40% {
+                color: #0000ff;
+            }
+
+            60% {
+                color: #ff00ff;
+            }
+
+            80% {
+                color: #ffff00;
+            }
+
+            100% {
+                color: #ff0000;
+            }
         }
 
         @keyframes confetti-fall {
-            0% { transform: translateY(-100vh) rotate(0deg); }
-            100% { transform: translateY(100vh) rotate(360deg); }
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
         }
 
         @keyframes floatImage1 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(100vw, 100vh) scale(2) rotate(720deg); }
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(100vw, 100vh) scale(2) rotate(720deg);
+            }
         }
 
         @keyframes floatImage2 {
-            0% { transform: translate(0, 0) scale(0.5); }
-            100% { transform: translate(-80vw, 120vh) scale(1.8) rotate(-540deg); }
+            0% {
+                transform: translate(0, 0) scale(0.5);
+            }
+
+            100% {
+                transform: translate(-80vw, 120vh) scale(1.8) rotate(-540deg);
+            }
         }
 
         @keyframes floatImage3 {
-            0% { transform: translate(0, 0) scale(1.2); }
-            100% { transform: translate(120vw, -50vh) scale(0.8) rotate(360deg); }
+            0% {
+                transform: translate(0, 0) scale(1.2);
+            }
+
+            100% {
+                transform: translate(120vw, -50vh) scale(0.8) rotate(360deg);
+            }
         }
 
         @media (max-width: 600px) {
-            h1 { font-size: 2em; }
-            .slideshow { max-width: 200px; height: 200px; }
-            .meme-text { font-size: 1.4em; }
-            .meme-gallery { grid-template-columns: 1fr; }
-            .chutpaglu-meter { height: 30px; }
-            .meter-text { font-size: 1em; }
+            h1 {
+                font-size: 2em;
+            }
+
+            .slideshow {
+                max-width: 200px;
+                height: 200px;
+            }
+
+            .meme-text {
+                font-size: 1.4em;
+            }
+
+            .meme-gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .chutpaglu-meter {
+                height: 30px;
+            }
+
+            .meter-text {
+                font-size: 1em;
+            }
+
             #musicToggle {
                 padding: 8px 16px;
                 font-size: 0.9em;
                 bottom: 10px;
                 right: 10px;
             }
-            .flying-image { width: 120px !important; }
+
+            .flying-image {
+                width: 120px !important;
+            }
         }
 
         #strongg {
@@ -355,9 +427,20 @@
         }
 
         @keyframes sniffPop {
-            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
-            50% { opacity: 1; transform: translateX(-50%) translateY(-20px); }
-            100% { opacity: 0; transform: translateX(-50%) translateY(-40px); }
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+
+            50% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(-20px);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-40px);
+            }
         }
 
         .badge {
@@ -376,10 +459,25 @@
         }
 
         @keyframes badgePop {
-            0% { opacity: 0; transform: scale(0.5) translateY(100vh); }
-            20% { opacity: 1; transform: scale(1.2) translateY(0); }
-            80% { opacity: 1; transform: scale(1) translateY(0); }
-            100% { opacity: 0; transform: scale(0.8) translateY(-100vh); }
+            0% {
+                opacity: 0;
+                transform: scale(0.5) translateY(100vh);
+            }
+
+            20% {
+                opacity: 1;
+                transform: scale(1.2) translateY(0);
+            }
+
+            80% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(0.8) translateY(-100vh);
+            }
         }
 
         .cursor-trail {
@@ -392,9 +490,19 @@
         }
 
         @keyframes trailBounce {
-            0% { opacity: 1; transform: scale(0.5) translateY(0); }
-            50% { transform: scale(1.2) translateY(-20px); }
-            100% { opacity: 0; transform: scale(0.8) translateY(-40px); }
+            0% {
+                opacity: 1;
+                transform: scale(0.5) translateY(0);
+            }
+
+            50% {
+                transform: scale(1.2) translateY(-20px);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(0.8) translateY(-40px);
+            }
         }
 
         .alert-banner {
@@ -415,9 +523,20 @@
         }
 
         @keyframes alertFlash {
-            0%, 100% { top: -100px; }
-            10%, 90% { top: 0; }
-            50% { background: #00ff00; }
+
+            0%,
+            100% {
+                top: -100px;
+            }
+
+            10%,
+            90% {
+                top: 0;
+            }
+
+            50% {
+                background: #00ff00;
+            }
         }
 
         #voiceButton {
@@ -441,6 +560,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Password Overlay -->
     <div class="password-overlay">
@@ -512,7 +632,7 @@
     <script>
         // Auto-update year in footer
         document.getElementById('currentYear').textContent = new Date().getFullYear();
-        
+
         // Password Protection
         const CORRECT_PASSWORD = "ADRITDADDY69";
         const passwordInput = document.getElementById('passwordInput');
@@ -537,7 +657,7 @@
                     document.querySelectorAll('.container, #musicToggle').forEach(el => {
                         el.style.visibility = 'visible';
                     });
-                    
+
                     if (!initialized) {
                         initializePage();
                         initialized = true;
@@ -578,7 +698,7 @@
 
             // Initial confetti
             createConfetti();
-            
+
             // Regular confetti bursts
             setInterval(() => {
                 createConfetti();
@@ -594,7 +714,7 @@
             let isMuted = false;
 
             document.addEventListener('click', () => {
-                if (music.paused) music.play().catch(() => {});
+                if (music.paused) music.play().catch(() => { });
             }, { once: true });
 
             window.addEventListener('load', () => {
@@ -604,7 +724,7 @@
                     toggleButton.textContent = "🔇 Music OFF";
                     isMuted = true;
                 } else {
-                    music.play().catch(() => {});
+                    music.play().catch(() => { });
                     toggleButton.textContent = "🔊 Music ON";
                 }
             });
@@ -630,8 +750,8 @@
 
                 const startX = Math.random() * 100;
                 const startY = Math.random() * 100;
-                const initialSize = window.innerWidth <= 600 
-                    ? Math.random() * 100 + 20 
+                const initialSize = window.innerWidth <= 600
+                    ? Math.random() * 100 + 20
                     : Math.random() * 200 + 50;
 
                 img.style.cssText = `
@@ -656,7 +776,7 @@
             }
 
             setInterval(createFlyingImage, 1500);
-            setTimeout(() => { for(let i=0; i<15; i++) createFlyingImage(); }, 500);
+            setTimeout(() => { for (let i = 0; i < 15; i++) createFlyingImage(); }, 500);
 
             // Slideshow
             const slides = document.querySelectorAll('.slide');
@@ -684,7 +804,7 @@
 
             sniffButton.addEventListener('click', () => {
                 const randomSound = sniffSounds[Math.floor(Math.random() * sniffSounds.length)];
-                randomSound.play().catch(() => {});
+                randomSound.play().catch(() => { });
                 sniffBubble.style.animation = 'none';
                 setTimeout(() => {
                     sniffBubble.textContent = ['*SNIFFFFF*', '*SNUUUUUUUF*', '*SNIFF SNIFF*'][Math.floor(Math.random() * 3)];
@@ -752,9 +872,10 @@
 
             voiceButton.addEventListener('click', () => {
                 const randomClip = voiceClips[Math.floor(Math.random() * voiceClips.length)];
-                randomClip.play().catch(() => {});
+                randomClip.play().catch(() => { });
             });
         }
     </script>
 </body>
+
 </html>
