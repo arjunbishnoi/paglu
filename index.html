@@ -6,7 +6,7 @@
     <title>Adrit Bhatnagar - World's Biggest Chut Paglu! 🎉</title>
     <link rel="icon" type="image/png" href="images/adrit1.png">
     <style>
-        /* ======= UPDATED PASSWORD SCREEN ======= */
+        /* ======= PASSWORD PROTECTION ======= */
         .password-overlay {
             position: fixed;
             top: 0;
@@ -18,7 +18,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
             overflow: hidden;
             transition: opacity 0.5s ease;
         }
@@ -29,33 +28,6 @@
             border-radius: 12px;
             width: 320px;
             text-align: center;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .auth-animation {
-            position: relative;
-            margin-bottom: 30px;
-        }
-
-        .circle-loader {
-            width: 80px;
-            height: 80px;
-            position: relative;
-            animation: rotate 2s linear infinite;
-        }
-
-        .circle-track {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 3px solid transparent;
-            border-radius: 50%;
-            border-top-color: rgba(0, 170, 255, 0.8);
-            border-bottom-color: rgba(0, 170, 255, 0.8);
-            animation: pulse 1.5s ease-in-out infinite;
         }
 
         #passwordInput {
@@ -65,24 +37,23 @@
             padding: 12px 20px;
             color: #ffffff;
             font-size: 1.1em;
-            width: 220px;
+            width: 100%;
             box-sizing: border-box;
             outline: none;
             font-family: 'Segoe UI', Arial, sans-serif;
             transition: all 0.3s ease;
-            margin: 15px 0;
-            padding-left: 40px;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(255,255,255,0.6)" width="24" height="24"><path d="M12 17a2 2 0 0 0 2-2 2 2 0 0 0-2-2 2 2 0 0 0-2 2 2 2 0 0 0 2 2m6-9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2h1V6a5 5 0 0 1 5-5 5 5 0 0 1 5 5v2h1m-6-5a3 3 0 0 0-3 3v2h6V6a3 3 0 0 0-3-3z"/></svg>');
-            background-repeat: no-repeat;
-            background-position: 12px center;
-            background-size: 20px;
+            margin-top: 10px;
         }
 
         #passwordInput:focus {
             border-color: #00aaff;
             background: rgba(255, 255, 255, 0.15);
             box-shadow: 0 0 12px rgba(0, 170, 255, 0.2);
-            transform: scale(1.02);
+        }
+
+        #passwordInput::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-family: 'Segoe UI', Arial, sans-serif;
         }
 
         #errorMessage {
@@ -90,14 +61,16 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             font-size: 0.95em;
             margin-top: 15px;
-            display: none;
+            opacity: 0;
+            visibility: hidden;
             padding: 8px 15px;
             background: rgba(255, 85, 85, 0.1);
             border-radius: 6px;
             border: 1px solid rgba(255, 85, 85, 0.2);
             transition: opacity 0.3s ease;
         }
-
+        
+        /* NEW FOOTER STYLES */
         .password-footer {
             position: fixed;
             bottom: 0;
@@ -115,18 +88,23 @@
             z-index: 99999;
         }
 
-        @keyframes rotate {
-            100% { transform: rotate(360deg); }
+        .password-footer span {
+            display: inline-block;
+            margin: 0 5px;
         }
 
-        @keyframes pulse {
-            0%, 100% { 
-                transform: scale(0.95);
-                opacity: 0.8;
+        @media (max-width: 600px) {
+            .password-footer {
+                font-size: 0.7em;
+                padding: 10px;
             }
-            50% { 
-                transform: scale(1.1);
-                opacity: 1;
+            .password-container { width: 280px; padding: 30px; }
+        }
+
+        @media (max-width: 350px) {
+            .password-container {
+                width: 90vw;
+                padding: 20px;
             }
         }
 
@@ -138,7 +116,7 @@
             font-family: 'Comic Sans MS';
             min-height: 100vh;
             overflow-x: hidden;
-            overflow-y: hidden;
+            overflow-y: hidden; /* Hide scroll initially */
         }
 
         .container {
@@ -333,8 +311,6 @@
                 right: 10px;
             }
             .flying-image { width: 120px !important; }
-            .password-container { width: 280px; padding: 30px; }
-            .circle-loader { width: 60px; height: 60px; }
         }
 
         #strongg {
@@ -469,16 +445,12 @@
     <!-- Password Overlay -->
     <div class="password-overlay">
         <div class="password-container">
-            <div class="auth-animation">
-                <div class="circle-loader">
-                    <div class="circle-track"></div>
-                </div>
-            </div>
             <input type="password" id="passwordInput" placeholder="Code..." autocomplete="off">
             <div id="errorMessage">Invalid Code - Try Again</div>
         </div>
+        <!-- NEW FOOTER -->
         <div class="password-footer">
-            <span>Adrit Bhatnagar, CEO — Chutpaglu LLC. &copy;<span id="currentYear"></span></span>
+            <span>Adrit Bhatnagar, CEO — Chutpaglu LLC. ©<span id="currentYear"></span></span>
         </div>
     </div>
 
@@ -540,7 +512,7 @@
     <script>
         // Auto-update year in footer
         document.getElementById('currentYear').textContent = new Date().getFullYear();
-
+        
         // Password Protection
         const CORRECT_PASSWORD = "ADRITDADDY69";
         const passwordInput = document.getElementById('passwordInput');
@@ -553,6 +525,7 @@
             el.style.visibility = 'hidden';
         });
         document.body.style.background = '#000';
+        passwordInput.focus();
 
         function checkPassword() {
             if (passwordInput.value === CORRECT_PASSWORD) {
@@ -571,9 +544,15 @@
                     }
                 }, 500);
             } else {
-                errorMessage.style.display = 'block';
+                errorMessage.style.visibility = 'visible';
+                errorMessage.style.opacity = '1';
                 passwordInput.value = '';
-                setTimeout(() => errorMessage.style.display = 'none', 2000);
+                setTimeout(() => {
+                    errorMessage.style.opacity = '0';
+                    setTimeout(() => {
+                        errorMessage.style.visibility = 'hidden';
+                    }, 300);
+                }, 2000);
             }
         }
 
@@ -603,7 +582,7 @@
             // Regular confetti bursts
             setInterval(() => {
                 createConfetti();
-            }, Math.random() * 5000 + 5000);
+            }, Math.random() * 5000 + 5000); // 5-10 seconds
 
             // Click confetti
             document.addEventListener('click', createConfetti);
