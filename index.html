@@ -78,6 +78,36 @@
             border: 1px solid rgba(255, 85, 85, 0.2);
             transition: opacity 0.3s ease;
         }
+        
+        /* NEW FOOTER STYLES */
+.password-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 0.8em;
+    text-align: center;
+    line-height: 1.4;
+    z-index: 99999;
+}
+
+.password-footer span {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+@media (max-width: 600px) {
+    .password-footer {
+        font-size: 0.7em;
+        padding: 10px;
+    }
+}
 
         /* ======= ORIGINAL STYLES ======= */
         body {
@@ -421,6 +451,11 @@
             <input type="password" id="passwordInput" placeholder="Code..." autocomplete="off">
             <div id="errorMessage">Invalid Code - Try Again</div>
         </div>
+        <!-- NEW FOOTER -->
+<div class="password-footer">
+    <span>&copy; <span id="currentYear"></span> ChutPaglu LLC</span> |
+    <span>CEO: Adrit Bhatnagar</span>
+</div>
     </div>
 
     <!-- Original Content -->
@@ -479,6 +514,8 @@
     <button id="musicToggle">🔊 Music ON</button>
 
     <script>
+    // Auto-update year in footer
+document.getElementById('currentYear').textContent = new Date().getFullYear();
         // Password Protection
         const CORRECT_PASSWORD = "ADRITDADDY69";
         const passwordInput = document.getElementById('passwordInput');
