@@ -6,7 +6,7 @@
     <title>Adrit Bhatnagar - World's Biggest Chut Paglu! 🎉</title>
     <link rel="icon" type="image/png" href="images/adrit1.png">
     <style>
-        /* ======= PASSWORD PROTECTION ======= */
+        /* ======= UPDATED PASSWORD SCREEN ======= */
         .password-overlay {
             position: fixed;
             top: 0;
@@ -18,6 +18,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             overflow: hidden;
             transition: opacity 0.5s ease;
         }
@@ -28,6 +29,33 @@
             border-radius: 12px;
             width: 320px;
             text-align: center;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .auth-animation {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .circle-loader {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            animation: rotate 2s linear infinite;
+        }
+
+        .circle-track {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid transparent;
+            border-radius: 50%;
+            border-top-color: rgba(0, 170, 255, 0.8);
+            border-bottom-color: rgba(0, 170, 255, 0.8);
+            animation: pulse 1.5s ease-in-out infinite;
         }
 
         #passwordInput {
@@ -37,23 +65,24 @@
             padding: 12px 20px;
             color: #ffffff;
             font-size: 1.1em;
-            width: 100%;
+            width: 220px;
             box-sizing: border-box;
             outline: none;
             font-family: 'Segoe UI', Arial, sans-serif;
             transition: all 0.3s ease;
-            margin-top: 10px;
+            margin: 15px 0;
+            padding-left: 40px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(255,255,255,0.6)" width="24" height="24"><path d="M12 17a2 2 0 0 0 2-2 2 2 0 0 0-2-2 2 2 0 0 0-2 2 2 2 0 0 0 2 2m6-9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2h1V6a5 5 0 0 1 5-5 5 5 0 0 1 5 5v2h1m-6-5a3 3 0 0 0-3 3v2h6V6a3 3 0 0 0-3-3z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: 12px center;
+            background-size: 20px;
         }
 
         #passwordInput:focus {
             border-color: #00aaff;
             background: rgba(255, 255, 255, 0.15);
             box-shadow: 0 0 12px rgba(0, 170, 255, 0.2);
-        }
-
-        #passwordInput::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-            font-family: 'Segoe UI', Arial, sans-serif;
+            transform: scale(1.02);
         }
 
         #errorMessage {
@@ -68,36 +97,38 @@
             border: 1px solid rgba(255, 85, 85, 0.2);
             transition: opacity 0.3s ease;
         }
-        
-        /* NEW FOOTER STYLES */
-.password-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(5px);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.7);
-    font-family: 'Segoe UI', Arial, sans-serif;
-    font-size: 0.8em;
-    text-align: center;
-    line-height: 1.4;
-    z-index: 99999;
-}
 
-.password-footer span {
-    display: inline-block;
-    margin: 0 5px;
-}
+        .password-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.4;
+            z-index: 99999;
+        }
 
-@media (max-width: 600px) {
-    .password-footer {
-        font-size: 0.7em;
-        padding: 10px;
-    }
-}
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(0.95);
+                opacity: 0.8;
+            }
+            50% { 
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
 
         /* ======= ORIGINAL STYLES ======= */
         body {
@@ -107,7 +138,7 @@
             font-family: 'Comic Sans MS';
             min-height: 100vh;
             overflow-x: hidden;
-            overflow-y: hidden; /* Hide scroll initially */
+            overflow-y: hidden;
         }
 
         .container {
@@ -303,6 +334,7 @@
             }
             .flying-image { width: 120px !important; }
             .password-container { width: 280px; padding: 30px; }
+            .circle-loader { width: 60px; height: 60px; }
         }
 
         #strongg {
@@ -437,13 +469,17 @@
     <!-- Password Overlay -->
     <div class="password-overlay">
         <div class="password-container">
+            <div class="auth-animation">
+                <div class="circle-loader">
+                    <div class="circle-track"></div>
+                </div>
+            </div>
             <input type="password" id="passwordInput" placeholder="Code..." autocomplete="off">
             <div id="errorMessage">Invalid Code - Try Again</div>
         </div>
-        <!-- NEW FOOTER -->
-<div class="password-footer">
-    <span>Adrit Bhatnagar, CEO — Chutpaglu LLC. &copy;<span id="currentYear"></span></span>
-</div>
+        <div class="password-footer">
+            <span>Adrit Bhatnagar, CEO — Chutpaglu LLC. &copy;<span id="currentYear"></span></span>
+        </div>
     </div>
 
     <!-- Original Content -->
@@ -502,8 +538,9 @@
     <button id="musicToggle">🔊 Music ON</button>
 
     <script>
-    // Auto-update year in footer
-document.getElementById('currentYear').textContent = new Date().getFullYear();
+        // Auto-update year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
         // Password Protection
         const CORRECT_PASSWORD = "ADRITDADDY69";
         const passwordInput = document.getElementById('passwordInput');
@@ -566,7 +603,7 @@ document.getElementById('currentYear').textContent = new Date().getFullYear();
             // Regular confetti bursts
             setInterval(() => {
                 createConfetti();
-            }, Math.random() * 5000 + 5000); // 5-10 seconds
+            }, Math.random() * 5000 + 5000);
 
             // Click confetti
             document.addEventListener('click', createConfetti);
