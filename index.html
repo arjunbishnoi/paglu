@@ -643,7 +643,6 @@
             el.style.visibility = 'hidden';
         });
         document.body.style.background = '#000';
-        passwordInput.focus();
 
         function checkPassword() {
             if (passwordInput.value === CORRECT_PASSWORD) {
@@ -805,7 +804,7 @@
                 randomSound.play().catch(() => { });
                 sniffBubble.style.animation = 'none';
                 setTimeout(() => {
-                    sniffBubble.textContent = ['*SNIFFFFF*', '*SNUUUUUUUF*', '*SNIFF SNIFF*'][Math.floor(Math.random() * 3)];
+                    sniffBubble.textContent = ['*SNIFFFFF*', '*SNIIIIIIIF*', '*SNIFF SNIFF*'][Math.floor(Math.random() * 3)];
                     sniffBubble.style.animation = 'sniffPop 1.5s ease-out forwards';
                 }, 10);
             });
@@ -817,7 +816,14 @@
                 '🥇 Sniff Master 9000!',
                 '🎖️ Certified Dalla King!',
                 '💪 Chutpaglu Power Level: Infinity!',
-                '🌟 Supreme Gandu Award!'
+                '🌟 Supreme Gandu Award!',
+                '🧠 Braincell Bankruptcy Medal!',
+                '🥩 Raw Chutpaglu Energy Unleashed!',
+                '🍑 Gandu Gold Medalist!',
+                '🚽 Toilet Tier Chutpaglu Pro!',
+                '🧀 Cheesy Sniff Lord Supreme!',
+                '🍿 Netflix & No Chill Pro!',
+                '🛡️ Virginity Shield Bearer! (Undefeated since 1999)',
             ];
 
             function spawnBadge() {
