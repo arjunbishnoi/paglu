@@ -385,7 +385,7 @@
                 right: 10px;
             }
 
-            .alert-banner {
+            .alert-banner{
                 font-size: 0.6em;
             }
 
@@ -405,18 +405,9 @@
         }
 
         @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.5);
-            }
-
-            /* Fixed value for testing */
-            100% {
-                transform: scale(1);
-            }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1); }
         }
 
         #strongg {
@@ -540,7 +531,7 @@
             }
         }
 
-        /* News Ticker */
+        /* ======= NEW NEWS TICKER AND ALERT STYLES ======= */
         .news-ticker {
             position: fixed;
             top: 0;
@@ -551,19 +542,17 @@
             overflow: hidden;
             z-index: 1000;
             transition: top 0.5s;
-            /* Smooth slide when alert appears */
         }
 
         .news-ticker.alert-shown {
             top: 60px;
-            /* Slide down when alert is visible */
         }
 
         .ticker-text {
             position: absolute;
             white-space: nowrap;
-            animation: slide 20s linear infinite;
-            /* Sliding animation */
+            color: aliceblue;
+            animation: slide 25s linear infinite;
         }
 
         @keyframes slide {
@@ -571,39 +560,29 @@
                 transform: translateX(100%);
             }
 
-            /* Start off-screen right */
             100% {
                 transform: translateX(-100%);
             }
-
-            /* End off-screen left */
         }
 
-        /* Alert Banner */
         .alert-banner {
             position: fixed;
             top: -60px;
-            /* Hidden off-screen initially */
             left: 0;
             width: 100%;
             height: 60px;
-            /* Taller than the news ticker */
             padding: 10px;
             background: #ff0000;
             color: #ffff00;
             font-size: 1.5em;
             text-align: center;
             font-family: 'Comic Sans MS';
-            /* Fun, newsy font */
             text-shadow: 2px 2px 0 #0000ff;
-            /* Bold text effect */
             z-index: 1001;
-            /* Above the news ticker */
         }
 
         .alert-banner.show {
             animation: alertFlash 3s;
-            /* Pop-up animation */
         }
 
         @keyframes alertFlash {
@@ -611,68 +590,17 @@
                 top: -60px;
             }
 
-            /* Start hidden */
             10% {
                 top: 0;
             }
 
-            /* Slide down */
             90% {
                 top: 0;
             }
 
-            /* Stay visible */
             100% {
                 top: -60px;
             }
-
-            /* Slide back up */
-        }
-
-
-
-        #voiceButton {
-            display: block;
-            margin: 20px auto;
-            padding: 15px 30px;
-            font-size: 1.8em;
-            background: #ffff00;
-            border: 4px solid #0000ff;
-            border-radius: 25px;
-            cursor: pointer;
-            font-family: 'Comic Sans MS';
-            color: #ff00ff;
-            transition: all 0.3s;
-        }
-
-        #voiceButton:hover {
-            background: #0000ff;
-            color: #ffff00;
-            transform: scale(1.15);
-        }
-
-        .speech-bubble {
-            position: absolute;
-            top: 50%;
-            /* Center vertically relative to slideshow */
-            left: 50%;
-            /* Center horizontally */
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 10px;
-            border-radius: 10px;
-            border: 2px solid black;
-            display: none;
-            /* Hidden by default */
-            z-index: 1001;
-            /* Above slideshow and most elements */
-            font-family: 'Comic Sans MS';
-            font-size: 1.2em;
-            color: #ff0000;
-            /* Bright red text */
-            text-align: center;
-            box-shadow: 3px 3px 0 #0000ff;
-            /* Blue shadow for extra meme flair */
         }
     </style>
 </head>
@@ -690,12 +618,10 @@
         </div>
     </div>
 
+    <!-- News Ticker -->
     <div class="news-ticker">
         <div class="ticker-text"></div>
     </div>
-
-    <!-- Existing Alert Banner -->
-    <div id="alertBanner" class="alert-banner">🚨 CHUTPAGLU EMERGENCY ALERT 🚨</div>
 
     <!-- Original Content -->
     <div class="container">
@@ -709,7 +635,6 @@
             <img src="images/adrit5.png" alt="Adrit 5" class="slide">
             <img src="images/adrit6.png" alt="Adrit 6" class="slide">
         </div>
-        <div id="roastBubble" class="speech-bubble">Roast goes here</div>
 
         <div class="meme-text" id="randomText">Click anywhere for surprise!</div>
 
@@ -742,6 +667,8 @@
 
         <div id="badgeContainer"></div>
 
+        <div id="alertBanner" class="alert-banner">🚨 CHUTPAGLU EMERGENCY ALERT 🚨</div>
+
         <button id="voiceButton">🗣️ Hear the Chutpaglu Call!</button>
     </div>
 
@@ -756,25 +683,14 @@
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
         // Password Protection
-        const roasts = [
-            "Adrit once tried to sniff his own braincells... they’re still missing!",
-            "Breaking News: Adrit declared 'Chutpaglu of the Year' for the 10th time!",
-            "Adrit’s sniff game is so strong, even his shadow runs away!",
-            "Adrit’s brain is like a black hole: nothing escapes, not even logic!",
-            "If Chutpaglu was an Olympic sport, Adrit would be the undefeated champ!",
-            "Adrit’s favorite hobby: sniffing his way into awkward situations!",
-            "Scientists study Adrit to understand the limits of human Chutpaglu!",
-            "Adrit’s sniff level is so high, it’s now a unit of measurement!",
-            "Adrit’s braincells are on permanent vacation!"
-        ];
         const CORRECT_PASSWORD = "ADRITDADDY69";
         const passwordInput = document.getElementById('passwordInput');
         const errorMessage = document.getElementById('errorMessage');
         const passwordOverlay = document.querySelector('.password-overlay');
         let initialized = false;
 
-        // Initial setup
-        document.querySelectorAll('.container, #musicToggle').forEach(el => {
+        // Initial setup: Hide elements
+        document.querySelectorAll('.container, #musicToggle, .news-ticker, #alertBanner').forEach(el => {
             el.style.visibility = 'hidden';
         });
         document.body.style.background = '#000';
@@ -786,7 +702,7 @@
                     passwordOverlay.style.display = 'none';
                     document.body.style.background = 'linear-gradient(45deg, #ff00ff, #00ffff, #ffff00)';
                     document.body.style.overflowY = 'auto';
-                    document.querySelectorAll('.container, #musicToggle').forEach(el => {
+                    document.querySelectorAll('.container, #musicToggle, .news-ticker, #alertBanner').forEach(el => {
                         el.style.visibility = 'visible';
                     });
 
@@ -827,8 +743,6 @@
                     setTimeout(() => confetti.remove(), 5000);
                 }
             }
-
-
 
             const memeTexts = [
                 "Chutpaglu Alert! 🚨",
@@ -991,14 +905,14 @@
 
                 // Visual styling
                 img.style.cssText = `
-    left: ${startX}vw;
-    top: ${startY}vh;
-    width: ${initialSize};
-    opacity: ${Math.random() * (s.appearance.opacity.max - s.appearance.opacity.min) + s.appearance.opacity.min};
-    filter: hue-rotate(${Math.random() * (s.appearance.hueRotation.max - s.appearance.hueRotation.min) + s.appearance.hueRotation.min}deg);
-    mix-blend-mode: ${s.appearance.blendModes[Math.floor(Math.random() * s.appearance.blendModes.length)]};
-    z-index: ${Math.random() > 0.5 ? 3 : 1};
-  `;
+                    left: ${startX}vw;
+                    top: ${startY}vh;
+                    width: ${initialSize};
+                    opacity: ${Math.random() * (s.appearance.opacity.max - s.appearance.opacity.min) + s.appearance.opacity.min};
+                    filter: hue-rotate(${Math.random() * (s.appearance.hueRotation.max - s.appearance.hueRotation.min) + s.appearance.hueRotation.min}deg);
+                    mix-blend-mode: ${s.appearance.blendModes[Math.floor(Math.random() * s.appearance.blendModes.length)]};
+                    z-index: ${Math.random() > 0.5 ? 3 : 1};
+                `;
 
                 document.body.appendChild(img);
 
@@ -1040,7 +954,6 @@
                 }
             }, 100);
 
-
             // Slideshow
             const slides = document.querySelectorAll('.slide');
             let currentSlide = 0;
@@ -1073,14 +986,6 @@
                     sniffBubble.textContent = ['*SNIFFFFF*', '*SNIIIIIIIF*', '*SNIFF SNIFF*'][Math.floor(Math.random() * 3)];
                     sniffBubble.style.animation = 'sniffPop 1.5s ease-out forwards';
                 }, 10);
-
-                // New roast bubble code
-                const roastBubble = document.getElementById('roastBubble');
-                roastBubble.textContent = roasts[Math.floor(Math.random() * roasts.length)];
-                roastBubble.style.display = 'block';
-                setTimeout(() => {
-                    roastBubble.style.display = 'none';
-                }, 3000); // Display for 3 seconds
             });
 
             // Badge System
@@ -1124,24 +1029,6 @@
                 setTimeout(() => trail.remove(), 1000);
             });
 
-            // Alert System
-            const alertBanner = document.getElementById('alertBanner');
-            const alertMessages = [
-                '🚨 CHUTPAGLU DETECTED IN YOUR AREA! 🚨',
-                '⚠️ SNIFF LEVELS OFF THE CHARTS! ⚠️',
-                '🚨 ADRIT IS SNIFFING YOU RIGHT NOW! 🚨',
-                '⚠️ CHUTPAGLU RADIATION SPIKE! ⚠️'
-            ];
-
-            function triggerAlert() {
-                alertBanner.textContent = alertMessages[Math.floor(Math.random() * alertMessages.length)];
-                alertBanner.style.display = 'block';
-                setTimeout(() => alertBanner.style.display = 'none', 3000);
-            }
-
-            setInterval(triggerAlert, 10000);
-            setTimeout(triggerAlert, 2000);
-
             // Voice System
             const voiceButton = document.getElementById('voiceButton');
             const voiceClips = [
@@ -1152,6 +1039,61 @@
                 const randomClip = voiceClips[Math.floor(Math.random() * voiceClips.length)];
                 randomClip.play().catch(() => { });
             });
+
+            // ======= NEW NEWS TICKER AND ALERT FUNCTIONALITY =======
+            const headlines = [
+                "Chutpaglu Adrit spotted sniffing in downtown, citizens advised to stay indoors!",
+                "Breaking: Chutpaglu Adrit's sniff level reaches critical, evacuation ordered!",
+                "Chutpaglu Adrit declares himself mayor of Sniffville, chaos ensues!",
+                "Scientists baffled as Chutpaglu Adrit's braincells vanish into thin air!",
+                "Chutpaglu Adrit's sniff game too strong, local dogs in awe!",
+                "Adrit's Chutpaglu energy disrupts local weather patterns!",
+                "Chutpaglu Adrit attempts to sniff the internet, causes global outage!",
+                "Warning: Chutpaglu Adrit's laugh detected, earplugs recommended!"
+            ];
+
+            const alertMessages = [
+                '🚨 CHUTPAGLU DETECTED IN YOUR AREA! 🚨',
+                '⚠️ SNIFF LEVELS OFF THE CHARTS! ⚠️',
+                '🚨 ADRIT IS SNIFFING YOU RIGHT NOW! 🚨',
+                '⚠️ CHUTPAGLU RADIATION SPIKE! ⚠️',
+                '🚨 EMERGENCY: CHUTPAGLU OVERLOAD! 🚨',
+                '⚠️ WARNING: EXTREME CHUTPAGLU ACTIVITY! ⚠️'
+            ];
+
+            const newsTicker = document.querySelector('.news-ticker');
+            const tickerText = document.querySelector('.ticker-text');
+            const alertBanner = document.getElementById('alertBanner');
+
+            function updateNewsTicker() {
+                const headline = headlines[Math.floor(Math.random() * headlines.length)];
+                const repeatedHeadline = (headline + " *** ").repeat(2);
+                tickerText.textContent = repeatedHeadline;
+            }
+
+            function triggerAlert() {
+                alertBanner.textContent = alertMessages[Math.floor(Math.random() * alertMessages.length)];
+                alertBanner.classList.add('show');
+                newsTicker.classList.add('alert-shown');
+                setTimeout(() => {
+                    alertBanner.classList.remove('show');
+                    newsTicker.classList.remove('alert-shown');
+                }, 3000);
+            }
+
+            function scheduleNextAlert() {
+                const delay = Math.random() * 10000 + 5000;
+                setTimeout(() => {
+                    triggerAlert();
+                    scheduleNextAlert();
+                }, delay);
+            }
+
+            // Initialize news ticker and alerts
+            updateNewsTicker();
+            setInterval(updateNewsTicker, 10000);
+            setTimeout(triggerAlert, 2000);
+            scheduleNextAlert();
         }
     </script>
 </body>
