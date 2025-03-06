@@ -892,7 +892,7 @@
     for (const tier of tiers) {
         cumulative += tier.chance;
         if (random <= cumulative) {
-            return Number((Math.random() * (tier.max - tier.min) + tier.min).toFixed(2);
+            return Number((Math.random() * (tier.max - tier.min) + tier.min).toFixed(2));
         }
     }
     return 1; // Fallback
