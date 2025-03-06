@@ -843,7 +843,11 @@
 
                 // Visual Effects
                 appearance: {
-                    opacity: { min: 0.4, max: 0.9 },
+                    opacityTiers: [
+    { chance: 0.1, min: 0.1, max: 0.3 },   // 10% chance
+    { chance: 0.3, min: 0.3, max: 0.7 },   // 30% chance
+    { chance: 0.6, min: 0.7, max: 1 }      // 60% chance
+  ],
                     hueRotation: { min: 0, max: 360 }, // degrees
                     blendModes: ['multiply', 'screen', 'overlay', 'darken']
                 },
@@ -879,6 +883,20 @@
                     initialBurst: 5                    // number of initial images
                 }
             };
+            
+            function getWeightedOpacity() {
+    const tiers = FLYING_IMAGE_SETTINGS.appearance.opacityTiers;
+    const random = Math.random();
+    let cumulative = 0;
+
+    for (const tier of tiers) {
+        cumulative += tier.chance;
+        if (random <= cumulative) {
+            return Number((Math.random() * (tier.max - tier.min) + tier.min).toFixed(2);
+        }
+    }
+    return 1; // Fallback
+}
 
             // Flying Images
             function createFlyingImage() {
@@ -904,15 +922,15 @@
                 }
 
                 // Visual styling
-                img.style.cssText = `
-                    left: ${startX}vw;
-                    top: ${startY}vh;
-                    width: ${initialSize};
-                    opacity: ${Math.random() * (s.appearance.opacity.max - s.appearance.opacity.min) + s.appearance.opacity.min};
-                    filter: hue-rotate(${Math.random() * (s.appearance.hueRotation.max - s.appearance.hueRotation.min) + s.appearance.hueRotation.min}deg);
-                    mix-blend-mode: ${s.appearance.blendModes[Math.floor(Math.random() * s.appearance.blendModes.length)]};
-                    z-index: ${Math.random() > 0.5 ? 3 : 1};
-                `;
+img.style.cssText = `
+    left: ${startX}vw;
+    top: ${startY}vh;
+    width: ${initialSize};
+    opacity: ${getWeightedOpacity()};
+    filter: hue-rotate(${Math.random() * (s.appearance.hueRotation.max - s.appearance.hueRotation.min) + s.appearance.hueRotation.min}deg);
+    mix-blend-mode: ${s.appearance.blendModes[Math.floor(Math.random() * s.appearance.blendModes.length)]};
+    z-index: ${Math.random() > 0.5 ? 3 : 1};
+`;
 
                 document.body.appendChild(img);
 
