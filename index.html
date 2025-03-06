@@ -693,6 +693,41 @@
                 }
             }
 
+            const memeTexts = [
+                "Chutpaglu Alert! 🚨", 
+                "Adrit is watching... 👀",
+                "Warning: Extreme Pagluness! ⚠️",
+                "Certified Gandu™️",
+                "100% Pure Chutpaglu!",
+                "Sniff Incoming! 💥",
+                "Dalla No.1"
+            ];
+
+             // ======= RESTORE CLICK HANDLERS =======
+             document.addEventListener('click', function() {
+                // Confetti generation from your snippet
+                for (let i = 0; i < 50; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = Math.random() * 100 + 'vh';
+                    confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 5000);
+                }
+
+                // Random meme text from your snippet
+                document.getElementById('randomText').textContent = 
+                    memeTexts[Math.floor(Math.random() * memeTexts.length)];
+
+                // Box rotations from your snippet
+                document.querySelectorAll('.meme-item').forEach(item => {
+                    item.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
+                    setTimeout(() => item.style.transform = 'rotate(2deg)', 300);
+                });
+            });
+
             // Initial confetti
             createConfetti();
 
