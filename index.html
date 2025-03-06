@@ -141,8 +141,11 @@
         h1 {
             color: #ff0000;
             font-size: 3.5em;
+            z-index: 99999;
             text-align: center;
-            text-shadow: 3px 3px 0 #00ff00;
+            text-shadow: 3px 3px  position: relative; /* Required for z-index */
+            z-index: 1000; /* Higher than 3 (image max) */
+            position: relative;
             animation: float 3s ease-in-out infinite, rainbow 5s infinite;
         }
 
@@ -155,6 +158,7 @@
             overflow: hidden;
             border: 5px solid #ff00ff;
             border-radius: 50%;
+            z-index: 999;
         }
 
         .slide {
@@ -165,6 +169,7 @@
             opacity: 0;
             transition: opacity 1s ease-in-out;
             border-radius: 50%;
+            z-index: 99999;
         }
 
         .slide.active {
@@ -260,8 +265,7 @@
         .flying-image {
             position: fixed;
             pointer-events: none;
-            opacity: 0.8;
-            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0));
             mix-blend-mode: multiply;
             z-index: 1;
             transform-origin: center;
@@ -383,6 +387,12 @@
             }
         }
 
+        @keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(${1 + Math.random() * 2}); /* Random scale-up */ }
+  100% { transform: scale(1); }
+}
+
         #strongg {
             color: rgb(100, 0, 0);
         }
@@ -422,6 +432,7 @@
             text-shadow: 2px 2px 0 #ffff00;
             animation: sniffPop 1.5s ease-out forwards;
             pointer-events: none;
+            z-index: 99999;
         }
 
         @keyframes sniffPop {
@@ -453,7 +464,7 @@
             font-family: 'Comic Sans MS';
             animation: badgePop 4s ease-in-out forwards;
             pointer-events: none;
-            z-index: 10;
+            z-index: 1000;
         }
 
         @keyframes badgePop {
@@ -516,7 +527,7 @@
             font-family: 'Comic Sans MS';
             text-shadow: 3px 3px 0 #0000ff;
             animation: alertFlash 3s infinite;
-            z-index: 100;
+            z-index: 1000;
             display: none;
         }
 
@@ -783,9 +794,16 @@
 
                 const startX = Math.random() * 100;
                 const startY = Math.random() * 100;
-                const initialSize = window.innerWidth <= 600
-                    ? Math.random() * 100 + 20
-                    : Math.random() * 200 + 50;
+                const sizeType = Math.random(); // Randomizer for size strategies
+
+let initialSize;
+if (sizeType < 0.3) { // 30% chance for viewport-based sizing
+  initialSize = `${Math.random() * 40 + 10}vw`; // 10-50% of screen width
+} else if (sizeType < 0.6) { // 30% chance for absolute pixel sizing
+  initialSize = `${Math.pow(Math.random(), 0.3) * 1000 + 50}px`; // 50-1050px (biased toward larger)
+} else { // 40% chance for mixed units
+  initialSize = `${Math.random() * 30 + 10}vmin`; // 10-40vmin (viewport min)
+}
 
                 img.style.cssText = `
                     left: ${startX}vw;
@@ -799,17 +817,32 @@
                 document.body.appendChild(img);
 
                 setTimeout(() => {
-                    const animations = ['floatImage1', 'floatImage2', 'floatImage3'];
-                    const animation = animations[Math.floor(Math.random() * animations.length)];
-                    const duration = Math.random() * 8 + 8;
-                    img.style.animation = `${animation} ${duration}s linear forwards`;
-                }, 2000);
+    const animations = ['floatImage1', 'floatImage2', 'floatImage3'];
+    const animation = animations[Math.floor(Math.random() * animations.length)];
+    
+    // Randomize animation duration between 4s (fast) and 20s (slow)
+    const duration = Math.random() * 16 + 4;
+    
+    // Random rotation speed (positive or negative)
+    const rotationSpeed = (Math.random() * 5 + 2) * (Math.random() > 0.5 ? 1 : -1);
+    
+    img.style.animation = `
+        ${animation} ${duration}s linear infinite,
+        spin ${rotationSpeed}s linear infinite
+    `;
+
+    if (Math.random() > 0.5) {
+    const pulseScale = 1 + Math.random(); // Random scale factor (1-2x)
+    const pulseDuration = Math.random() * 3 + 2; // 2-5 seconds
+    img.style.animation += `, pulse ${pulseDuration}s ease-in-out infinite`;
+  }
+}, 2000);
 
                 setTimeout(() => img.remove(), 10000);
             }
 
-            setInterval(createFlyingImage, 1500);
-            setTimeout(() => { for (let i = 0; i < 15; i++) createFlyingImage(); }, 500);
+            setInterval(createFlyingImage, 800);
+            setTimeout(() => { for (let i = 0; i < 5; i++) createFlyingImage(); }, 100);
 
             // Slideshow
             const slides = document.querySelectorAll('.slide');
