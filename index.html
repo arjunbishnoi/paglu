@@ -143,8 +143,10 @@
             font-size: 3.5em;
             z-index: 99999;
             text-align: center;
-            text-shadow: 3px 3px  position: relative; /* Required for z-index */
-            z-index: 1000; /* Higher than 3 (image max) */
+            text-shadow: 3px 3px position: relative;
+            /* Required for z-index */
+            z-index: 1000;
+            /* Higher than 3 (image max) */
             position: relative;
             animation: float 3s ease-in-out infinite, rainbow 5s infinite;
         }
@@ -383,13 +385,24 @@
             }
 
             .flying-image {
-                width: 120px !important;
+    max-width: 120px !important; /* Instead of fixed width */
+    height: auto !important;
+  }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
             }
         }
 
         @keyframes pulse {
   0% { transform: scale(1); }
-  50% { transform: scale(${1 + Math.random() * 2}); /* Random scale-up */ }
+  50% { transform: scale(1.5); } /* Fixed value for testing */
   100% { transform: scale(1); }
 }
 
@@ -705,7 +718,7 @@
             }
 
             const memeTexts = [
-                "Chutpaglu Alert! 🚨", 
+                "Chutpaglu Alert! 🚨",
                 "Adrit is watching... 👀",
                 "Warning: Extreme Pagluness! ⚠️",
                 "Certified Gandu™️",
@@ -714,8 +727,8 @@
                 "Dalla No.1"
             ];
 
-             // ======= RESTORE CLICK HANDLERS =======
-             document.addEventListener('click', function() {
+            // ======= RESTORE CLICK HANDLERS =======
+            document.addEventListener('click', function () {
                 // Confetti generation from your snippet
                 for (let i = 0; i < 50; i++) {
                     const confetti = document.createElement('div');
@@ -729,7 +742,7 @@
                 }
 
                 // Random meme text from your snippet
-                document.getElementById('randomText').textContent = 
+                document.getElementById('randomText').textContent =
                     memeTexts[Math.floor(Math.random() * memeTexts.length)];
 
                 // Box rotations from your snippet
@@ -785,64 +798,135 @@
                 localStorage.setItem('musicMuted', isMuted);
             });
 
+            // ======= FLYING IMAGE CONFIGURATION =======
+            const FLYING_IMAGE_SETTINGS = {
+                // Size Control
+                sizeRanges: {
+                    viewport: { min: 10, max: 50 },    // vw/vmin units
+                    pixels: { min: 50, max: 1050 },    // px units
+                    vmin: { min: 10, max: 40 },        // vmin units
+                    sizeChances: [0.3, 0.3, 0.4]       // [viewport%, pixels%, vmin%]
+                },
+
+                // Positioning
+                startPosition: {
+                    x: { min: -10, max: 110 },         // % viewport width
+                    y: { min: -10, max: 110 }          // % viewport height
+                },
+
+                // Visual Effects
+                appearance: {
+                    opacity: { min: 0.4, max: 0.9 },
+                    hueRotation: { min: 0, max: 360 }, // degrees
+                    blendModes: ['multiply', 'screen', 'overlay', 'darken']
+                },
+
+                // Animation Properties
+                movement: {
+                    animations: ['floatImage1', 'floatImage2', 'floatImage3'],
+                    duration: { min: 4, max: 20 },     // seconds
+                    startDelay: { min: 1000, max: 4000 } // ms before movement starts
+                },
+
+                rotation: {
+                    speed: { min: 2, max: 7 },         // seconds per rotation
+                    directionChance: 0.5,              // 50% chance for reverse
+                    startDelay: { min: 0, max: 5000 }  // ms after movement starts
+                },
+
+                pulseEffect: {
+                    chance: 0.5,                       // 50% chance for pulse
+                    scale: { min: 1.1, max: 2.5 },     // max scale multiplier
+                    duration: { min: 2, max: 5 }       // seconds
+                },
+
+                // Lifecycle Control
+                lifetime: {
+                    base: 10000,                       // ms
+                    variation: 5000                    // ± ms variation
+                },
+
+                // Spawning Control
+                spawnRate: {
+                    interval: 800,                     // ms between spawns
+                    initialBurst: 5                    // number of initial images
+                }
+            };
+
             // Flying Images
             function createFlyingImage() {
-                const img = document.createElement('img');
-                const imgNum = Math.floor(Math.random() * 8) + 1;
-                img.src = `images/adrit${imgNum}.png`;
-                img.className = 'flying-image';
+  const s = FLYING_IMAGE_SETTINGS;
 
-                const startX = Math.random() * 100;
-                const startY = Math.random() * 100;
-                const sizeType = Math.random(); // Randomizer for size strategies
+  const img = document.createElement('img');
+  img.src = `images/adrit${Math.floor(Math.random() * 8) + 1}.png`;
+  img.className = 'flying-image';
 
-let initialSize;
-if (sizeType < 0.3) { // 30% chance for viewport-based sizing
-  initialSize = `${Math.random() * 40 + 10}vw`; // 10-50% of screen width
-} else if (sizeType < 0.6) { // 30% chance for absolute pixel sizing
-  initialSize = `${Math.pow(Math.random(), 0.3) * 1000 + 50}px`; // 50-1050px (biased toward larger)
-} else { // 40% chance for mixed units
-  initialSize = `${Math.random() * 30 + 10}vmin`; // 10-40vmin (viewport min)
+  // Random starting position
+  const startX = Math.random() * (s.startPosition.x.max - s.startPosition.x.min) + s.startPosition.x.min;
+  const startY = Math.random() * (s.startPosition.y.max - s.startPosition.y.min) + s.startPosition.y.min;
+
+  // Size calculation (FIXED SIZE CHANCES REFERENCE)
+  const sizeType = Math.random();
+  let initialSize;
+  if (sizeType < s.sizeRanges.sizeChances[0]) {
+    initialSize = `${Math.random() * (s.sizeRanges.viewport.max - s.sizeRanges.viewport.min) + s.sizeRanges.viewport.min}vw`;
+  } else if (sizeType < s.sizeRanges.sizeChances[0] + s.sizeRanges.sizeChances[1]) {
+    initialSize = `${Math.pow(Math.random(), 0.3) * (s.sizeRanges.pixels.max - s.sizeRanges.pixels.min) + s.sizeRanges.pixels.min}px`;
+  } else {
+    initialSize = `${Math.random() * (s.sizeRanges.vmin.max - s.sizeRanges.vmin.min) + s.sizeRanges.vmin.min}vmin`;
+  }
+
+  // Visual styling
+  img.style.cssText = `
+    left: ${startX}vw;
+    top: ${startY}vh;
+    width: ${initialSize};
+    opacity: ${Math.random() * (s.appearance.opacity.max - s.appearance.opacity.min) + s.appearance.opacity.min};
+    filter: hue-rotate(${Math.random() * (s.appearance.hueRotation.max - s.appearance.hueRotation.min) + s.appearance.hueRotation.min}deg);
+    mix-blend-mode: ${s.appearance.blendModes[Math.floor(Math.random() * s.appearance.blendModes.length)]};
+    z-index: ${Math.random() > 0.5 ? 3 : 1};
+  `;
+
+  document.body.appendChild(img);
+
+  // Animation timing
+  const initialDelay = Math.random() * (s.movement.startDelay.max - s.movement.startDelay.min) + s.movement.startDelay.min;
+  
+  setTimeout(() => {
+    const animation = s.movement.animations[Math.floor(Math.random() * s.movement.animations.length)];
+    const duration = Math.random() * (s.movement.duration.max - s.movement.duration.min) + s.movement.duration.min;
+    
+    // Apply movement
+    img.style.animation = `${animation} ${duration}s linear infinite`;
+
+    // Delayed rotation
+    const rotationDelay = Math.random() * s.rotation.startDelay.max;
+    setTimeout(() => {
+      const rotationSpeed = (Math.random() * (s.rotation.speed.max - s.rotation.speed.min) + s.rotation.speed.min) * 
+                          (Math.random() > s.rotation.directionChance ? 1 : -1);
+      img.style.animation += `, spin ${Math.abs(rotationSpeed)}s linear infinite`;
+    }, rotationDelay);
+
+    // Pulse effect (simplified)
+    if(Math.random() < s.pulseEffect.chance) {
+      const pulseDuration = Math.random() * (s.pulseEffect.duration.max - s.pulseEffect.duration.min) + s.pulseEffect.duration.min;
+      img.style.animation += `, pulse ${pulseDuration}s ease-in-out infinite`;
+    }
+  }, initialDelay);
+
+  // Random lifetime
+  const lifetimeVariation = (Math.random() - 0.5) * s.lifetime.variation * 2;
+  setTimeout(() => img.remove(), s.lifetime.base + lifetimeVariation);
 }
 
-                img.style.cssText = `
-                    left: ${startX}vw;
-                    top: ${startY}vh;
-                    width: ${initialSize}px;
-                    opacity: 0.8;
-                    filter: hue-rotate(${Math.random() * 360}deg);
-                    z-index: ${Math.random() > 0.5 ? 3 : 1};
-                `;
+            // Start spawning
+            setInterval(createFlyingImage, FLYING_IMAGE_SETTINGS.spawnRate.interval);
+            setTimeout(() => {
+                for (let i = 0; i < FLYING_IMAGE_SETTINGS.spawnRate.initialBurst; i++) {
+                    createFlyingImage();
+                }
+            }, 100);
 
-                document.body.appendChild(img);
-
-                setTimeout(() => {
-    const animations = ['floatImage1', 'floatImage2', 'floatImage3'];
-    const animation = animations[Math.floor(Math.random() * animations.length)];
-    
-    // Randomize animation duration between 4s (fast) and 20s (slow)
-    const duration = Math.random() * 16 + 4;
-    
-    // Random rotation speed (positive or negative)
-    const rotationSpeed = (Math.random() * 5 + 2) * (Math.random() > 0.5 ? 1 : -1);
-    
-    img.style.animation = `
-        ${animation} ${duration}s linear infinite,
-        spin ${rotationSpeed}s linear infinite
-    `;
-
-    if (Math.random() > 0.5) {
-    const pulseScale = 1 + Math.random(); // Random scale factor (1-2x)
-    const pulseDuration = Math.random() * 3 + 2; // 2-5 seconds
-    img.style.animation += `, pulse ${pulseDuration}s ease-in-out infinite`;
-  }
-}, 2000);
-
-                setTimeout(() => img.remove(), 10000);
-            }
-
-            setInterval(createFlyingImage, 800);
-            setTimeout(() => { for (let i = 0; i < 5; i++) createFlyingImage(); }, 100);
 
             // Slideshow
             const slides = document.querySelectorAll('.slide');
