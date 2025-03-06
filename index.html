@@ -385,13 +385,13 @@
                 right: 10px;
             }
 
-            .alert-banner{
+            .alert-banner {
                 font-size: 0.6em;
-                        }
+            }
 
             .flying-image {
-    height: auto !important;
-  }
+                height: auto !important;
+            }
         }
 
         @keyframes spin {
@@ -405,10 +405,19 @@
         }
 
         @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.5); } /* Fixed value for testing */
-  100% { transform: scale(1); }
-}
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.5);
+            }
+
+            /* Fixed value for testing */
+            100% {
+                transform: scale(1);
+            }
+        }
 
         #strongg {
             color: rgb(100, 0, 0);
@@ -531,39 +540,96 @@
             }
         }
 
-        .alert-banner {
+        /* News Ticker */
+        .news-ticker {
             position: fixed;
-            top: -100px;
+            top: 0;
             left: 0;
             width: 100%;
-            padding: 20px;
+            height: 30px;
+            background: red;
+            overflow: hidden;
+            z-index: 1000;
+            transition: top 0.5s;
+            /* Smooth slide when alert appears */
+        }
+
+        .news-ticker.alert-shown {
+            top: 60px;
+            /* Slide down when alert is visible */
+        }
+
+        .ticker-text {
+            position: absolute;
+            white-space: nowrap;
+            animation: slide 20s linear infinite;
+            /* Sliding animation */
+        }
+
+        @keyframes slide {
+            0% {
+                transform: translateX(100%);
+            }
+
+            /* Start off-screen right */
+            100% {
+                transform: translateX(-100%);
+            }
+
+            /* End off-screen left */
+        }
+
+        /* Alert Banner */
+        .alert-banner {
+            position: fixed;
+            top: -60px;
+            /* Hidden off-screen initially */
+            left: 0;
+            width: 100%;
+            height: 60px;
+            /* Taller than the news ticker */
+            padding: 10px;
             background: #ff0000;
             color: #ffff00;
-            font-size: 2em;
+            font-size: 1.5em;
             text-align: center;
             font-family: 'Comic Sans MS';
-            text-shadow: 3px 3px 0 #0000ff;
-            animation: alertFlash 3s infinite;
-            z-index: 1000;
-            display: none;
+            /* Fun, newsy font */
+            text-shadow: 2px 2px 0 #0000ff;
+            /* Bold text effect */
+            z-index: 1001;
+            /* Above the news ticker */
+        }
+
+        .alert-banner.show {
+            animation: alertFlash 3s;
+            /* Pop-up animation */
         }
 
         @keyframes alertFlash {
-
-            0%,
-            100% {
-                top: -100px;
+            0% {
+                top: -60px;
             }
 
-            10%,
+            /* Start hidden */
+            10% {
+                top: 0;
+            }
+
+            /* Slide down */
             90% {
                 top: 0;
             }
 
-            50% {
-                background: #00ff00;
+            /* Stay visible */
+            100% {
+                top: -60px;
             }
+
+            /* Slide back up */
         }
+
+
 
         #voiceButton {
             display: block;
@@ -584,6 +650,30 @@
             color: #ffff00;
             transform: scale(1.15);
         }
+
+        .speech-bubble {
+            position: absolute;
+            top: 50%;
+            /* Center vertically relative to slideshow */
+            left: 50%;
+            /* Center horizontally */
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid black;
+            display: none;
+            /* Hidden by default */
+            z-index: 1001;
+            /* Above slideshow and most elements */
+            font-family: 'Comic Sans MS';
+            font-size: 1.2em;
+            color: #ff0000;
+            /* Bright red text */
+            text-align: center;
+            box-shadow: 3px 3px 0 #0000ff;
+            /* Blue shadow for extra meme flair */
+        }
     </style>
 </head>
 
@@ -600,6 +690,13 @@
         </div>
     </div>
 
+    <div class="news-ticker">
+        <div class="ticker-text"></div>
+    </div>
+
+    <!-- Existing Alert Banner -->
+    <div id="alertBanner" class="alert-banner">🚨 CHUTPAGLU EMERGENCY ALERT 🚨</div>
+
     <!-- Original Content -->
     <div class="container">
         <h1>🎉 ADRIT BHATNAGAR<br>WORLD'S #1 CHUT PAGLU! 🏆</h1>
@@ -612,6 +709,7 @@
             <img src="images/adrit5.png" alt="Adrit 5" class="slide">
             <img src="images/adrit6.png" alt="Adrit 6" class="slide">
         </div>
+        <div id="roastBubble" class="speech-bubble">Roast goes here</div>
 
         <div class="meme-text" id="randomText">Click anywhere for surprise!</div>
 
@@ -644,8 +742,6 @@
 
         <div id="badgeContainer"></div>
 
-        <div id="alertBanner" class="alert-banner">🚨 CHUTPAGLU EMERGENCY ALERT 🚨</div>
-
         <button id="voiceButton">🗣️ Hear the Chutpaglu Call!</button>
     </div>
 
@@ -660,6 +756,17 @@
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
         // Password Protection
+        const roasts = [
+            "Adrit once tried to sniff his own braincells... they’re still missing!",
+            "Breaking News: Adrit declared 'Chutpaglu of the Year' for the 10th time!",
+            "Adrit’s sniff game is so strong, even his shadow runs away!",
+            "Adrit’s brain is like a black hole: nothing escapes, not even logic!",
+            "If Chutpaglu was an Olympic sport, Adrit would be the undefeated champ!",
+            "Adrit’s favorite hobby: sniffing his way into awkward situations!",
+            "Scientists study Adrit to understand the limits of human Chutpaglu!",
+            "Adrit’s sniff level is so high, it’s now a unit of measurement!",
+            "Adrit’s braincells are on permanent vacation!"
+        ];
         const CORRECT_PASSWORD = "ADRITDADDY69";
         const passwordInput = document.getElementById('passwordInput');
         const errorMessage = document.getElementById('errorMessage');
@@ -720,6 +827,8 @@
                     setTimeout(() => confetti.remove(), 5000);
                 }
             }
+
+
 
             const memeTexts = [
                 "Chutpaglu Alert! 🚨",
@@ -859,29 +968,29 @@
 
             // Flying Images
             function createFlyingImage() {
-  const s = FLYING_IMAGE_SETTINGS;
+                const s = FLYING_IMAGE_SETTINGS;
 
-  const img = document.createElement('img');
-  img.src = `images/adrit${Math.floor(Math.random() * 8) + 1}.png`;
-  img.className = 'flying-image';
+                const img = document.createElement('img');
+                img.src = `images/adrit${Math.floor(Math.random() * 8) + 1}.png`;
+                img.className = 'flying-image';
 
-  // Random starting position
-  const startX = Math.random() * (s.startPosition.x.max - s.startPosition.x.min) + s.startPosition.x.min;
-  const startY = Math.random() * (s.startPosition.y.max - s.startPosition.y.min) + s.startPosition.y.min;
+                // Random starting position
+                const startX = Math.random() * (s.startPosition.x.max - s.startPosition.x.min) + s.startPosition.x.min;
+                const startY = Math.random() * (s.startPosition.y.max - s.startPosition.y.min) + s.startPosition.y.min;
 
-  // Size calculation (FIXED SIZE CHANCES REFERENCE)
-  const sizeType = Math.random();
-  let initialSize;
-  if (sizeType < s.sizeRanges.sizeChances[0]) {
-    initialSize = `${Math.random() * (s.sizeRanges.viewport.max - s.sizeRanges.viewport.min) + s.sizeRanges.viewport.min}vw`;
-  } else if (sizeType < s.sizeRanges.sizeChances[0] + s.sizeRanges.sizeChances[1]) {
-    initialSize = `${Math.pow(Math.random(), 0.3) * (s.sizeRanges.pixels.max - s.sizeRanges.pixels.min) + s.sizeRanges.pixels.min}px`;
-  } else {
-    initialSize = `${Math.random() * (s.sizeRanges.vmin.max - s.sizeRanges.vmin.min) + s.sizeRanges.vmin.min}vmin`;
-  }
+                // Size calculation (FIXED SIZE CHANCES REFERENCE)
+                const sizeType = Math.random();
+                let initialSize;
+                if (sizeType < s.sizeRanges.sizeChances[0]) {
+                    initialSize = `${Math.random() * (s.sizeRanges.viewport.max - s.sizeRanges.viewport.min) + s.sizeRanges.viewport.min}vw`;
+                } else if (sizeType < s.sizeRanges.sizeChances[0] + s.sizeRanges.sizeChances[1]) {
+                    initialSize = `${Math.pow(Math.random(), 0.3) * (s.sizeRanges.pixels.max - s.sizeRanges.pixels.min) + s.sizeRanges.pixels.min}px`;
+                } else {
+                    initialSize = `${Math.random() * (s.sizeRanges.vmin.max - s.sizeRanges.vmin.min) + s.sizeRanges.vmin.min}vmin`;
+                }
 
-  // Visual styling
-  img.style.cssText = `
+                // Visual styling
+                img.style.cssText = `
     left: ${startX}vw;
     top: ${startY}vh;
     width: ${initialSize};
@@ -891,37 +1000,37 @@
     z-index: ${Math.random() > 0.5 ? 3 : 1};
   `;
 
-  document.body.appendChild(img);
+                document.body.appendChild(img);
 
-  // Animation timing
-  const initialDelay = Math.random() * (s.movement.startDelay.max - s.movement.startDelay.min) + s.movement.startDelay.min;
-  
-  setTimeout(() => {
-    const animation = s.movement.animations[Math.floor(Math.random() * s.movement.animations.length)];
-    const duration = Math.random() * (s.movement.duration.max - s.movement.duration.min) + s.movement.duration.min;
-    
-    // Apply movement
-    img.style.animation = `${animation} ${duration}s linear infinite`;
+                // Animation timing
+                const initialDelay = Math.random() * (s.movement.startDelay.max - s.movement.startDelay.min) + s.movement.startDelay.min;
 
-    // Delayed rotation
-    const rotationDelay = Math.random() * s.rotation.startDelay.max;
-    setTimeout(() => {
-      const rotationSpeed = (Math.random() * (s.rotation.speed.max - s.rotation.speed.min) + s.rotation.speed.min) * 
-                          (Math.random() > s.rotation.directionChance ? 1 : -1);
-      img.style.animation += `, spin ${Math.abs(rotationSpeed)}s linear infinite`;
-    }, rotationDelay);
+                setTimeout(() => {
+                    const animation = s.movement.animations[Math.floor(Math.random() * s.movement.animations.length)];
+                    const duration = Math.random() * (s.movement.duration.max - s.movement.duration.min) + s.movement.duration.min;
 
-    // Pulse effect (simplified)
-    if(Math.random() < s.pulseEffect.chance) {
-      const pulseDuration = Math.random() * (s.pulseEffect.duration.max - s.pulseEffect.duration.min) + s.pulseEffect.duration.min;
-      img.style.animation += `, pulse ${pulseDuration}s ease-in-out infinite`;
-    }
-  }, initialDelay);
+                    // Apply movement
+                    img.style.animation = `${animation} ${duration}s linear infinite`;
 
-  // Random lifetime
-  const lifetimeVariation = (Math.random() - 0.5) * s.lifetime.variation * 2;
-  setTimeout(() => img.remove(), s.lifetime.base + lifetimeVariation);
-}
+                    // Delayed rotation
+                    const rotationDelay = Math.random() * s.rotation.startDelay.max;
+                    setTimeout(() => {
+                        const rotationSpeed = (Math.random() * (s.rotation.speed.max - s.rotation.speed.min) + s.rotation.speed.min) *
+                            (Math.random() > s.rotation.directionChance ? 1 : -1);
+                        img.style.animation += `, spin ${Math.abs(rotationSpeed)}s linear infinite`;
+                    }, rotationDelay);
+
+                    // Pulse effect (simplified)
+                    if (Math.random() < s.pulseEffect.chance) {
+                        const pulseDuration = Math.random() * (s.pulseEffect.duration.max - s.pulseEffect.duration.min) + s.pulseEffect.duration.min;
+                        img.style.animation += `, pulse ${pulseDuration}s ease-in-out infinite`;
+                    }
+                }, initialDelay);
+
+                // Random lifetime
+                const lifetimeVariation = (Math.random() - 0.5) * s.lifetime.variation * 2;
+                setTimeout(() => img.remove(), s.lifetime.base + lifetimeVariation);
+            }
 
             // Start spawning
             setInterval(createFlyingImage, FLYING_IMAGE_SETTINGS.spawnRate.interval);
@@ -964,6 +1073,14 @@
                     sniffBubble.textContent = ['*SNIFFFFF*', '*SNIIIIIIIF*', '*SNIFF SNIFF*'][Math.floor(Math.random() * 3)];
                     sniffBubble.style.animation = 'sniffPop 1.5s ease-out forwards';
                 }, 10);
+
+                // New roast bubble code
+                const roastBubble = document.getElementById('roastBubble');
+                roastBubble.textContent = roasts[Math.floor(Math.random() * roasts.length)];
+                roastBubble.style.display = 'block';
+                setTimeout(() => {
+                    roastBubble.style.display = 'none';
+                }, 3000); // Display for 3 seconds
             });
 
             // Badge System
