@@ -2097,14 +2097,47 @@
                 return filterString;
 }
 
-            // Flying Images
+            // Update the flying images function to dynamically handle any number of images
             function createFlyingImage() {
+                // First, check how many adrit images are available
+                const checkImage = (num) => {
+                    return new Promise((resolve) => {
+                        const img = new Image();
+                        img.onload = () => resolve(true);
+                        img.onerror = () => resolve(false);
+                        img.src = `images/adrit${num}.png`;
+                    });
+                };
+
+                // Use a cached count if we've already checked
+                if (!window.adritImageCount) {
+                    // Start with what we know exists
+                    window.adritImageCount = 8;
+                    
+                    // We'll check for more images in the background
+                    (async () => {
+                        let num = 9; // Start checking from adrit9.png
+                        let exists = true;
+                        
+                        while (exists && num <= 100) { // Set a reasonable upper limit
+                            exists = await checkImage(num);
+                            if (exists) {
+                                window.adritImageCount = num;
+                            }
+                            num++;
+                        }
+                        console.log(`Found ${window.adritImageCount} adrit images`);
+                    })();
+                }
+                
+                // Create the flying image with a random number from the available images
                 const img = document.createElement('img');
-                const imgNum = Math.floor(Math.random() * 8) + 1;
+                const imgNum = Math.floor(Math.random() * window.adritImageCount) + 1;
                 img.src = `images/adrit${imgNum}.png`;
                 img.className = 'flying-image';
                 img.alt = "Flying Adrit";
 
+                // Rest of the function remains unchanged
                 // Random position
                 const position = {
                     x: Math.random() * 100,
@@ -2159,7 +2192,6 @@
                     'glitch',
                     'heartbeat',
                     'floating-rotation',
-                    // 10 new funky animations
                     'rainbow-pulse',
                     'electric-shake',
                     'dizzy-spin',
@@ -2170,7 +2202,6 @@
                     'tornado-spin',
                     'elastic-stretch',
                     'cosmic-drift',
-                    // 10 new animations added
                     'neon-flash',
                     'kaleidoscope',
                     'party-mode',
@@ -2233,7 +2264,7 @@
                 // Random scale
                 const scale = 0.5 + Math.random() * 1.5;
                 
-                // Random blend mode - expanded with more options
+                // Random blend mode
                 const blendModes = [
                     'normal', 'multiply', 'screen', 'overlay', 'darken', 'lighten', 
                     'color-dodge', 'color-burn', 'hard-light', 'soft-light', 'difference', 
@@ -2311,7 +2342,7 @@
                 }
                 
                 // Apply styles with all random effects
-img.style.cssText = `
+                img.style.cssText = `
                     position: fixed;
                     left: ${position.x}vw;
                     top: ${position.y}vh;
@@ -2324,10 +2355,10 @@ img.style.cssText = `
                     transform-origin: center;
                     transform: rotate(${rotation}deg) scale(${scale}) ${transformEffects};
                     ${animationStyle}
-`;
+                `;
 
                 document.body.appendChild(img);
-
+                
                 // Remove after some time - randomized lifetime
                 setTimeout(() => {
                     if (img.parentNode) img.remove();
@@ -2501,7 +2532,7 @@ img.style.cssText = `
                     }
                 }, animDuration * 1000);
             }
-        });
+            });
 
             // Voice System
             const voiceButton = document.getElementById('voiceButton');
