@@ -928,19 +928,46 @@
                         pixelation: { min: 70, max: 90 } // % quality reduction
                     },
                     
-                    // New z-index distribution system
+                    // New z-index distribution system with 50% of images at the very top
                     zIndexDistribution: {
                         min: 5,        // Minimum z-index for flying images
-                        max: 99,       // Maximum z-index for flying images
+                        max: 199,      // Maximum z-index increased for more depth layers
                         // Probability weights for different z-index ranges
-                        // Higher probability for higher z-indices (appearing on top)
+                        // Now 50% of images will appear at the very top
                         ranges: [
-                            { range: [5, 20], weight: 0.10 },    // 10% chance - very bottom layer
-                            { range: [21, 40], weight: 0.15 },   // 15% chance - lower mid layer
-                            { range: [41, 60], weight: 0.25 },   // 25% chance - middle layer
-                            { range: [61, 80], weight: 0.30 },   // 30% chance - upper mid layer
-                            { range: [81, 99], weight: 0.20 }    // 20% chance - top layer
-                        ]
+                            { range: [5, 20], weight: 0.10 },     // 10% chance - very bottom layer
+                            { range: [21, 45], weight: 0.15 },    // 15% chance - lower mid layer
+                            { range: [46, 70], weight: 0.15 },    // 15% chance - middle layer
+                            { range: [71, 95], weight: 0.10 },    // 10% chance - upper mid layer
+                            { range: [96, 199], weight: 0.50 }    // 50% chance - top layer (now extended range)
+                        ],
+                        // Layer-specific visual effects for greater depth differentiation
+                        layerEffects: {
+                            // Bottom layer (dim, blurry)
+                            bottom: {
+                                zRange: [5, 45],
+                                scale: { min: 0.6, max: 0.9 },
+                                opacity: { modifier: 0.7 },       // Reduce opacity
+                                blur: { min: 1, max: 3 },         // Add blur
+                                saturate: { min: 60, max: 90 }    // Reduce saturation
+                            },
+                            // Middle layer (normal)
+                            middle: {
+                                zRange: [46, 95],
+                                scale: { min: 0.8, max: 1.2 },
+                                opacity: { modifier: 1 },         // Normal opacity
+                                blur: { min: 0, max: 1 },         // Light or no blur
+                                saturate: { min: 90, max: 120 }   // Normal saturation
+                            },
+                            // Top layer (bright, sharp, bigger)
+                            top: {
+                                zRange: [96, 199],
+                                scale: { min: 1.0, max: 1.4 },     // Bigger
+                                opacity: { modifier: 1.2 },        // Enhanced opacity
+                                blur: { min: 0, max: 0 },          // No blur
+                                saturate: { min: 110, max: 150 }   // Enhanced saturation
+                            }
+                        }
                     }
                 }
             };
@@ -979,6 +1006,34 @@
                 // Fallback to middle of range
                 return Math.floor((distribution.min + distribution.max) / 2);
             }
+            
+            // Function to get layer-specific visual effects based on z-index
+            function getLayerEffects(zIndex) {
+                const layerEffects = FLYING_IMAGE_SETTINGS.enhancedRandomization.zIndexDistribution.layerEffects;
+                
+                // Determine which layer this z-index belongs to
+                let layer;
+                if (zIndex >= layerEffects.top.zRange[0] && zIndex <= layerEffects.top.zRange[1]) {
+                    layer = layerEffects.top;
+                } else if (zIndex >= layerEffects.middle.zRange[0] && zIndex <= layerEffects.middle.zRange[1]) {
+                    layer = layerEffects.middle;
+                } else {
+                    layer = layerEffects.bottom;
+                }
+                
+                // Generate effects
+                const scale = Math.random() * (layer.scale.max - layer.scale.min) + layer.scale.min;
+                const opacityModifier = layer.opacity.modifier;
+                const blur = Math.random() * (layer.blur.max - layer.blur.min) + layer.blur.min;
+                const saturate = Math.random() * (layer.saturate.max - layer.saturate.min) + layer.saturate.min;
+                
+                return {
+                    scale,
+                    opacityModifier,
+                    blur,
+                    saturate
+                };
+            }
 
             // Flying Images
             function createFlyingImage() {
@@ -1003,30 +1058,36 @@
                     initialSize = `${Math.random() * (s.sizeRanges.vmin.max - s.sizeRanges.vmin.min) + s.sizeRanges.vmin.min}vmin`;
                 }
 
-                // Build filter string with random effects
+                // Get z-index first
+                const zIndex = getWeightedZIndex();
+                
+                // Get layer-specific effects based on the z-index
+                const layerEffects = getLayerEffects(zIndex);
+                
+                // Build filter string with random effects and layer-specific adjustments
                 let filterString = `hue-rotate(${Math.random() * (s.appearance.hueRotation.max - s.appearance.hueRotation.min) + s.appearance.hueRotation.min}deg)`;
                 
-                // Apply random filter effects
-                const er = s.enhancedRandomization;
-                if (Math.random() < er.filterEffects.blur.chance) {
-                    const blurAmount = Math.random() * (er.filterEffects.blur.max - er.filterEffects.blur.min) + er.filterEffects.blur.min;
-                    filterString += ` blur(${blurAmount.toFixed(1)}px)`;
+                // Always add layer-specific saturation and blur
+                filterString += ` saturate(${layerEffects.saturate.toFixed(0)}%)`;
+                if (layerEffects.blur > 0) {
+                    filterString += ` blur(${layerEffects.blur.toFixed(1)}px)`;
                 }
+                
+                // Apply additional random filter effects
+                const er = s.enhancedRandomization;
                 if (Math.random() < er.filterEffects.contrast.chance) {
                     const contrastAmount = Math.random() * (er.filterEffects.contrast.max - er.filterEffects.contrast.min) + er.filterEffects.contrast.min;
                     filterString += ` contrast(${contrastAmount.toFixed(0)}%)`;
-                }
-                if (Math.random() < er.filterEffects.saturate.chance) {
-                    const saturateAmount = Math.random() * (er.filterEffects.saturate.max - er.filterEffects.saturate.min) + er.filterEffects.saturate.min;
-                    filterString += ` saturate(${saturateAmount.toFixed(0)}%)`;
                 }
                 if (Math.random() < er.filterEffects.sepia.chance) {
                     const sepiaAmount = Math.random() * (er.filterEffects.sepia.max - er.filterEffects.sepia.min) + er.filterEffects.sepia.min;
                     filterString += ` sepia(${sepiaAmount.toFixed(0)}%)`;
                 }
                 
-                // Create transform string for non-animation transforms
-                let transformString = '';
+                // Create transform string with layer-specific scale
+                let transformString = `scale(${layerEffects.scale.toFixed(2)})`;
+                
+                // Add random transforms
                 if (Math.random() < er.transforms.skew.chance) {
                     const skewX = Math.random() * (er.transforms.skew.max - er.transforms.skew.min) + er.transforms.skew.min;
                     const skewY = Math.random() * (er.transforms.skew.max - er.transforms.skew.min) + er.transforms.skew.min;
@@ -1043,24 +1104,28 @@
                 if (Math.random() < er.quality.lowQualityChance) {
                     imageRendering = 'pixelated';
                 }
+                
+                // Get opacity based on tier system and modify by layer effect
+                const baseOpacity = getWeightedOpacity();
+                const adjustedOpacity = Math.min(1, baseOpacity * layerEffects.opacityModifier);
 
                 // Visual styling
                 img.style.cssText = `
                     left: ${startX}vw;
                     top: ${startY}vh;
                     width: ${initialSize};
-                    opacity: ${getWeightedOpacity()};
+                    opacity: ${adjustedOpacity.toFixed(2)};
                     filter: ${filterString};
                     mix-blend-mode: ${s.appearance.blendModes[Math.floor(Math.random() * s.appearance.blendModes.length)]};
-                    z-index: ${getWeightedZIndex()};
-                    ${transformString ? 'transform:' + transformString + ';' : ''}
+                    z-index: ${zIndex};
+                    transform: ${transformString};
                     ${imageRendering ? 'image-rendering:' + imageRendering + ';' : ''}
                 `;
 
                 document.body.appendChild(img);
 
                 // Determine if this image will move at all
-                const willMove = Math.random() < er.moveChance;
+                const willMove = Math.random() < s.enhancedRandomization.moveChance;
                 
                 if (willMove) {
                     // Animation timing
