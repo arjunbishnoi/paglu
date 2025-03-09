@@ -928,46 +928,75 @@
                         pixelation: { min: 70, max: 90 } // % quality reduction
                     },
                     
-                    // New z-index distribution system with 50% of images at the very top
+                    // New z-index distribution system with super-top layer images
                     zIndexDistribution: {
                         min: 5,        // Minimum z-index for flying images
-                        max: 199,      // Maximum z-index increased for more depth layers
-                        // Probability weights for different z-index ranges
-                        // Now 50% of images will appear at the very top
+                        max: 1500,     // Maximum z-index increased dramatically to go above ALL elements
+                        // New probability weights with super-top layer that appears above everything
                         ranges: [
-                            { range: [5, 20], weight: 0.10 },     // 10% chance - very bottom layer
-                            { range: [21, 45], weight: 0.15 },    // 15% chance - lower mid layer
-                            { range: [46, 70], weight: 0.15 },    // 15% chance - middle layer
-                            { range: [71, 95], weight: 0.10 },    // 10% chance - upper mid layer
-                            { range: [96, 199], weight: 0.50 }    // 50% chance - top layer (now extended range)
+                            { range: [5, 20], weight: 0.05 },      // 5% chance - very bottom layer
+                            { range: [21, 45], weight: 0.10 },     // 10% chance - lower mid layer
+                            { range: [46, 70], weight: 0.10 },     // 10% chance - middle layer
+                            { range: [71, 95], weight: 0.05 },     // 5% chance - upper mid layer
+                            { range: [96, 199], weight: 0.35 },    // 35% chance - top layer (above content)
+                            { range: [1001, 1500], weight: 0.35 }  // 35% chance - super-top layer (above ALL UI)
                         ],
                         // Layer-specific visual effects for greater depth differentiation
                         layerEffects: {
                             // Bottom layer (dim, blurry)
                             bottom: {
                                 zRange: [5, 45],
-                                scale: { min: 0.6, max: 0.9 },
-                                opacity: { modifier: 0.7 },       // Reduce opacity
-                                blur: { min: 1, max: 3 },         // Add blur
-                                saturate: { min: 60, max: 90 }    // Reduce saturation
+                                scale: { min: 0.5, max: 0.8 },
+                                opacity: { modifier: 0.7 },        // Reduce opacity
+                                blur: { min: 1.5, max: 4 },        // More blur
+                                saturate: { min: 50, max: 80 }     // More desaturated
                             },
                             // Middle layer (normal)
                             middle: {
                                 zRange: [46, 95],
-                                scale: { min: 0.8, max: 1.2 },
-                                opacity: { modifier: 1 },         // Normal opacity
-                                blur: { min: 0, max: 1 },         // Light or no blur
-                                saturate: { min: 90, max: 120 }   // Normal saturation
+                                scale: { min: 0.7, max: 1.1 },
+                                opacity: { modifier: 0.9 },        // Slightly reduced opacity
+                                blur: { min: 0.3, max: 1.2 },      // Light blur
+                                saturate: { min: 80, max: 110 }    // Normal saturation
                             },
-                            // Top layer (bright, sharp, bigger)
+                            // Top layer (bright, sharp)
                             top: {
                                 zRange: [96, 199],
-                                scale: { min: 1.0, max: 1.4 },     // Bigger
-                                opacity: { modifier: 1.2 },        // Enhanced opacity
+                                scale: { min: 0.9, max: 1.5 },     // Bigger
+                                opacity: { modifier: 1.1 },        // Enhanced opacity
+                                blur: { min: 0, max: 0.2 },        // Almost no blur
+                                saturate: { min: 100, max: 130 }   // Enhanced saturation
+                            },
+                            // Super-top layer (very bright, sharp, potential for huge)
+                            superTop: {
+                                zRange: [1001, 1500],
+                                scale: { min: 0.9, max: 2.5 },     // Potential for HUGE (but only some)
+                                opacity: { modifier: 1.3 },        // Very enhanced opacity
                                 blur: { min: 0, max: 0 },          // No blur
-                                saturate: { min: 110, max: 150 }   // Enhanced saturation
+                                saturate: { min: 110, max: 160 },  // Highly saturated
+                                hugeChance: 0.15                   // Only 15% chance to be extremely large
                             }
                         }
+                    },
+                    
+                    // Enhanced positioning control (70% within viewport)
+                    positionControl: {
+                        inScreen: {
+                            chance: 0.7,  // 70% chance to be within screen
+                            padding: { min: 5, max: 15 }  // % padding from edge
+                        },
+                        offScreen: {
+                            range: { min: -30, max: 130 }  // % viewport
+                        }
+                    },
+                    
+                    // Mobile-specific adjustments
+                    mobileAdjustments: {
+                        breakpoint: 768,  // px width
+                        sizeMultiplier: 0.7,  // Reduce size on mobile
+                        spawnRateMultiplier: 0.6,  // Spawn fewer images on mobile
+                        topLayerLimit: 0.25,  // Reduce top layer images to 25% on mobile
+                        hugeImageChance: 0.05  // Reduce chance of huge images on mobile
                     }
                 }
             };
@@ -1007,13 +1036,16 @@
                 return Math.floor((distribution.min + distribution.max) / 2);
             }
             
-            // Function to get layer-specific visual effects based on z-index
+            // Enhanced function to get layer-specific visual effects based on z-index
             function getLayerEffects(zIndex) {
                 const layerEffects = FLYING_IMAGE_SETTINGS.enhancedRandomization.zIndexDistribution.layerEffects;
+                const isMobile = window.innerWidth < FLYING_IMAGE_SETTINGS.enhancedRandomization.mobileAdjustments.breakpoint;
                 
                 // Determine which layer this z-index belongs to
                 let layer;
-                if (zIndex >= layerEffects.top.zRange[0] && zIndex <= layerEffects.top.zRange[1]) {
+                if (zIndex >= layerEffects.superTop.zRange[0] && zIndex <= layerEffects.superTop.zRange[1]) {
+                    layer = layerEffects.superTop;
+                } else if (zIndex >= layerEffects.top.zRange[0] && zIndex <= layerEffects.top.zRange[1]) {
                     layer = layerEffects.top;
                 } else if (zIndex >= layerEffects.middle.zRange[0] && zIndex <= layerEffects.middle.zRange[1]) {
                     layer = layerEffects.middle;
@@ -1021,8 +1053,32 @@
                     layer = layerEffects.bottom;
                 }
                 
+                // Handle special case for potentially huge images in super-top layer
+                let scaleRange = {...layer.scale};
+                
+                // For super-top layer, check if this should be a huge image
+                let isHuge = false;
+                if (layer === layerEffects.superTop) {
+                    const hugeChance = isMobile ? 
+                        FLYING_IMAGE_SETTINGS.enhancedRandomization.mobileAdjustments.hugeImageChance : 
+                        layer.hugeChance;
+                        
+                    if (Math.random() < hugeChance) {
+                        isHuge = true;
+                        // Make it HUGE (3x-6x normal size)
+                        scaleRange.min = 2.5;
+                        scaleRange.max = isMobile ? 4 : 6;
+                    }
+                }
+                
                 // Generate effects
-                const scale = Math.random() * (layer.scale.max - layer.scale.min) + layer.scale.min;
+                let scale = Math.random() * (scaleRange.max - scaleRange.min) + scaleRange.min;
+                
+                // Apply mobile size adjustment if needed
+                if (isMobile && !isHuge) {
+                    scale *= FLYING_IMAGE_SETTINGS.enhancedRandomization.mobileAdjustments.sizeMultiplier;
+                }
+                
                 const opacityModifier = layer.opacity.modifier;
                 const blur = Math.random() * (layer.blur.max - layer.blur.min) + layer.blur.min;
                 const saturate = Math.random() * (layer.saturate.max - layer.saturate.min) + layer.saturate.min;
@@ -1031,40 +1087,98 @@
                     scale,
                     opacityModifier,
                     blur,
-                    saturate
+                    saturate,
+                    isHuge
                 };
+            }
+
+            // Enhanced function to get position based on screen control settings
+            function getRandomPosition() {
+                const s = FLYING_IMAGE_SETTINGS;
+                const control = s.enhancedRandomization.positionControl;
+                const isInScreen = Math.random() < control.inScreen.chance;
+                
+                if (isInScreen) {
+                    // Position within screen with padding
+                    const padding = Math.random() * (control.inScreen.padding.max - control.inScreen.padding.min) + 
+                                  control.inScreen.padding.min;
+                    return {
+                        x: padding + Math.random() * (100 - 2 * padding),
+                        y: padding + Math.random() * (100 - 2 * padding)
+                    };
+                } else {
+                    // Position potentially off-screen
+                    return {
+                        x: Math.random() * (control.offScreen.range.max - control.offScreen.range.min) + 
+                           control.offScreen.range.min,
+                        y: Math.random() * (control.offScreen.range.max - control.offScreen.range.min) + 
+                           control.offScreen.range.min
+                    };
+                }
             }
 
             // Flying Images
             function createFlyingImage() {
                 const s = FLYING_IMAGE_SETTINGS;
+                const isMobile = window.innerWidth < s.enhancedRandomization.mobileAdjustments.breakpoint;
+                
+                // On mobile, potentially skip creating some images to improve performance
+                if (isMobile && Math.random() > s.enhancedRandomization.mobileAdjustments.spawnRateMultiplier) {
+                    return;
+                }
 
                 const img = document.createElement('img');
                 img.src = `images/adrit${Math.floor(Math.random() * 8) + 1}.png`;
                 img.className = 'flying-image';
 
-                // Random starting position
-                const startX = Math.random() * (s.startPosition.x.max - s.startPosition.x.min) + s.startPosition.x.min;
-                const startY = Math.random() * (s.startPosition.y.max - s.startPosition.y.min) + s.startPosition.y.min;
-
-                // Size calculation (FIXED SIZE CHANCES REFERENCE)
+                // Get z-index with mobile adjustments
+                let zIndex;
+                if (isMobile) {
+                    // Reduce chance of top layer images on mobile
+                    const superTopChance = s.enhancedRandomization.zIndexDistribution.ranges[5].weight * 
+                                         s.enhancedRandomization.mobileAdjustments.topLayerLimit;
+                    
+                    const random = Math.random();
+                    // Redistribute weights to reduce super-top layer on mobile
+                    if (random < superTopChance) {
+                        // Super-top layer (reduced chance)
+                        zIndex = Math.floor(
+                            Math.random() * 
+                            (s.enhancedRandomization.zIndexDistribution.ranges[5].range[1] - 
+                             s.enhancedRandomization.zIndexDistribution.ranges[5].range[0] + 1) + 
+                             s.enhancedRandomization.zIndexDistribution.ranges[5].range[0]
+                        );
+                    } else {
+                        // Use weighted distribution for other layers
+                        zIndex = getWeightedZIndex();
+                    }
+                } else {
+                    // Normal distribution for desktop
+                    zIndex = getWeightedZIndex();
+                }
+                
+                // Get layer-specific effects based on the z-index
+                const layerEffects = getLayerEffects(zIndex);
+                
+                // Random enhanced position
+                const position = getRandomPosition();
+                
+                // Size calculation with adjustments for huge images
                 const sizeType = Math.random();
                 let initialSize;
-                if (sizeType < s.sizeRanges.sizeChances[0]) {
+                
+                if (layerEffects.isHuge) {
+                    // For huge images, use viewport units for dramatic effect
+                    initialSize = `${Math.random() * 25 + 25}vmin`; // 25-50vmin for huge images
+                } else if (sizeType < s.sizeRanges.sizeChances[0]) {
                     initialSize = `${Math.random() * (s.sizeRanges.viewport.max - s.sizeRanges.viewport.min) + s.sizeRanges.viewport.min}vw`;
                 } else if (sizeType < s.sizeRanges.sizeChances[0] + s.sizeRanges.sizeChances[1]) {
                     initialSize = `${Math.pow(Math.random(), 0.3) * (s.sizeRanges.pixels.max - s.sizeRanges.pixels.min) + s.sizeRanges.pixels.min}px`;
                 } else {
                     initialSize = `${Math.random() * (s.sizeRanges.vmin.max - s.sizeRanges.vmin.min) + s.sizeRanges.vmin.min}vmin`;
                 }
-
-                // Get z-index first
-                const zIndex = getWeightedZIndex();
                 
-                // Get layer-specific effects based on the z-index
-                const layerEffects = getLayerEffects(zIndex);
-                
-                // Build filter string with random effects and layer-specific adjustments
+                // Build filter string with layer-specific adjustments
                 let filterString = `hue-rotate(${Math.random() * (s.appearance.hueRotation.max - s.appearance.hueRotation.min) + s.appearance.hueRotation.min}deg)`;
                 
                 // Always add layer-specific saturation and blur
@@ -1111,8 +1225,8 @@
 
                 // Visual styling
                 img.style.cssText = `
-                    left: ${startX}vw;
-                    top: ${startY}vh;
+                    left: ${position.x}vw;
+                    top: ${position.y}vh;
                     width: ${initialSize};
                     opacity: ${adjustedOpacity.toFixed(2)};
                     filter: ${filterString};
@@ -1124,55 +1238,97 @@
 
                 document.body.appendChild(img);
 
-                // Determine if this image will move at all
+                // Highly randomized movement timing
                 const willMove = Math.random() < s.enhancedRandomization.moveChance;
                 
                 if (willMove) {
-                    // Animation timing
-                    const initialDelay = Math.random() * (s.movement.startDelay.max - s.movement.startDelay.min) + s.movement.startDelay.min;
+                    // Completely randomized initial delay - some move instantly, others wait
+                    // Super top layer images have faster movement start
+                    const maxDelay = zIndex > 1000 ? 2000 : 4000; // Super top layer moves faster
+                    const initialDelay = Math.random() * maxDelay;
     
                     setTimeout(() => {
+                        // Choose animation type - super top layer gets more varied movement
                         const animation = s.movement.animations[Math.floor(Math.random() * s.movement.animations.length)];
-                        const duration = Math.random() * (s.movement.duration.max - s.movement.duration.min) + s.movement.duration.min;
+                        
+                        // Duration varies by layer - top layer moves faster for more dramatic effect
+                        let durationRange = {...s.movement.duration};
+                        if (zIndex > 1000) {
+                            // Super top layer - faster movement
+                            durationRange.min *= 0.7;
+                            durationRange.max *= 0.8;
+                        } else if (zIndex < 50) {
+                            // Bottom layer - slower movement
+                            durationRange.min *= 1.3;
+                            durationRange.max *= 1.5;
+                        }
+                        
+                        const duration = Math.random() * (durationRange.max - durationRange.min) + durationRange.min;
     
                         // Apply movement
                         img.style.animation = `${animation} ${duration}s linear infinite`;
     
-                        // Delayed rotation
-                        const rotationDelay = Math.random() * s.rotation.startDelay.max;
+                        // Highly variable rotation delay - some rotate immediately, others much later
+                        const rotationDelay = Math.random() * 3000;
+                        
                         setTimeout(() => {
-                            // More varied rotation speed (wider range)
+                            // More varied rotation speed and direction
                             const rotationSpeed = (Math.random() * (s.rotation.speed.max - s.rotation.speed.min) + s.rotation.speed.min) *
                                 (Math.random() > s.rotation.directionChance ? 1 : -1);
+                                
+                            // Apply rotation animation
                             img.style.animation += `, spin ${Math.abs(rotationSpeed)}s linear infinite`;
                         }, rotationDelay);
     
-                        // Pulse effect (simplified)
+                        // Random pulse effect with variable timing and intensity
                         if (Math.random() < s.pulseEffect.chance) {
-                            const pulseDuration = Math.random() * (s.pulseEffect.duration.max - s.pulseEffect.duration.min) + s.pulseEffect.duration.min;
-                            img.style.animation += `, pulse ${pulseDuration}s ease-in-out infinite`;
+                            // Delay pulse start randomly
+                            setTimeout(() => {
+                                const pulseDuration = Math.random() * (s.pulseEffect.duration.max - s.pulseEffect.duration.min) + s.pulseEffect.duration.min;
+                                img.style.animation += `, pulse ${pulseDuration}s ease-in-out infinite`;
+                            }, Math.random() * 2000);
                         }
                     }, initialDelay);
                 }
 
-                // Random lifetime
+                // Random lifetime with more variation for dramatic effect
+                const baseLifetime = zIndex > 1000 ? s.lifetime.base * 1.2 : s.lifetime.base; // Top layer lives longer
                 const lifetimeVariation = (Math.random() - 0.5) * s.lifetime.variation * 2;
-                setTimeout(() => img.remove(), s.lifetime.base + lifetimeVariation);
+                setTimeout(() => img.remove(), baseLifetime + lifetimeVariation);
             }
 
-            // Start spawning
-            setInterval(createFlyingImage, FLYING_IMAGE_SETTINGS.spawnRate.interval);
-            
-            // Initial burst of 5-10 images
-            setTimeout(() => {
-                const initialCount = Math.floor(Math.random() * 
-                    (FLYING_IMAGE_SETTINGS.spawnRate.initialBurst.max - FLYING_IMAGE_SETTINGS.spawnRate.initialBurst.min + 1)) + 
-                    FLYING_IMAGE_SETTINGS.spawnRate.initialBurst.min;
-                    
-                for (let i = 0; i < initialCount; i++) {
-                    createFlyingImage();
+            // Updated spawning system with adjustments for mobile
+            function setupImageSpawning() {
+                const s = FLYING_IMAGE_SETTINGS;
+                const isMobile = window.innerWidth < s.enhancedRandomization.mobileAdjustments.breakpoint;
+                
+                // Adjusted spawn interval based on device
+                const interval = isMobile ? 
+                    s.spawnRate.interval / s.enhancedRandomization.mobileAdjustments.spawnRateMultiplier : 
+                    s.spawnRate.interval;
+                
+                // Set up regular spawning
+                setInterval(createFlyingImage, interval);
+                
+                // Initial burst with appropriate count
+                const burstCount = Math.floor(Math.random() * 
+                    (s.spawnRate.initialBurst.max - s.spawnRate.initialBurst.min + 1)) + 
+                    s.spawnRate.initialBurst.min;
+                
+                // Calculate adjusted burst count for mobile
+                const adjustedBurstCount = isMobile ? 
+                    Math.floor(burstCount * s.enhancedRandomization.mobileAdjustments.spawnRateMultiplier) : 
+                    burstCount;
+                
+                // Create initial burst
+                for (let i = 0; i < adjustedBurstCount; i++) {
+                    // Stagger creation slightly for performance
+                    setTimeout(createFlyingImage, i * 50);
                 }
-            }, 100);
+            }
+            
+            // Start the image spawning system
+            setTimeout(setupImageSpawning, 100);
 
             // Slideshow
             const slides = document.querySelectorAll('.slide');
