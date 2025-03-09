@@ -501,13 +501,15 @@
             }
         }
 
+        /* Update cursor trail styling to increase z-index and prepare for randomness */
         .cursor-trail {
             position: fixed;
-            width: 50px;
-            height: 50px;
+            width: 70px;
+            height: 70px;
             pointer-events: none;
-            animation: trailBounce 1s ease-out forwards;
-            z-index: 130;
+            animation: trailBounce 2s ease-out forwards;
+            z-index: 800; /* Increased from 130 to 800 to appear above most elements */
+            transform-origin: center;
         }
 
         @keyframes trailBounce {
@@ -518,6 +520,11 @@
 
             50% {
                 transform: scale(1.2) translateY(-20px);
+            }
+
+            90% {
+                opacity: 0.7;
+                transform: scale(0.9) translateY(-30px);
             }
 
             100% {
@@ -733,6 +740,643 @@
             80% { transform: scale(1.8) rotate(-90deg); }
             100% { transform: scale(1) rotate(0deg); }
         }
+
+        /* ======= NEW FLAG STYLES ======= */
+        .flag-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 170;
+            pointer-events: none;
+            visibility: hidden; /* Hide initially */
+        }
+
+        .flag-pole {
+            position: fixed;
+            right: 40px;
+            top: 0;
+            width: 15px;
+            height: 100vh;
+            background: linear-gradient(90deg, #8B4513, #A0522D, #8B4513);
+            border-radius: 8px;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+            z-index: 172; /* Ensure pole is above flag */
+        }
+
+        .flag {
+            position: fixed;
+            top: 100px; /* Increased top margin for ticker/alerts */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 1000px;
+            height: 200px;
+            background: linear-gradient(45deg, rgba(255, 240, 245, 0.9), rgba(255, 228, 225, 0.95), rgba(255, 245, 238, 0.9));
+            border: 5px dashed #ff0000;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            gap: 20px;
+            transform-origin: right center;
+            animation: flagWave 3s ease-in-out infinite;
+        }
+
+        /* Create a pseudo-element to connect the flag to the pole */
+        .flag::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -55px; /* Connect to the pole */
+            width: 55px;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255, 240, 245, 0.9), rgba(255, 228, 225, 0.95), rgba(255, 245, 238, 0.9));
+            border-top: 5px dashed #ff0000;
+            border-bottom: 5px dashed #ff0000;
+            border-right: 5px dashed #ff0000;
+            box-sizing: border-box;
+        }
+
+        .flag-image {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 3px solid #ff00ff;
+            object-fit: cover;
+            animation: pulse 3s ease-in-out infinite;
+            flex-shrink: 0; /* Prevent image from shrinking */
+        }
+
+        .flag h1 {
+            margin: 0;
+            font-size: 2.8em;
+            white-space: normal;
+            word-wrap: break-word;
+            text-shadow: 3px 3px #ff00ff;
+            animation: float 3s ease-in-out infinite, rainbow 5s infinite;
+            flex: 1;
+            text-align: center;
+        }
+
+        @keyframes flagWave {
+            0%, 100% {
+                transform: translateX(-50%) rotate(0deg) scaleX(1);
+            }
+            25% {
+                transform: translateX(-50%) rotate(-3deg) scaleX(0.95);
+            }
+            50% {
+                transform: translateX(-50%) rotate(0deg) scaleX(1);
+            }
+            75% {
+                transform: translateX(-50%) rotate(3deg) scaleX(0.95);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .flag-pole {
+                right: 20px;
+                width: 10px;
+            }
+
+            .flag {
+                top: 90px; /* Slightly less space on mobile but still enough */
+                width: 85%; /* Slightly wider on mobile */
+                height: 180px;
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .flag::after {
+                right: -30px; /* Connect to the pole on mobile */
+                width: 30px;
+            }
+
+            .flag-image {
+                width: 110px;
+                height: 110px;
+            }
+
+            .flag h1 {
+                font-size: 1.7em;
+            }
+
+            @keyframes flagWave {
+                0%, 100% {
+                    transform: translateX(-50%) rotate(0deg) scaleX(1);
+                }
+                25% {
+                    transform: translateX(-50%) rotate(-3deg) scaleX(0.95);
+                }
+                50% {
+                    transform: translateX(-50%) rotate(0deg) scaleX(1);
+                }
+                75% {
+                    transform: translateX(-50%) rotate(3deg) scaleX(0.95);
+                }
+            }
+        }
+
+        /* More funky animations for flying images */
+        @keyframes spiral-zoom {
+            0% { transform: scale(0.5) rotate(0deg); }
+            50% { transform: scale(1.5) rotate(360deg); }
+            100% { transform: scale(0.5) rotate(720deg); }
+        }
+
+        @keyframes flip-flop {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(180deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        @keyframes disco-spin {
+            0% { transform: rotate(0deg) scale(1); filter: hue-rotate(0deg); }
+            25% { transform: rotate(90deg) scale(1.2); filter: hue-rotate(90deg); }
+            50% { transform: rotate(180deg) scale(0.8); filter: hue-rotate(180deg); }
+            75% { transform: rotate(270deg) scale(1.4); filter: hue-rotate(270deg); }
+            100% { transform: rotate(360deg) scale(1); filter: hue-rotate(360deg); }
+        }
+
+        @keyframes rubber-band {
+            0% { transform: scale3d(1, 1, 1); }
+            30% { transform: scale3d(1.25, 0.75, 1); }
+            40% { transform: scale3d(0.75, 1.25, 1); }
+            50% { transform: scale3d(1.15, 0.85, 1); }
+            65% { transform: scale3d(0.95, 1.05, 1); }
+            75% { transform: scale3d(1.05, 0.95, 1); }
+            100% { transform: scale3d(1, 1, 1); }
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            10% { transform: translate(-5px, 5px); }
+            20% { transform: translate(-10px, 10px); }
+            30% { transform: translate(5px, -5px); }
+            40% { transform: translate(10px, -10px); }
+            50% { transform: translate(-5px, -5px); }
+            60% { transform: translate(5px, 5px); }
+            70% { transform: translate(-10px, -10px); }
+            80% { transform: translate(10px, 10px); }
+            90% { transform: translate(5px, -5px); }
+            100% { transform: translate(0); }
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.3); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.3); }
+            70% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes floating-rotation {
+            0% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(90deg); }
+            50% { transform: translateY(0) rotate(180deg); }
+            75% { transform: translateY(15px) rotate(270deg); }
+            100% { transform: translateY(0) rotate(360deg); }
+        }
+
+        @keyframes rainbow-pulse {
+            0% { transform: scale(1); filter: hue-rotate(0deg); }
+            25% { transform: scale(1.2); filter: hue-rotate(90deg); }
+            50% { transform: scale(1.4); filter: hue-rotate(180deg); }
+            75% { transform: scale(1.2); filter: hue-rotate(270deg); }
+            100% { transform: scale(1); filter: hue-rotate(360deg); }
+        }
+
+        @keyframes electric-shake {
+            0%, 100% { transform: translateX(0) rotate(0deg); filter: brightness(100%); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px) rotate(-5deg); filter: brightness(150%); }
+            20%, 40%, 60%, 80% { transform: translateX(10px) rotate(5deg); filter: brightness(200%); }
+        }
+
+        @keyframes dizzy-spin {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(360deg) scale(0.8); }
+            50% { transform: rotate(720deg) scale(1.2); }
+            75% { transform: rotate(1080deg) scale(0.9); }
+            100% { transform: rotate(1440deg) scale(1); }
+        }
+
+        @keyframes bounce-rotate {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30vh) rotate(180deg); }
+        }
+
+        @keyframes jellyfish {
+            0%, 100% { transform: scaleX(1) scaleY(1); }
+            25% { transform: scaleX(1.3) scaleY(0.7); }
+            50% { transform: scaleX(0.8) scaleY(1.2); }
+            75% { transform: scaleX(1.1) scaleY(0.9); }
+        }
+
+        @keyframes firework-explode {
+            0% { transform: scale(0.1) rotate(0deg); opacity: 0.5; filter: brightness(100%); }
+            50% { transform: scale(1.5) rotate(180deg); opacity: 1; filter: brightness(200%); }
+            100% { transform: scale(0.1) rotate(360deg); opacity: 0.5; filter: brightness(100%); }
+        }
+
+        @keyframes gravity-bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); animation-timing-function: ease-out; }
+            40% { transform: translateY(-30vh); animation-timing-function: ease-in; }
+            60% { transform: translateY(-15vh); animation-timing-function: ease-in; }
+        }
+
+        @keyframes tornado-spin {
+            0% { transform: rotate(0deg) translateX(0) translateY(0) scale(1); }
+            25% { transform: rotate(270deg) translateX(20vw) translateY(-10vh) scale(1.2); }
+            50% { transform: rotate(540deg) translateX(0) translateY(-20vh) scale(0.8); }
+            75% { transform: rotate(810deg) translateX(-20vw) translateY(-10vh) scale(1.2); }
+            100% { transform: rotate(1080deg) translateX(0) translateY(0) scale(1); }
+        }
+
+        @keyframes elastic-stretch {
+            0% { transform: scaleX(1) scaleY(1); }
+            25% { transform: scaleX(2) scaleY(0.5); }
+            50% { transform: scaleX(0.5) scaleY(2); }
+            75% { transform: scaleX(1.5) scaleY(0.7); }
+            100% { transform: scaleX(1) scaleY(1); }
+        }
+
+        @keyframes cosmic-drift {
+            0% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); filter: hue-rotate(0deg); }
+            25% { transform: translateX(15vw) translateY(-10vh) rotate(90deg) scale(1.2); filter: hue-rotate(90deg); }
+            50% { transform: translateX(30vw) translateY(0) rotate(180deg) scale(0.8); filter: hue-rotate(180deg); }
+            75% { transform: translateX(15vw) translateY(10vh) rotate(270deg) scale(1.1); filter: hue-rotate(270deg); }
+            100% { transform: translateX(0) translateY(0) rotate(360deg) scale(1); filter: hue-rotate(360deg); }
+        }
+
+        /* Add 10 more creative animations for flying images */
+        @keyframes neon-flash {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 0, 255, 0.8)) brightness(100%); }
+            25% { filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.8)) brightness(150%); }
+            50% { filter: drop-shadow(0 0 20px rgba(255, 255, 0, 0.8)) brightness(200%); }
+            75% { filter: drop-shadow(0 0 15px rgba(0, 255, 0, 0.8)) brightness(150%); }
+        }
+
+        @keyframes kaleidoscope {
+            0% { transform: rotate(0deg) scale(1); filter: hue-rotate(0deg) saturate(100%); }
+            20% { transform: rotate(72deg) scale(1.2); filter: hue-rotate(72deg) saturate(200%); }
+            40% { transform: rotate(144deg) scale(0.8); filter: hue-rotate(144deg) saturate(300%); }
+            60% { transform: rotate(216deg) scale(1.4); filter: hue-rotate(216deg) saturate(200%); }
+            80% { transform: rotate(288deg) scale(0.9); filter: hue-rotate(288deg) saturate(100%); }
+            100% { transform: rotate(360deg) scale(1); filter: hue-rotate(360deg) saturate(100%); }
+        }
+
+        @keyframes party-mode {
+            0% { transform: scale(1) rotate(0deg); filter: contrast(100%) brightness(100%) hue-rotate(0deg); }
+            20% { transform: scale(1.3) rotate(72deg); filter: contrast(150%) brightness(150%) hue-rotate(72deg); }
+            40% { transform: scale(0.7) rotate(144deg); filter: contrast(200%) brightness(120%) hue-rotate(144deg); }
+            60% { transform: scale(1.2) rotate(216deg); filter: contrast(150%) brightness(150%) hue-rotate(216deg); }
+            80% { transform: scale(0.8) rotate(288deg); filter: contrast(120%) brightness(200%) hue-rotate(288deg); }
+            100% { transform: scale(1) rotate(360deg); filter: contrast(100%) brightness(100%) hue-rotate(360deg); }
+        }
+
+        @keyframes liquid-morph {
+            0% { border-radius: 50%; transform: scale(1); }
+            25% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: scale(1.1); }
+            50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: scale(0.9); }
+            75% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: scale(1.1); }
+            100% { border-radius: 50%; transform: scale(1); }
+        }
+
+        @keyframes magnetic-pull {
+            0% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(-20vw, -15vh) scale(1.2); }
+            30% { transform: translate(-18vw, -13vh) scale(1.15); }
+            35% { transform: translate(-22vw, -17vh) scale(1.25); }
+            50% { transform: translate(20vw, 15vh) scale(0.8); }
+            55% { transform: translate(18vw, 13vh) scale(0.85); }
+            60% { transform: translate(22vw, 17vh) scale(0.75); }
+            75% { transform: translate(-10vw, 20vh) scale(1.1); }
+            80% { transform: translate(-8vw, 18vh) scale(1.05); }
+            85% { transform: translate(-12vw, 22vh) scale(1.15); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        @keyframes pixel-dissolve {
+            0% { clip-path: inset(0% 0% 0% 0%); transform: scale(1); }
+            20% { clip-path: inset(20% 0% 0% 0%); transform: scale(0.95) translate(2%, 0); }
+            40% { clip-path: inset(20% 20% 0% 0%); transform: scale(0.9) translate(2%, 2%); }
+            60% { clip-path: inset(20% 20% 20% 0%); transform: scale(0.85) translate(2%, 2%); }
+            80% { clip-path: inset(20% 20% 20% 20%); transform: scale(0.8) translate(2%, 2%); }
+            90% { clip-path: inset(0% 0% 0% 0%); transform: scale(1.1); }
+            100% { clip-path: inset(0% 0% 0% 0%); transform: scale(1); }
+        }
+
+        @keyframes hypnotic-spiral {
+            0% { transform: rotate(0deg) scale(1); filter: hue-rotate(0deg); }
+            25% { transform: rotate(360deg) scale(0.5); filter: hue-rotate(90deg); }
+            50% { transform: rotate(720deg) scale(1.5); filter: hue-rotate(180deg); }
+            75% { transform: rotate(1080deg) scale(0.5); filter: hue-rotate(270deg); }
+            100% { transform: rotate(1440deg) scale(1); filter: hue-rotate(360deg); }
+        }
+
+        @keyframes electric-shock {
+            0%, 100% { transform: translate(0, 0) skew(0deg, 0deg); filter: brightness(100%); }
+            10%, 90% { transform: translate(-2px, -3px) skew(1deg, 1deg); filter: brightness(150%); }
+            20%, 80% { transform: translate(3px, 2px) skew(-1deg, 2deg); filter: brightness(200%); }
+            30%, 70% { transform: translate(-3px, 3px) skew(2deg, -1deg); filter: brightness(250%); }
+            40%, 60% { transform: translate(2px, -2px) skew(-2deg, -2deg); filter: brightness(300%); }
+            50% { transform: translate(-2px, -2px) skew(2deg, 2deg); filter: brightness(350%); }
+        }
+
+        @keyframes bubble-float {
+            0% { transform: translateY(0) scale(1); opacity: 0.7; }
+            25% { transform: translateY(-20vh) scale(1.1) rotate(5deg); opacity: 0.8; }
+            50% { transform: translateY(-40vh) scale(1.2) rotate(-5deg); opacity: 0.9; }
+            75% { transform: translateY(-60vh) scale(1.3) rotate(5deg); opacity: 0.5; }
+            100% { transform: translateY(-80vh) scale(1.4) rotate(-5deg); opacity: 0.3; }
+        }
+
+        @keyframes glitch-out {
+            0%, 100% { transform: translate(0) skew(0deg); clip-path: inset(0% 0% 0% 0%); }
+            20% { transform: translate(-10px, 5px) skew(10deg); clip-path: inset(10% 0% 0% 5%); }
+            40% { transform: translate(10px, -5px) skew(-5deg); clip-path: inset(0% 10% 5% 0%); }
+            60% { transform: translate(-5px, -10px) skew(5deg); clip-path: inset(5% 0% 10% 0%); }
+            80% { transform: translate(5px, 10px) skew(-10deg); clip-path: inset(0% 5% 0% 10%); }
+        }
+
+        /* Add styling for the voice button to match the sniff button */
+        #voiceButton {
+            padding: 15px 25px;
+            font-size: 1.5em;
+            background: #ff00ff; /* Pink background */
+            border: 4px dashed #00ff00; /* Green dashed border */
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: 'Comic Sans MS';
+            color: #ffff00; /* Yellow text */
+            transition: all 0.3s;
+            margin-top: 20px;
+            text-shadow: 2px 2px 0 #0000ff; /* Blue text shadow */
+        }
+
+        #voiceButton:hover {
+            background: #00ff00; /* Green background on hover */
+            color: #ff00ff; /* Pink text on hover */
+            transform: rotate(-5deg) scale(1.2);
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.7);
+        }
+
+        @media (max-width: 600px) {
+            #voiceButton {
+                padding: 10px 20px;
+                font-size: 1.2em;
+            }
+        }
+
+        /* Add new animation types for cursor trail */
+        @keyframes trailSpin {
+            0% {
+                opacity: 1;
+                transform: scale(0.5) rotate(0deg);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.2) rotate(180deg);
+            }
+            90% {
+                opacity: 0.5;
+                transform: scale(0.9) rotate(324deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.8) rotate(360deg);
+            }
+        }
+
+        @keyframes trailPulse {
+            0% {
+                opacity: 1;
+                transform: scale(0.5);
+                filter: brightness(100%);
+            }
+            25% {
+                opacity: 0.9;
+                transform: scale(1.5);
+                filter: brightness(150%);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(0.8);
+                filter: brightness(120%);
+            }
+            75% {
+                opacity: 0.6;
+                transform: scale(1.2);
+                filter: brightness(130%);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.7);
+                filter: brightness(100%);
+            }
+        }
+
+        @keyframes trailZigzag {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0.5);
+            }
+            25% {
+                opacity: 0.9;
+                transform: translate(20px, -20px) scale(1.1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: translate(-20px, -40px) scale(1.2);
+            }
+            75% {
+                opacity: 0.6;
+                transform: translate(15px, -60px) scale(0.9);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-10px, -80px) scale(0.7);
+            }
+        }
+
+        /* Add 20 more wild animations for flying images */
+        @keyframes color-explosion {
+            0% { filter: hue-rotate(0deg) saturate(100%) brightness(100%); transform: scale(1); }
+            20% { filter: hue-rotate(72deg) saturate(300%) brightness(150%); transform: scale(1.2); }
+            40% { filter: hue-rotate(144deg) saturate(500%) brightness(200%); transform: scale(0.8); }
+            60% { filter: hue-rotate(216deg) saturate(700%) brightness(250%); transform: scale(1.4); }
+            80% { filter: hue-rotate(288deg) saturate(500%) brightness(200%); transform: scale(0.6); }
+            100% { filter: hue-rotate(360deg) saturate(100%) brightness(100%); transform: scale(1); }
+        }
+
+        @keyframes warp-speed {
+            0% { transform: scale(1) rotate(0deg); filter: blur(0px); }
+            50% { transform: scale(3) rotate(180deg); filter: blur(5px); }
+            100% { transform: scale(1) rotate(360deg); filter: blur(0px); }
+        }
+
+        @keyframes quantum-leap {
+            0% { transform: translateX(0) translateY(0) scale(1); opacity: 1; }
+            10% { transform: translateX(30vw) translateY(-20vh) scale(0.1); opacity: 0.1; }
+            20% { transform: translateX(-40vw) translateY(30vh) scale(1.5); opacity: 1; }
+            30% { transform: translateX(20vw) translateY(40vh) scale(0.2); opacity: 0.2; }
+            40% { transform: translateX(-30vw) translateY(-40vh) scale(1.8); opacity: 1; }
+            50% { transform: translateX(40vw) translateY(20vh) scale(0.3); opacity: 0.3; }
+            60% { transform: translateX(-20vw) translateY(-30vh) scale(1.2); opacity: 1; }
+            70% { transform: translateX(10vw) translateY(50vh) scale(0.4); opacity: 0.4; }
+            80% { transform: translateX(-50vw) translateY(-10vh) scale(1.6); opacity: 1; }
+            90% { transform: translateX(50vw) translateY(-50vh) scale(0.5); opacity: 0.5; }
+            100% { transform: translateX(0) translateY(0) scale(1); opacity: 1; }
+        }
+
+        @keyframes matrix-glitch {
+            0%, 100% { clip-path: inset(0 0 0 0); }
+            10% { clip-path: inset(20% 0 0 0); transform: translateX(10px); }
+            20% { clip-path: inset(0 20% 0 0); transform: translateX(-10px); }
+            30% { clip-path: inset(0 0 20% 0); transform: translateX(10px); }
+            40% { clip-path: inset(0 0 0 20%); transform: translateX(-10px); }
+            50% { clip-path: inset(10% 10% 10% 10%); transform: translateX(0); }
+            60% { clip-path: inset(30% 0 0 30%); transform: translateX(10px); }
+            70% { clip-path: inset(0 30% 30% 0); transform: translateX(-10px); }
+            80% { clip-path: inset(10% 10% 10% 10%); transform: translateX(0); }
+            90% { clip-path: inset(20% 20% 20% 20%); transform: translateX(0); }
+        }
+
+        @keyframes psychedelic-trip {
+            0% { filter: hue-rotate(0deg) contrast(100%) brightness(100%) saturate(100%); transform: rotate(0deg) scale(1); }
+            20% { filter: hue-rotate(72deg) contrast(200%) brightness(150%) saturate(300%); transform: rotate(72deg) scale(1.2); }
+            40% { filter: hue-rotate(144deg) contrast(300%) brightness(200%) saturate(500%); transform: rotate(144deg) scale(0.8); }
+            60% { filter: hue-rotate(216deg) contrast(400%) brightness(250%) saturate(700%); transform: rotate(216deg) scale(1.4); }
+            80% { filter: hue-rotate(288deg) contrast(300%) brightness(200%) saturate(500%); transform: rotate(288deg) scale(0.6); }
+            100% { filter: hue-rotate(360deg) contrast(100%) brightness(100%) saturate(100%); transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes black-hole {
+            0% { transform: scale(1) rotate(0deg); filter: brightness(100%); }
+            50% { transform: scale(0.1) rotate(180deg); filter: brightness(0%); }
+            100% { transform: scale(1) rotate(360deg); filter: brightness(100%); }
+        }
+
+        @keyframes supernova {
+            0% { transform: scale(1); filter: brightness(100%) blur(0px); }
+            40% { transform: scale(0.8); filter: brightness(80%) blur(0px); }
+            50% { transform: scale(3); filter: brightness(300%) blur(5px); }
+            60% { transform: scale(0.8); filter: brightness(80%) blur(0px); }
+            100% { transform: scale(1); filter: brightness(100%) blur(0px); }
+        }
+
+        @keyframes dimensional-shift {
+            0% { transform: perspective(500px) rotateX(0deg) rotateY(0deg) scale(1); }
+            25% { transform: perspective(500px) rotateX(45deg) rotateY(45deg) scale(1.2); }
+            50% { transform: perspective(500px) rotateX(90deg) rotateY(90deg) scale(0.8); }
+            75% { transform: perspective(500px) rotateX(45deg) rotateY(135deg) scale(1.2); }
+            100% { transform: perspective(500px) rotateX(0deg) rotateY(180deg) scale(1); }
+        }
+
+        @keyframes rainbow-explosion {
+            0% { filter: hue-rotate(0deg); transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+            20% { filter: hue-rotate(72deg); transform: scale(1.5); box-shadow: 0 0 20px 10px rgba(255, 165, 0, 0.7); }
+            40% { filter: hue-rotate(144deg); transform: scale(1); box-shadow: 0 0 40px 20px rgba(255, 255, 0, 0.7); }
+            60% { filter: hue-rotate(216deg); transform: scale(1.5); box-shadow: 0 0 60px 30px rgba(0, 128, 0, 0.7); }
+            80% { filter: hue-rotate(288deg); transform: scale(1); box-shadow: 0 0 40px 20px rgba(0, 0, 255, 0.7); }
+            100% { filter: hue-rotate(360deg); transform: scale(1); box-shadow: 0 0 0 0 rgba(75, 0, 130, 0); }
+        }
+
+        @keyframes electric-jolt {
+            0%, 100% { transform: translate(0, 0) skew(0deg, 0deg); filter: brightness(100%) contrast(100%); }
+            10%, 30%, 50%, 70%, 90% { transform: translate(-10px, -10px) skew(20deg, 20deg); filter: brightness(300%) contrast(300%); }
+            20%, 40%, 60%, 80% { transform: translate(10px, 10px) skew(-20deg, -20deg); filter: brightness(100%) contrast(100%); }
+        }
+
+        @keyframes time-warp {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; filter: blur(0px); }
+            25% { transform: scale(1.5) rotate(90deg); opacity: 0.7; filter: blur(2px); }
+            50% { transform: scale(0.5) rotate(180deg); opacity: 0.5; filter: blur(4px); }
+            75% { transform: scale(1.5) rotate(270deg); opacity: 0.7; filter: blur(2px); }
+            100% { transform: scale(1) rotate(360deg); opacity: 1; filter: blur(0px); }
+        }
+
+        @keyframes acid-trip {
+            0% { filter: saturate(100%) hue-rotate(0deg); transform: scale(1) rotate(0deg); }
+            25% { filter: saturate(300%) hue-rotate(90deg); transform: scale(1.2) rotate(90deg) skew(10deg, 10deg); }
+            50% { filter: saturate(500%) hue-rotate(180deg); transform: scale(0.8) rotate(180deg) skew(-10deg, -10deg); }
+            75% { filter: saturate(300%) hue-rotate(270deg); transform: scale(1.2) rotate(270deg) skew(10deg, 10deg); }
+            100% { filter: saturate(100%) hue-rotate(360deg); transform: scale(1) rotate(360deg); }
+        }
+
+        @keyframes reality-break {
+            0% { transform: translate(0, 0) scale(1); clip-path: circle(50%); }
+            20% { transform: translate(20px, -20px) scale(1.2); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+            40% { transform: translate(-20px, 20px) scale(0.8); clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); }
+            60% { transform: translate(20px, 20px) scale(1.2); clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); }
+            80% { transform: translate(-20px, -20px) scale(0.8); clip-path: inset(10% 10% 10% 10%); }
+            100% { transform: translate(0, 0) scale(1); clip-path: circle(50%); }
+        }
+
+        @keyframes neon-pulse {
+            0% { filter: drop-shadow(0 0 2px rgba(255, 0, 255, 0.7)) brightness(100%); transform: scale(1); }
+            25% { filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.7)) brightness(150%); transform: scale(1.1); }
+            50% { filter: drop-shadow(0 0 15px rgba(255, 255, 0, 0.7)) brightness(200%); transform: scale(1.2); }
+            75% { filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.7)) brightness(150%); transform: scale(1.1); }
+            100% { filter: drop-shadow(0 0 2px rgba(255, 0, 255, 0.7)) brightness(100%); transform: scale(1); }
+        }
+
+        @keyframes teleport {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            10% { transform: translate(0, 0) scale(0.1); opacity: 0.1; }
+            15% { transform: translate(50vw, -30vh) scale(0); opacity: 0; }
+            20% { transform: translate(50vw, -30vh) scale(0.1); opacity: 0.1; }
+            30% { transform: translate(50vw, -30vh) scale(1); opacity: 1; }
+            40% { transform: translate(50vw, -30vh) scale(0.1); opacity: 0.1; }
+            45% { transform: translate(-50vw, 30vh) scale(0); opacity: 0; }
+            50% { transform: translate(-50vw, 30vh) scale(0.1); opacity: 0.1; }
+            60% { transform: translate(-50vw, 30vh) scale(1); opacity: 1; }
+            70% { transform: translate(-50vw, 30vh) scale(0.1); opacity: 0.1; }
+            75% { transform: translate(0, 0) scale(0); opacity: 0; }
+            80% { transform: translate(0, 0) scale(0.1); opacity: 0.1; }
+            100% { transform: translate(0, 0) scale(1); opacity: 1; }
+        }
+
+        @keyframes fractal-spin {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(90deg) scale(0.5) translate(50%, 50%); }
+            50% { transform: rotate(180deg) scale(0.25) translate(100%, 100%); }
+            75% { transform: rotate(270deg) scale(0.5) translate(50%, 50%); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes vibration-mode {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            10%, 30%, 50%, 70%, 90% { transform: translate(-2px, -2px) rotate(-2deg); }
+            20%, 40%, 60%, 80% { transform: translate(2px, 2px) rotate(2deg); }
+            15%, 35%, 55%, 75%, 95% { transform: translate(3px, -3px) rotate(3deg); }
+            5%, 25%, 45%, 65%, 85% { transform: translate(-3px, 3px) rotate(-3deg); }
+        }
+
+        @keyframes chaotic-bounce {
+            0% { transform: translate(0, 0); animation-timing-function: ease-in; }
+            10% { transform: translate(20vw, -30vh); animation-timing-function: ease-out; }
+            25% { transform: translate(-30vw, 10vh); animation-timing-function: ease-in; }
+            40% { transform: translate(10vw, -20vh); animation-timing-function: ease-out; }
+            55% { transform: translate(-20vw, 30vh); animation-timing-function: ease-in; }
+            70% { transform: translate(30vw, -10vh); animation-timing-function: ease-out; }
+            85% { transform: translate(-10vw, 20vh); animation-timing-function: ease-in; }
+            100% { transform: translate(0, 0); animation-timing-function: ease-out; }
+        }
+
+        @keyframes dizzy-dance {
+            0% { transform: rotate(0deg) translateX(0) translateY(0); }
+            20% { transform: rotate(72deg) translateX(20px) translateY(-20px); }
+            40% { transform: rotate(144deg) translateX(-20px) translateY(-20px); }
+            60% { transform: rotate(216deg) translateX(-20px) translateY(20px); }
+            80% { transform: rotate(288deg) translateX(20px) translateY(20px); }
+            100% { transform: rotate(360deg) translateX(0) translateY(0); }
+        }
     </style>
 </head>
 
@@ -754,9 +1398,18 @@
         <div class="ticker-text"></div>
     </div>
 
+    <!-- Flag Structure -->
+    <div class="flag-container">
+        <div class="flag-pole"></div>
+        <div class="flag">
+            <img src="images/adrit1.png" alt="Adrit" class="flag-image">
+            <h1>🎉 ADRIT BHATNAGAR<br>WORLD'S #1 CHUT PAGLU! 🏆</h1>
+        </div>
+    </div>
+
     <!-- Original Content -->
     <div class="container">
-        <h1>🎉 ADRIT BHATNAGAR<br>WORLD'S #1 CHUT PAGLU! 🏆</h1>
+        <h1 style="visibility: hidden;">🎉 ADRIT BHATNAGAR<br>WORLD'S #1 CHUT PAGLU! 🏆</h1>
 
         <div class="slideshow">
             <img src="images/adrit1.png" alt="Adrit 1" class="slide active">
@@ -821,10 +1474,11 @@
         let initialized = false;
 
         // Initial setup: Hide elements
-        document.querySelectorAll('.container, #musicToggle, .news-ticker, #alertBanner').forEach(el => {
+        document.querySelectorAll('.container, #musicToggle, .news-ticker, #alertBanner, .flag-container').forEach(el => {
             el.style.visibility = 'hidden';
         });
         document.body.style.background = '#000';
+        document.body.style.overflowY = 'hidden'; // Ensure no scrolling during authentication
 
         function checkPassword() {
             if (passwordInput.value === CORRECT_PASSWORD) {
@@ -833,7 +1487,9 @@
                     passwordOverlay.style.display = 'none';
                     document.body.style.background = 'linear-gradient(45deg, #ff00ff, #00ffff, #ffff00)';
                     document.body.style.overflowY = 'auto';
-                    document.querySelectorAll('.container, #musicToggle, .news-ticker, #alertBanner').forEach(el => {
+                    // Reset scroll position
+                    window.scrollTo(0, 0);
+                    document.querySelectorAll('.container, #musicToggle, .news-ticker, #alertBanner, .flag-container').forEach(el => {
                         el.style.visibility = 'visible';
                     });
 
@@ -1482,7 +2138,7 @@
                 // 30% chance to be static
                 const isStatic = Math.random() < 0.3;
 
-                // List of all possible animations
+                // List of all possible animations - EXPANDED with new funky animations
                 const animations = [
                     'floatImage1',
                     'floatImage2',
@@ -1495,7 +2151,56 @@
                     'pendulum',
                     'random-paths',
                     'jitter',
-                    'crazy-rotate'
+                    'crazy-rotate',
+                    'spiral-zoom',
+                    'flip-flop',
+                    'disco-spin',
+                    'rubber-band',
+                    'glitch',
+                    'heartbeat',
+                    'floating-rotation',
+                    // 10 new funky animations
+                    'rainbow-pulse',
+                    'electric-shake',
+                    'dizzy-spin',
+                    'bounce-rotate',
+                    'jellyfish',
+                    'firework-explode',
+                    'gravity-bounce',
+                    'tornado-spin',
+                    'elastic-stretch',
+                    'cosmic-drift',
+                    // 10 new animations added
+                    'neon-flash',
+                    'kaleidoscope',
+                    'party-mode',
+                    'liquid-morph',
+                    'magnetic-pull',
+                    'pixel-dissolve',
+                    'hypnotic-spiral',
+                    'electric-shock',
+                    'bubble-float',
+                    'glitch-out',
+                    // 20 new wild animations
+                    'color-explosion',
+                    'warp-speed',
+                    'quantum-leap',
+                    'matrix-glitch',
+                    'psychedelic-trip',
+                    'black-hole',
+                    'supernova',
+                    'dimensional-shift',
+                    'rainbow-explosion',
+                    'electric-jolt',
+                    'time-warp',
+                    'acid-trip',
+                    'reality-break',
+                    'neon-pulse',
+                    'teleport',
+                    'fractal-spin',
+                    'vibration-mode',
+                    'chaotic-bounce',
+                    'dizzy-dance'
                 ];
 
                 // Get 1-3 random animations
@@ -1511,34 +2216,119 @@
                 if (!isStatic) {
                     const duration = 5 + Math.random() * 10; // 5-15s
                     const animationString = selectedAnimations.map(anim => 
-                        `${anim} ${duration}s linear infinite`
+                        `${anim} ${duration}s ${Math.random() > 0.5 ? 'linear' : 'ease-in-out'} infinite ${Math.random() > 0.7 ? 'alternate' : ''}`
                     ).join(', ');
                     animationStyle = `animation: ${animationString};`;
                 } else {
                     // For static images, maybe add a subtle pulse
                     if (Math.random() < 0.5) {
-                        animationStyle = 'animation: pulse 3s ease-in-out infinite;';
+                        const pulseType = Math.random() > 0.5 ? 'pulse' : (Math.random() > 0.5 ? 'crazy-pulse' : 'irregular-pulse');
+                        animationStyle = `animation: ${pulseType} ${2 + Math.random() * 4}s ease-in-out infinite;`;
                     }
                 }
                 
-                // Apply styles with adjusted blend mode for top layer
-                img.style.cssText = `
+                // Random rotation
+                const rotation = Math.random() * 360;
+                
+                // Random scale
+                const scale = 0.5 + Math.random() * 1.5;
+                
+                // Random blend mode - expanded with more options
+                const blendModes = [
+                    'normal', 'multiply', 'screen', 'overlay', 'darken', 'lighten', 
+                    'color-dodge', 'color-burn', 'hard-light', 'soft-light', 'difference', 
+                    'exclusion', 'hue', 'saturation', 'color', 'luminosity'
+                ];
+                const blendMode = isTopLayer ? 'normal' : blendModes[Math.floor(Math.random() * blendModes.length)];
+                
+                // Random filter effects
+                const hueRotate = Math.floor(Math.random() * 360);
+                const saturate = 50 + Math.floor(Math.random() * 250);
+                const brightness = 70 + Math.floor(Math.random() * 130);
+                const contrast = 80 + Math.floor(Math.random() * 120);
+                
+                // Additional random effects
+                let extraEffects = '';
+                
+                // 30% chance for drop shadow
+                if (Math.random() < 0.3) {
+                    const shadowColor = `hsl(${Math.floor(Math.random() * 360)}, 100%, 50%)`;
+                    const shadowBlur = Math.floor(Math.random() * 10) + 5;
+                    extraEffects += `drop-shadow(0 0 ${shadowBlur}px ${shadowColor}) `;
+                }
+                
+                // 20% chance for sepia
+                if (Math.random() < 0.2) {
+                    extraEffects += `sepia(${Math.floor(Math.random() * 70) + 30}%) `;
+                }
+                
+                // 15% chance for invert
+                if (Math.random() < 0.15) {
+                    extraEffects += `invert(${Math.floor(Math.random() * 70) + 30}%) `;
+                }
+                
+                // 10% chance for grayscale
+                if (Math.random() < 0.1) {
+                    extraEffects += `grayscale(${Math.floor(Math.random() * 70) + 30}%) `;
+                }
+                
+                // 10% chance for blur
+                if (Math.random() < 0.1) {
+                    extraEffects += `blur(${Math.random() * 3}px) `;
+                }
+                
+                // Random transform effects
+                let transformEffects = '';
+                
+                // 25% chance for skew
+                if (Math.random() < 0.25) {
+                    const skewX = Math.floor(Math.random() * 40) - 20;
+                    const skewY = Math.floor(Math.random() * 40) - 20;
+                    transformEffects += `skew(${skewX}deg, ${skewY}deg) `;
+                }
+                
+                // 20% chance for perspective
+                if (Math.random() < 0.2) {
+                    const perspective = 200 + Math.floor(Math.random() * 800);
+                    const rotateX = Math.floor(Math.random() * 40) - 20;
+                    const rotateY = Math.floor(Math.random() * 40) - 20;
+                    transformEffects += `perspective(${perspective}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) `;
+                }
+                
+                // 15% chance for 3D rotation
+                if (Math.random() < 0.15) {
+                    const rotateX = Math.floor(Math.random() * 360);
+                    const rotateY = Math.floor(Math.random() * 360);
+                    const rotateZ = Math.floor(Math.random() * 360);
+                    transformEffects += `rotate3d(1, 1, 1, ${rotateX}deg) `;
+                }
+                
+                // 10% chance for non-uniform scaling
+                if (Math.random() < 0.1) {
+                    const scaleX = 0.5 + Math.random() * 1.5;
+                    const scaleY = 0.5 + Math.random() * 1.5;
+                    transformEffects += `scaleX(${scaleX}) scaleY(${scaleY}) `;
+                }
+                
+                // Apply styles with all random effects
+img.style.cssText = `
                     position: fixed;
                     left: ${position.x}vw;
                     top: ${position.y}vh;
                     width: ${size}vmin;
                     opacity: ${opacity};
                     z-index: ${zIndex};
-                    filter: hue-rotate(${Math.random() * 360}deg);
-                    mix-blend-mode: ${isTopLayer ? 'normal' : 'multiply'};
+                    filter: hue-rotate(${hueRotate}deg) saturate(${saturate}%) brightness(${brightness}%) contrast(${contrast}%) ${extraEffects};
+                    mix-blend-mode: ${blendMode};
                     pointer-events: none;
                     transform-origin: center;
+                    transform: rotate(${rotation}deg) scale(${scale}) ${transformEffects};
                     ${animationStyle}
-                `;
+`;
 
                 document.body.appendChild(img);
-                
-                // Remove after some time
+
+                // Remove after some time - randomized lifetime
                 setTimeout(() => {
                     if (img.parentNode) img.remove();
                 }, 8000 + Math.random() * 4000); // 8-12 seconds lifetime
@@ -1548,32 +2338,32 @@
             function setupImageSpawning() {
                 console.log("Starting to create flying images...");
                 
-                // Create 5 images immediately (reduced from 8)
-                for (let i = 0; i < 5; i++) {
+                // Create 8 images immediately (increased initial burst)
+                for (let i = 0; i < 8; i++) {
                     createFlyingImage();
                 }
                 
-                // Create 4 more with slight delay (reduced from 6)
+                // Create 5 more with slight delay
                 setTimeout(() => {
-                    for (let i = 0; i < 4; i++) {
+                    for (let i = 0; i < 5; i++) {
                         createFlyingImage();
                     }
                 }, 800);
                 
-                // Slower spawn rate - create a new image every 1000ms (was 800ms)
-                setInterval(createFlyingImage, 1000);
+                // Slower spawn rate - create a new image every 2000ms (reduced frequency)
+                setInterval(createFlyingImage, 2000);
                 
                 // Additional smaller bursts
                 setTimeout(() => {
-                    for (let i = 0; i < 3; i++) { // Reduced from 5 to 3
+                    for (let i = 0; i < 3; i++) {
                         createFlyingImage();
                     }
                 }, 3000);
                 
-                setTimeout(() => {
-                    for (let i = 0; i < 3; i++) { // Reduced from 5 to 3
-                        createFlyingImage();
-                    }
+            setTimeout(() => {
+                    for (let i = 0; i < 2; i++) {
+                    createFlyingImage();
+                }
                 }, 6000);
             }
             
@@ -1650,16 +2440,68 @@
             setInterval(spawnBadge, 5000);
             setTimeout(spawnBadge, 1000);
 
-            // Cursor Trail
-            document.addEventListener('mousemove', (e) => {
+            // Completely rewrite the cursor trail function to fix scrolling issues
+            document.addEventListener('mousemove', function(e) {
+                // Limit the frequency of trail creation (only create a trail every 200ms)
+                if (!this.lastTrailTime || Date.now() - this.lastTrailTime > 200) {
+                    this.lastTrailTime = Date.now();
+                    
                 const trail = document.createElement('img');
-                trail.src = `images/adrit${Math.floor(Math.random() * 7) + 1}.png`;
+                const imgNum = Math.floor(Math.random() * 7) + 1;
+                trail.src = `images/adrit${imgNum}.png`;
                 trail.className = 'cursor-trail';
-                trail.style.left = e.pageX - 25 + 'px';
-                trail.style.top = e.pageY - 25 + 'px';
+                    
+                // Random size variation (60px to 90px)
+                const randomSize = 60 + Math.floor(Math.random() * 30);
+                trail.style.width = `${randomSize}px`;
+                trail.style.height = `${randomSize}px`;
+                    
+                // Use clientX and clientY which are relative to the viewport
+                trail.style.left = `${e.clientX - (randomSize/2)}px`;
+                trail.style.top = `${e.clientY - (randomSize/2)}px`;
+                    
+                // Random rotation
+                const rotation = Math.random() * 360;
+                    
+                // Random hue rotation for color variation
+                const hueRotate = Math.floor(Math.random() * 360);
+                    
+                // Random blend mode
+                const blendModes = ['normal', 'multiply', 'screen', 'overlay', 'color-dodge', 'color-burn', 'hard-light', 'soft-light'];
+                const randomBlendMode = blendModes[Math.floor(Math.random() * blendModes.length)];
+                    
+                // Random animation duration (1.5s to 2.5s)
+                const animDuration = 1.5 + Math.random();
+                    
+                // Random animation type (25% chance for each)
+                let animationType = 'trailBounce';
+                const animRandom = Math.random();
+                if (animRandom < 0.25) {
+                    animationType = 'trailBounce';
+                } else if (animRandom < 0.5) {
+                    animationType = 'trailSpin';
+                } else if (animRandom < 0.75) {
+                    animationType = 'trailPulse';
+                } else {
+                    animationType = 'trailZigzag';
+                }
+                    
+                // Apply all the random styles
+                trail.style.transform = `rotate(${rotation}deg)`;
+                trail.style.filter = `hue-rotate(${hueRotate}deg)`;
+                trail.style.mixBlendMode = randomBlendMode;
+                trail.style.animation = `${animationType} ${animDuration}s ease-out forwards`;
+                    
                 document.body.appendChild(trail);
-                setTimeout(() => trail.remove(), 1000);
-            });
+                    
+                // Timeout based on animation duration
+                setTimeout(() => {
+                    if (trail.parentNode) {
+                        trail.parentNode.removeChild(trail);
+                    }
+                }, animDuration * 1000);
+            }
+        });
 
             // Voice System
             const voiceButton = document.getElementById('voiceButton');
