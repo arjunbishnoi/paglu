@@ -629,6 +629,108 @@
         /* Flying images will use z-index 5-99 (set dynamically in JS) */
         /* Background elements (1-4) */
         .confetti { z-index: 3; }
+
+        /* New wild animations for flying images */
+        @keyframes zigzag {
+            0% { transform: translate(0, 0); }
+            20% { transform: translate(20vw, -20vh); }
+            40% { transform: translate(-20vw, -40vh); }
+            60% { transform: translate(40vw, 20vh); }
+            80% { transform: translate(-30vw, 30vh); }
+            100% { transform: translate(50vw, -50vh); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-30vh); }
+            60% { transform: translateY(-15vh); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+
+        @keyframes wobble {
+            0% { transform: translateX(0%); }
+            15% { transform: translateX(-25%) rotate(-5deg); }
+            30% { transform: translateX(20%) rotate(3deg); }
+            45% { transform: translateX(-15%) rotate(-3deg); }
+            60% { transform: translateX(10%) rotate(2deg); }
+            75% { transform: translateX(-5%) rotate(-1deg); }
+            100% { transform: translateX(0%); }
+        }
+
+        @keyframes swirl {
+            0% { transform: rotate(0deg) translateX(0) translateY(0); }
+            50% { transform: rotate(180deg) translateX(30vw) translateY(-20vh); }
+            100% { transform: rotate(360deg) translateX(0) translateY(0); }
+        }
+
+        @keyframes pendulum {
+            0% { transform-origin: top; transform: rotate(15deg); }
+            50% { transform-origin: top; transform: rotate(-15deg); }
+            100% { transform-origin: top; transform: rotate(15deg); }
+        }
+
+        @keyframes random-paths {
+            0% { transform: translate(0, 0); }
+            10% { transform: translate(10vw, -5vh) scale(1.2); }
+            25% { transform: translate(-15vw, 10vh) scale(0.8) rotate(45deg); }
+            40% { transform: translate(20vw, 20vh) scale(1.4) rotate(90deg); }
+            55% { transform: translate(-25vw, -25vh) scale(0.7) rotate(180deg); }
+            70% { transform: translate(15vw, 5vh) scale(1.1) rotate(270deg); }
+            85% { transform: translate(-5vw, 15vh) scale(0.9) rotate(315deg); }
+            100% { transform: translate(30vw, -20vh) scale(1.3) rotate(360deg); }
+        }
+
+        @keyframes random-scale {
+            0% { transform: scale(1); }
+            25% { transform: scale(0.7); }
+            50% { transform: scale(1.5); }
+            75% { transform: scale(0.5); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes crazy-rotate {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(90deg) scale(1.2); }
+            50% { transform: rotate(180deg) scale(0.8); }
+            75% { transform: rotate(270deg) scale(1.5); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes jitter {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5px, -5px); }
+            20% { transform: translate(5px, 5px); }
+            30% { transform: translate(5px, -5px); }
+            40% { transform: translate(-5px, 5px); }
+            50% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            70% { transform: translate(2px, -2px); }
+            80% { transform: translate(-2px, 2px); }
+            90% { transform: translate(1px, 1px); }
+        }
+
+        /* More pulsing variations */
+        @keyframes crazy-pulse {
+            0% { transform: scale(1); }
+            20% { transform: scale(1.8); }
+            40% { transform: scale(0.6); }
+            60% { transform: scale(2.2); }
+            80% { transform: scale(0.4); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes irregular-pulse {
+            0% { transform: scale(1) rotate(0deg); }
+            30% { transform: scale(1.5) rotate(45deg); }
+            50% { transform: scale(0.8) rotate(90deg); }
+            80% { transform: scale(1.8) rotate(-90deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
     </style>
 </head>
 
@@ -912,20 +1014,58 @@
                 
                 // New settings for enhanced randomization
                 enhancedRandomization: {
-                    moveChance: 0.9,           // 90% chance image will move (10% stationary)
+                    moveChance: 0.7,           // 70% chance image will move (30% stationary)
                     filterEffects: {
                         blur: { chance: 0.3, min: 0, max: 3 },         // px
                         contrast: { chance: 0.4, min: 80, max: 200 },  // %
                         saturate: { chance: 0.5, min: 50, max: 300 },  // %
-                        sepia: { chance: 0.2, min: 0, max: 70 }        // %
+                        sepia: { chance: 0.2, min: 0, max: 70 },       // %
+                        // New funky filters
+                        invert: { chance: 0.15, min: 10, max: 80 },    // %
+                        hueRotateAnimate: { chance: 0.2 },             // Animated hue-rotate
+                        dropShadow: { chance: 0.3 },                   // Colored drop shadows
+                        grayscale: { chance: 0.1, min: 30, max: 100 }, // %
+                        brightness: { chance: 0.3, min: 80, max: 180 } // %
                     },
                     transforms: {
                         skew: { chance: 0.3, min: -15, max: 15 },      // degrees
-                        perspective: { chance: 0.2, min: 100, max: 500 } // px
+                        perspective: { chance: 0.2, min: 100, max: 500 }, // px
+                        // New transform effects
+                        rotate3d: { chance: 0.15 },                     // 3D rotation
+                        scaleDistort: { chance: 0.2 }                   // Non-uniform scaling
                     },
                     quality: {
                         lowQualityChance: 0.2,  // 20% chance for pixelated effect
                         pixelation: { min: 70, max: 90 } // % quality reduction
+                    },
+                    
+                    // Expanded animation system
+                    animations: {
+                        // New animation types with weights
+                        types: [
+                            { name: 'floatImage1', weight: 0.1 },   // Original animations
+                            { name: 'floatImage2', weight: 0.1 },
+                            { name: 'floatImage3', weight: 0.1 },
+                            { name: 'zigzag', weight: 0.1 },        // New wild animations
+                            { name: 'bounce', weight: 0.08 },
+                            { name: 'shake', weight: 0.05 },
+                            { name: 'wobble', weight: 0.08 },
+                            { name: 'swirl', weight: 0.1 },
+                            { name: 'pendulum', weight: 0.07 },
+                            { name: 'random-paths', weight: 0.12 },
+                            { name: 'jitter', weight: 0.05 },
+                            { name: 'random-scale', weight: 0.05 }
+                        ],
+                        // Combining animations
+                        combinationChance: 0.4,      // 40% chance to combine multiple animations
+                        maxCombinations: 3,          // Up to 3 animations can be combined
+                        // New special effects
+                        specialEffects: {
+                            crazyRotate: { chance: 0.2 },
+                            crazyPulse: { chance: 0.15 },
+                            irregularPulse: { chance: 0.15 },
+                            reverseChance: 0.3       // 30% chance to reverse an animation
+                        }
                     },
                     
                     // New z-index distribution system with super-top layer images
@@ -1117,6 +1257,167 @@
                 }
             }
 
+            // Enhanced function to get randomized animation
+            function getRandomAnimation() {
+                const animationSystem = FLYING_IMAGE_SETTINGS.enhancedRandomization.animations;
+                const animations = animationSystem.types;
+                
+                // Calculate total weight
+                const totalWeight = animations.reduce((sum, anim) => sum + anim.weight, 0);
+                
+                // Pick random animation based on weight
+                let random = Math.random() * totalWeight;
+                let cumulativeWeight = 0;
+                let selectedAnimation = animations[0].name; // Default fallback
+                
+                for (const anim of animations) {
+                    cumulativeWeight += anim.weight;
+                    if (random <= cumulativeWeight) {
+                        selectedAnimation = anim.name;
+                        break;
+                    }
+                }
+                
+                // Determine if we should combine multiple animations
+                let animationString = selectedAnimation;
+                let animationsUsed = 1;
+                
+                // Potentially add more animations
+                if (Math.random() < animationSystem.combinationChance) {
+                    const maxCombos = animationSystem.maxCombinations;
+                    const combosToAdd = Math.floor(Math.random() * (maxCombos - 1)) + 1; // 1-2 more
+                    
+                    for (let i = 0; i < combosToAdd && animationsUsed < maxCombos; i++) {
+                        // Get another random animation, avoiding duplicates
+                        let additionalAnim = selectedAnimation;
+                        while (additionalAnim === selectedAnimation || animationString.includes(additionalAnim)) {
+                            random = Math.random() * totalWeight;
+                            cumulativeWeight = 0;
+                            
+                            for (const anim of animations) {
+                                cumulativeWeight += anim.weight;
+                                if (random <= cumulativeWeight) {
+                                    additionalAnim = anim.name;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        // Add it to the combination
+                        animationString += `, ${additionalAnim}`;
+                        animationsUsed++;
+                    }
+                }
+                
+                // Add special effects
+                const specialEffects = animationSystem.specialEffects;
+                
+                if (Math.random() < specialEffects.crazyRotate.chance) {
+                    animationString += ', crazy-rotate';
+                    animationsUsed++;
+                }
+                
+                if (animationsUsed < animationSystem.maxCombinations) {
+                    if (Math.random() < specialEffects.crazyPulse.chance) {
+                        animationString += ', crazy-pulse';
+                        animationsUsed++;
+                    } else if (Math.random() < specialEffects.irregularPulse.chance) {
+                        animationString += ', irregular-pulse';
+                        animationsUsed++;
+                    }
+                }
+                
+                return animationString;
+            }
+            
+            // Function to get randomized animation duration
+            function getRandomDuration(zIndex) {
+                const s = FLYING_IMAGE_SETTINGS;
+                let baseMin = s.movement.duration.min;
+                let baseMax = s.movement.duration.max;
+                
+                // Layer-specific adjustments
+                if (zIndex > 1000) {
+                    // Super top layer - faster movement
+                    baseMin *= 0.6;
+                    baseMax *= 0.7;
+                } else if (zIndex < 50) {
+                    // Bottom layer - slower movement
+                    baseMin *= 1.5;
+                    baseMax *= 1.8;
+                }
+                
+                // Add randomness - sometimes extremely fast or slow
+                if (Math.random() < 0.1) {
+                    // 10% chance for super fast
+                    return Math.random() * (baseMin * 0.5 - baseMin * 0.2) + baseMin * 0.2;
+                } else if (Math.random() < 0.1) {
+                    // 10% chance for super slow
+                    return Math.random() * (baseMax * 1.8 - baseMax) + baseMax;
+                } else {
+                    // Normal range
+                    return Math.random() * (baseMax - baseMin) + baseMin;
+                }
+            }
+            
+            // Function to create a wild filter string
+            function getWildFilterString(hueRotation, layerEffects) {
+                const er = FLYING_IMAGE_SETTINGS.enhancedRandomization;
+                let filterString = '';
+                
+                // Base hue rotation (can be animated)
+                if (Math.random() < er.filterEffects.hueRotateAnimate.chance) {
+                    // Will be handled via animation instead
+                    filterString += 'hue-rotate(0deg) ';
+                } else {
+                    filterString += `hue-rotate(${hueRotation}deg) `;
+                }
+                
+                // Layer-specific saturation and blur
+                filterString += `saturate(${layerEffects.saturate.toFixed(0)}%)`;
+                if (layerEffects.blur > 0) {
+                    filterString += ` blur(${layerEffects.blur.toFixed(1)}px)`;
+                }
+                
+                // Apply additional random filter effects
+                if (Math.random() < er.filterEffects.contrast.chance) {
+                    const amount = Math.random() * (er.filterEffects.contrast.max - er.filterEffects.contrast.min) + er.filterEffects.contrast.min;
+                    filterString += ` contrast(${amount.toFixed(0)}%)`;
+                }
+                
+                if (Math.random() < er.filterEffects.sepia.chance) {
+                    const amount = Math.random() * (er.filterEffects.sepia.max - er.filterEffects.sepia.min) + er.filterEffects.sepia.min;
+                    filterString += ` sepia(${amount.toFixed(0)}%)`;
+                }
+                
+                // New funky filters
+                if (Math.random() < er.filterEffects.invert.chance) {
+                    const amount = Math.random() * (er.filterEffects.invert.max - er.filterEffects.invert.min) + er.filterEffects.invert.min;
+                    filterString += ` invert(${amount.toFixed(0)}%)`;
+                }
+                
+                if (Math.random() < er.filterEffects.grayscale.chance) {
+                    const amount = Math.random() * (er.filterEffects.grayscale.max - er.filterEffects.grayscale.min) + er.filterEffects.grayscale.min;
+                    filterString += ` grayscale(${amount.toFixed(0)}%)`;
+                }
+                
+                if (Math.random() < er.filterEffects.brightness.chance) {
+                    const amount = Math.random() * (er.filterEffects.brightness.max - er.filterEffects.brightness.min) + er.filterEffects.brightness.min;
+                    filterString += ` brightness(${amount.toFixed(0)}%)`;
+                }
+                
+                // Add colored drop shadow for some images
+                if (Math.random() < er.filterEffects.dropShadow.chance) {
+                    const color = `hsl(${Math.floor(Math.random() * 360)}, 100%, 50%)`;
+                    const offsetX = Math.floor(Math.random() * 10 - 5);
+                    const offsetY = Math.floor(Math.random() * 10 - 5);
+                    const blur = Math.floor(Math.random() * 5 + 2);
+                    filterString += ` drop-shadow(${offsetX}px ${offsetY}px ${blur}px ${color})`;
+                }
+                
+                return filterString;
+}
+
             // Flying Images
             function createFlyingImage() {
                 const s = FLYING_IMAGE_SETTINGS;
@@ -1224,17 +1525,17 @@
                 const adjustedOpacity = Math.min(1, baseOpacity * layerEffects.opacityModifier);
 
                 // Visual styling
-                img.style.cssText = `
+img.style.cssText = `
                     left: ${position.x}vw;
                     top: ${position.y}vh;
-                    width: ${initialSize};
+    width: ${initialSize};
                     opacity: ${adjustedOpacity.toFixed(2)};
                     filter: ${filterString};
-                    mix-blend-mode: ${s.appearance.blendModes[Math.floor(Math.random() * s.appearance.blendModes.length)]};
+    mix-blend-mode: ${s.appearance.blendModes[Math.floor(Math.random() * s.appearance.blendModes.length)]};
                     z-index: ${zIndex};
                     transform: ${transformString};
                     ${imageRendering ? 'image-rendering:' + imageRendering + ';' : ''}
-                `;
+`;
 
                 document.body.appendChild(img);
 
@@ -1244,51 +1545,110 @@
                 if (willMove) {
                     // Completely randomized initial delay - some move instantly, others wait
                     // Super top layer images have faster movement start
-                    const maxDelay = zIndex > 1000 ? 2000 : 4000; // Super top layer moves faster
+                    const maxDelay = zIndex > 1000 ? 1500 : 3000; // Super top layer moves faster
                     const initialDelay = Math.random() * maxDelay;
-    
-                    setTimeout(() => {
-                        // Choose animation type - super top layer gets more varied movement
-                        const animation = s.movement.animations[Math.floor(Math.random() * s.movement.animations.length)];
+
+                setTimeout(() => {
+                        // Get random animation(s) and duration
+                        const animationString = getRandomAnimation();
+                        const duration = getRandomDuration(zIndex);
                         
-                        // Duration varies by layer - top layer moves faster for more dramatic effect
-                        let durationRange = {...s.movement.duration};
-                        if (zIndex > 1000) {
-                            // Super top layer - faster movement
-                            durationRange.min *= 0.7;
-                            durationRange.max *= 0.8;
-                        } else if (zIndex < 50) {
-                            // Bottom layer - slower movement
-                            durationRange.min *= 1.3;
-                            durationRange.max *= 1.5;
+                        // Apply animation with randomized direction
+                        const direction = Math.random() < s.enhancedRandomization.animations.specialEffects.reverseChance ? 
+                            'reverse' : 'normal';
+                            
+                        // Apply animation timing function - sometimes use wild easing
+                        const timingFunctions = ['linear', 'ease', 'ease-in', 'ease-out', 'ease-in-out', 
+                            'cubic-bezier(0.6, 0.04, 0.98, 0.335)', 'cubic-bezier(0.075, 0.82, 0.165, 1)',
+                            'cubic-bezier(0.785, 0.135, 0.15, 0.86)', 'cubic-bezier(0.19, 1, 0.22, 1)'];
+                        const timingFunction = timingFunctions[Math.floor(Math.random() * timingFunctions.length)];
+                            
+                        // Apply base movement animation
+                        img.style.animation = `${animationString} ${duration}s ${timingFunction} infinite ${direction}`;
+                        
+                        // Apply animated hue rotation if selected
+                        if (Math.random() < s.enhancedRandomization.filterEffects.hueRotateAnimate.chance) {
+                            // Create a keyframe animation specifically for this image
+                            const styleSheet = document.styleSheets[0];
+                            const animationName = `hueRotate${Math.floor(Math.random() * 10000)}`;
+                            const rotationSpeed = Math.random() * 10 + 3; // 3-13s
+                            
+                            // Add keyframe animation dynamically
+                            const keyframes = `@keyframes ${animationName} {
+                                0% { filter: ${img.style.filter} hue-rotate(0deg); }
+                                100% { filter: ${img.style.filter} hue-rotate(360deg); }
+                            }`;
+                            
+                            try {
+                                styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+                                // Apply the animation
+                                img.style.animation += `, ${animationName} ${rotationSpeed}s linear infinite`;
+                            } catch (e) {
+                                // Fallback if dynamic style insertion fails
+                                console.log("Dynamic style insertion failed", e);
+                            }
                         }
                         
-                        const duration = Math.random() * (durationRange.max - durationRange.min) + durationRange.min;
-    
-                        // Apply movement
-                        img.style.animation = `${animation} ${duration}s linear infinite`;
-    
-                        // Highly variable rotation delay - some rotate immediately, others much later
-                        const rotationDelay = Math.random() * 3000;
-                        
-                        setTimeout(() => {
-                            // More varied rotation speed and direction
-                            const rotationSpeed = (Math.random() * (s.rotation.speed.max - s.rotation.speed.min) + s.rotation.speed.min) *
-                                (Math.random() > s.rotation.directionChance ? 1 : -1);
-                                
-                            // Apply rotation animation
-                            img.style.animation += `, spin ${Math.abs(rotationSpeed)}s linear infinite`;
-                        }, rotationDelay);
-    
-                        // Random pulse effect with variable timing and intensity
-                        if (Math.random() < s.pulseEffect.chance) {
-                            // Delay pulse start randomly
-                            setTimeout(() => {
-                                const pulseDuration = Math.random() * (s.pulseEffect.duration.max - s.pulseEffect.duration.min) + s.pulseEffect.duration.min;
-                                img.style.animation += `, pulse ${pulseDuration}s ease-in-out infinite`;
-                            }, Math.random() * 2000);
+                        // Apply special 3D transform effects randomly
+                        if (Math.random() < s.enhancedRandomization.transforms.rotate3d.chance) {
+                            // Create 3D rotation animation
+                            const styleSheet = document.styleSheets[0];
+                            const animationName = `rotate3d${Math.floor(Math.random() * 10000)}`;
+                            const rotationSpeed = Math.random() * 8 + 4; // 4-12s
+                            
+                            // Random 3D rotation values
+                            const x = Math.random();
+                            const y = Math.random();
+                            const z = Math.random();
+                            
+                            // Add keyframe animation dynamically
+                            const keyframes = `@keyframes ${animationName} {
+                                0% { transform: ${img.style.transform} rotate3d(${x}, ${y}, ${z}, 0deg); }
+                                100% { transform: ${img.style.transform} rotate3d(${x}, ${y}, ${z}, 360deg); }
+                            }`;
+                            
+                            try {
+                                styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+                                // Apply the animation
+                                img.style.animation += `, ${animationName} ${rotationSpeed}s linear infinite`;
+                            } catch (e) {
+                                // Fallback if dynamic style insertion fails
+                                console.log("Dynamic style insertion failed", e);
+                            }
                         }
-                    }, initialDelay);
+                        
+                        // Non-uniform scale distortion
+                        if (Math.random() < s.enhancedRandomization.transforms.scaleDistort.chance) {
+                            const styleSheet = document.styleSheets[0];
+                            const animationName = `scaleDistort${Math.floor(Math.random() * 10000)}`;
+                            const distortSpeed = Math.random() * 5 + 2; // 2-7s
+                            
+                            // Add keyframe animation dynamically
+                            const keyframes = `@keyframes ${animationName} {
+                                0% { transform: ${img.style.transform} scaleX(1) scaleY(1); }
+                                25% { transform: ${img.style.transform} scaleX(1.3) scaleY(0.7); }
+                                50% { transform: ${img.style.transform} scaleX(0.7) scaleY(1.3); }
+                                75% { transform: ${img.style.transform} scaleX(1.1) scaleY(0.9); }
+                                100% { transform: ${img.style.transform} scaleX(1) scaleY(1); }
+                            }`;
+                            
+                            try {
+                                styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+                                // Apply the animation
+                                img.style.animation += `, ${animationName} ${distortSpeed}s ease-in-out infinite`;
+                            } catch (e) {
+                                // Fallback if dynamic style insertion fails
+                                console.log("Dynamic style insertion failed", e);
+                            }
+                    }
+                }, initialDelay);
+                } else {
+                    // For static images, maybe add subtle breathing or hover effect
+                    if (Math.random() < 0.5) {
+                        const subtleEffect = Math.random() < 0.7 ? 'pulse' : 'random-scale';
+                        const duration = Math.random() * 4 + 3; // 3-7s
+                        img.style.animation = `${subtleEffect} ${duration}s ease-in-out infinite`;
+                    }
                 }
 
                 // Random lifetime with more variation for dramatic effect
