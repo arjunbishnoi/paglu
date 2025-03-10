@@ -846,7 +846,7 @@
             .flag {
                 top: 90px; /* Slightly less space on mobile but still enough */
                 width: 85%; /* Slightly wider on mobile */
-                height: 180px;
+                height: 180px; /* Reduced height */
                 padding: 10px;
                 gap: 10px;
             }
@@ -857,12 +857,12 @@
             }
 
             .flag-image {
-                width: 110px;
-                height: 110px;
+                width: 110px; /* Smaller image */
+                height: 110px; /* Smaller image */
             }
 
             .flag h1 {
-                font-size: 1.7em;
+                font-size: 1.7em; /* Smaller text */
             }
 
             @keyframes flagWave {
@@ -1403,6 +1403,306 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
             animation: alert-background-animation 5s linear infinite, alert-bounce 0.5s ease-in-out infinite alternate;
         }
+
+        /* Mobile-specific improvements */
+        @media (max-width: 600px) {
+            /* Improved news ticker for mobile */
+            .news-ticker {
+                top: 10px;
+                height: 40px;
+                font-size: 16px;
+                margin-bottom: 20px;
+            }
+            
+            .ticker-content {
+                animation: ticker 30s linear infinite; /* Slowed down from 20s to 30s */
+            }
+            
+            /* Add margin above news ticker when alert is shown */
+            body.alert-active .news-ticker {
+                top: 60px; /* More space when alert is shown */
+            }
+            
+            /* Reduced flag size for mobile */
+            .flag-container {
+                width: 100%;
+            }
+            
+            .flag-pole {
+                right: 20px;
+                width: 10px;
+            }
+            
+            .flag {
+                top: 70px; /* Increased from original to add space below ticker */
+                right: 30px;
+                width: 80%; /* Reduced width */
+                height: 140px; /* Reduced height */
+                padding: 8px;
+                gap: 8px;
+            }
+            
+            .flag-image {
+                width: 80px; /* Reduced from 110px */
+                height: 80px; /* Reduced from 110px */
+            }
+            
+            .flag h1 {
+                font-size: 1.4em; /* Reduced from 1.7em */
+            }
+            
+            /* Adjust slideshow position to be more centered */
+            .slideshow-container {
+                margin-top: 230px; /* Increased to add space below flag */
+            }
+            
+            /* Adjust other elements for better spacing */
+            #voiceButton, #sniffButton {
+                margin-top: 15px;
+                font-size: 1em;
+                padding: 8px 15px;
+            }
+        }
+
+        /* Add more news items to ensure ticker is never empty */
+        // ... existing code ...
+
+        // Enhanced news ticker setup
+        function setupNewsTicker() {
+            const newsItems = [
+                "BREAKING: Adrit declared world's #1 Chut Paglu by international committee",
+                "Adrit's paglu levels reach record high, scientists concerned",
+                "Local man can't stop being a paglu, friends report",
+                "EXCLUSIVE: Adrit reveals secret to being the ultimate paglu",
+                "Paglu convention names Adrit honorary president",
+                "Studies show Adrit's paglu behavior is contagious, experts warn",
+                "Adrit wins 'Most Paglu Person' award for 5th consecutive year",
+                "WATCH: Adrit demonstrates advanced paglu techniques",
+                "Paglu University offers Adrit honorary doctorate",
+                "Adrit's paglu moments compilation goes viral",
+                "Scientists study Adrit to understand extreme paglu behavior",
+                "New book 'How to Be a Paglu Like Adrit' tops bestseller lists",
+                "Adrit starts masterclass on professional paglu techniques",
+                "Local authorities issue paglu warning after Adrit sighting",
+                "Adrit breaks world record for continuous paglu behavior",
+                "International Paglu Day to be celebrated in honor of Adrit",
+                "Adrit's paglu dance becomes latest TikTok trend",
+                "Experts confirm: Nobody can out-paglu Adrit",
+                "Adrit launches new paglu merchandise line",
+                "Documentary 'The Paglu Life of Adrit' wins film festival award"
+            ];
+            
+            const tickerContent = document.querySelector('.ticker-content');
+            if (tickerContent) {
+                // Clear existing content
+                tickerContent.innerHTML = '';
+                
+                // Add all news items with spacing
+                newsItems.forEach(item => {
+                    const span = document.createElement('span');
+                    span.textContent = item + ' • ';
+                    tickerContent.appendChild(span);
+                });
+                
+                // Duplicate the items to ensure continuous scrolling
+                const allItems = tickerContent.innerHTML;
+                tickerContent.innerHTML = allItems + allItems;
+            }
+        }
+
+        // Modify the flag to use random image
+        function setupFlag() {
+            // Get a random image for the flag
+            const flagImage = document.querySelector('.flag-image');
+            if (flagImage) {
+                // Use the same image detection logic as flying images
+                const imgNum = Math.floor(Math.random() * (window.adritImageCount || 8)) + 1;
+                flagImage.src = `images/adrit${imgNum}.png`;
+                
+                // Remove background by adding these styles
+                flagImage.style.background = 'transparent';
+            }
+        }
+
+        // Modify the alert system to add body class for spacing
+        function showAlert(message, duration = 3000) {
+            const alertElement = document.createElement('div');
+            alertElement.className = 'alert';
+            alertElement.textContent = message;
+            document.body.appendChild(alertElement);
+            
+            // Add class to body for spacing adjustments
+            document.body.classList.add('alert-active');
+            
+            setTimeout(() => {
+                alertElement.remove();
+                // Remove class when alert is gone
+                document.body.classList.remove('alert-active');
+            }, duration);
+        }
+
+        // Add to the initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // ... existing initialization code ...
+            
+            // Enhanced ticker setup
+            setupNewsTicker();
+            
+            // Setup random flag image
+            setupFlag();
+        });
+
+        /* Mobile-optimized styles */
+        .ticker-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 10px 0;
+            z-index: 150;
+            overflow: hidden;
+        }
+
+        .ticker-content {
+            white-space: nowrap;
+            animation: ticker 60s linear infinite; /* Slowed down from 30s to 60s */
+        }
+
+        .ticker-content span {
+            margin-right: 50px; /* Increased spacing between news items */
+        }
+
+        /* Add margin when alert is active */
+        body.alert-active .ticker-container {
+            margin-top: 70px; /* More space for alert */
+        }
+
+        /* Mobile-specific adjustments */
+        @media (max-width: 600px) {
+            .flag {
+                top: 120px; /* More space below ticker */
+                height: 150px; /* Reduced height */
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .flag-image {
+                width: 80px; /* Smaller image */
+                height: 80px;
+                background: none !important; /* Force remove background */
+                object-fit: contain; /* Ensure image fits without background */
+            }
+
+            .flag h1 {
+                font-size: 1.4em; /* Smaller text */
+            }
+
+            /* Adjust slideshow position */
+            .slideshow-container {
+                margin-top: 1800px; /* Increased from 300px to move it lower */
+                margin-bottom: 50px; /* Increased bottom margin for better spacing */
+                position: relative;
+                z-index: 100;
+            }
+
+            /* Add more margin when alert is active */
+            body.alert-active .ticker-container {
+                margin-top: 90px;
+            }
+
+            /* Ensure ticker is always visible */
+            .ticker-content {
+                animation: ticker 80s linear infinite; /* Even slower on mobile */
+            }
+        }
+
+        /* Ensure flag image is always transparent */
+        .flag-image {
+            background: none !important;
+            object-fit: contain;
+        }
+
+        /* Add more news items to ensure ticker is never empty */
+        function setupNewsTicker() {
+            const newsItems = [
+                "BREAKING: Adrit declared world's #1 Chut Paglu by international committee",
+                "EXCLUSIVE: Scientists confirm Adrit's Paglu levels are off the charts",
+                "UPDATE: Global Paglu Index reaches new high thanks to Adrit",
+                "ALERT: Adrit's cuteness levels causing worldwide sugar shortages",
+                "TRENDING: #AdritPaglu tops worldwide social media trends",
+                "JUST IN: Adrit wins 'Most Adorable Paglu' award for 5th consecutive year",
+                "REPORT: Experts say Adrit's Paglu energy could power a small city",
+                "NEWS FLASH: Adrit's smile officially registered as a renewable resource",
+                "URGENT: World leaders gather to discuss Adrit's rising Paglu influence",
+                "BREAKING: Time Magazine names Adrit 'Paglu of the Year'",
+                "EXCLUSIVE: NASA discovers new star constellation shaped like Adrit",
+                "UPDATE: Oxford Dictionary adds 'Adrit' as synonym for 'ultimate cuteness'",
+                "ALERT: Global happiness levels spike due to Adrit's latest adventures",
+                "TRENDING: Adrit's dance moves become international sensation",
+                "JUST IN: Nobel Committee creates new category for Paglu Excellence"
+            ];
+            
+            const tickerContent = document.querySelector('.ticker-content');
+            if (tickerContent) {
+                // Clear existing content
+                tickerContent.innerHTML = '';
+                
+                // Add all news items with spacing
+                newsItems.forEach(item => {
+                    const span = document.createElement('span');
+                    span.textContent = item + ' • ';
+                    tickerContent.appendChild(span);
+                });
+                
+                // Duplicate the items multiple times to ensure continuous scrolling
+                const allItems = tickerContent.innerHTML;
+                tickerContent.innerHTML = allItems + allItems + allItems; // Triple the content
+            }
+        }
+
+        // Modify the flag to use random image
+        function setupFlag() {
+            // Get a random image for the flag
+            const flagImage = document.querySelector('.flag-image');
+            if (flagImage) {
+                // Use the same image detection logic as flying images
+                const imgNum = Math.floor(Math.random() * (window.adritImageCount || 8)) + 1;
+                flagImage.src = `images/adrit${imgNum}.png`;
+                
+                // Remove background by adding these styles
+                flagImage.style.background = 'transparent';
+            }
+        }
+
+        // Modify the alert system to add body class for spacing
+        function showAlert(message, duration = 3000) {
+            const alertElement = document.createElement('div');
+            alertElement.className = 'alert';
+            alertElement.textContent = message;
+            document.body.appendChild(alertElement);
+            
+            // Add class to body for spacing adjustments
+            document.body.classList.add('alert-active');
+            
+            setTimeout(() => {
+                alertElement.remove();
+                // Remove class when alert is gone
+                document.body.classList.remove('alert-active');
+            }, duration);
+        }
+
+        // Add to the initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // ... existing initialization code ...
+            
+            // Enhanced ticker setup
+            setupNewsTicker();
+            
+            // Setup random flag image
+            setupFlag();
+        });
     </style>
 </head>
 
@@ -2784,6 +3084,91 @@ img.style.cssText = `
                 setupNewsTickerAndAlerts();
             });
         }
+
+        // Enhanced news ticker setup
+        function setupNewsTicker() {
+            const newsItems = [
+                "BREAKING: Adrit declared world's #1 Chut Paglu by international committee",
+                "Adrit's paglu levels reach record high, scientists concerned",
+                "Local man can't stop being a paglu, friends report",
+                "EXCLUSIVE: Adrit reveals secret to being the ultimate paglu",
+                "Paglu convention names Adrit honorary president",
+                "Studies show Adrit's paglu behavior is contagious, experts warn",
+                "Adrit wins 'Most Paglu Person' award for 5th consecutive year",
+                "WATCH: Adrit demonstrates advanced paglu techniques",
+                "Paglu University offers Adrit honorary doctorate",
+                "Adrit's paglu moments compilation goes viral",
+                "Scientists study Adrit to understand extreme paglu behavior",
+                "New book 'How to Be a Paglu Like Adrit' tops bestseller lists",
+                "Adrit starts masterclass on professional paglu techniques",
+                "Local authorities issue paglu warning after Adrit sighting",
+                "Adrit breaks world record for continuous paglu behavior",
+                "International Paglu Day to be celebrated in honor of Adrit",
+                "Adrit's paglu dance becomes latest TikTok trend",
+                "Experts confirm: Nobody can out-paglu Adrit",
+                "Adrit launches new paglu merchandise line",
+                "Documentary 'The Paglu Life of Adrit' wins film festival award"
+            ];
+            
+            const tickerContent = document.querySelector('.ticker-content');
+            if (tickerContent) {
+                // Clear existing content
+                tickerContent.innerHTML = '';
+                
+                // Add all news items with spacing
+                newsItems.forEach(item => {
+                    const span = document.createElement('span');
+                    span.textContent = item + ' • ';
+                    tickerContent.appendChild(span);
+                });
+                
+                // Duplicate the items to ensure continuous scrolling
+                const allItems = tickerContent.innerHTML;
+                tickerContent.innerHTML = allItems + allItems;
+            }
+        }
+
+        // Modify the flag to use random image
+        function setupFlag() {
+            // Get a random image for the flag
+            const flagImage = document.querySelector('.flag-image');
+            if (flagImage) {
+                // Use the same image detection logic as flying images
+                const imgNum = Math.floor(Math.random() * (window.adritImageCount || 8)) + 1;
+                flagImage.src = `images/adrit${imgNum}.png`;
+                
+                // Remove background by adding these styles
+                flagImage.style.background = 'transparent';
+            }
+        }
+
+        // Modify the alert system to add body class for spacing
+        function showAlert(message, duration = 3000) {
+            const alertElement = document.createElement('div');
+            alertElement.className = 'alert';
+            alertElement.textContent = message;
+            document.body.appendChild(alertElement);
+            
+            // Add class to body for spacing adjustments
+            document.body.classList.add('alert-active');
+            
+            setTimeout(() => {
+                alertElement.remove();
+                // Remove class when alert is gone
+                document.body.classList.remove('alert-active');
+            }, duration);
+        }
+
+        // Add to the initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // ... existing initialization code ...
+            
+            // Enhanced ticker setup
+            setupNewsTicker();
+            
+            // Setup random flag image
+            setupFlag();
+        });
     </script>
 </body>
 
