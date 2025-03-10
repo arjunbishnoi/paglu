@@ -1377,6 +1377,32 @@
             80% { transform: rotate(288deg) translateX(20px) translateY(20px); }
             100% { transform: rotate(360deg) translateX(0) translateY(0); }
         }
+
+        /* Add animation for alert background */
+        @keyframes alert-background-animation {
+            0% { background: linear-gradient(45deg, rgba(255, 0, 0, 0.9), rgba(255, 0, 0, 0.7)); filter: hue-rotate(0deg); }
+            20% { background: linear-gradient(90deg, rgba(255, 165, 0, 0.9), rgba(255, 165, 0, 0.7)); filter: hue-rotate(72deg); }
+            40% { background: linear-gradient(135deg, rgba(255, 255, 0, 0.9), rgba(255, 255, 0, 0.7)); filter: hue-rotate(144deg); }
+            60% { background: linear-gradient(180deg, rgba(0, 255, 0, 0.9), rgba(0, 255, 0, 0.7)); filter: hue-rotate(216deg); }
+            80% { background: linear-gradient(225deg, rgba(0, 0, 255, 0.9), rgba(0, 0, 255, 0.7)); filter: hue-rotate(288deg); }
+            100% { background: linear-gradient(270deg, rgba(255, 0, 255, 0.9), rgba(255, 0, 255, 0.7)); filter: hue-rotate(360deg); }
+        }
+
+        .alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            animation: alert-background-animation 5s linear infinite, alert-bounce 0.5s ease-in-out infinite alternate;
+        }
     </style>
 </head>
 
@@ -2342,7 +2368,7 @@
                 }
                 
                 // Apply styles with all random effects
-                img.style.cssText = `
+img.style.cssText = `
                     position: fixed;
                     left: ${position.x}vw;
                     top: ${position.y}vh;
@@ -2355,19 +2381,53 @@
                     transform-origin: center;
                     transform: rotate(${rotation}deg) scale(${scale}) ${transformEffects};
                     ${animationStyle}
-                `;
+`;
 
                 document.body.appendChild(img);
-                
+
                 // Remove after some time - randomized lifetime
                 setTimeout(() => {
                     if (img.parentNode) img.remove();
                 }, 8000 + Math.random() * 4000); // 8-12 seconds lifetime
             }
 
-            // Simplified image spawning with fewer images
+            // Modify setupImageSpawning to ensure minimum number of flying images
             function setupImageSpawning() {
                 console.log("Starting to create flying images...");
+                
+                // Function to calculate minimum images based on window size
+                function getMinimumImages() {
+                    const width = window.innerWidth;
+                    const height = window.innerHeight;
+                    const area = width * height;
+                    
+                    // Base number on screen area (more for larger screens)
+                    if (area > 1920 * 1080) { // Large screens
+                        return 15;
+                    } else if (area > 1280 * 720) { // Medium screens
+                        return 12;
+                    } else { // Small screens
+                        return 8;
+                    }
+                }
+                
+                // Function to count current flying images
+                function countFlyingImages() {
+                    return document.querySelectorAll('.flying-image').length;
+                }
+                
+                // Function to ensure minimum images are present
+                function ensureMinimumImages() {
+                    const minImages = getMinimumImages();
+                    const currentImages = countFlyingImages();
+                    
+                    if (currentImages < minImages) {
+                        const imagesToCreate = minImages - currentImages;
+                        for (let i = 0; i < imagesToCreate; i++) {
+                            setTimeout(() => createFlyingImage(), i * 100); // Stagger creation
+                        }
+                    }
+                }
                 
                 // Create 8 images immediately (increased initial burst)
                 for (let i = 0; i < 8; i++) {
@@ -2391,11 +2451,17 @@
                     }
                 }, 3000);
                 
-            setTimeout(() => {
+                setTimeout(() => {
                     for (let i = 0; i < 2; i++) {
-                    createFlyingImage();
-                }
+                        createFlyingImage();
+                    }
                 }, 6000);
+                
+                // Check every 3 seconds to ensure minimum images are present
+                setInterval(ensureMinimumImages, 3000);
+                
+                // Also check when window is resized
+                window.addEventListener('resize', ensureMinimumImages);
             }
             
             // Start images IMMEDIATELY
